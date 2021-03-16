@@ -1,8 +1,8 @@
 ﻿using System.Windows.Input;
+using devTools.WiXComponents.ViewModels;
 using JetBrains.Annotations;
-using WiXComponents.ViewModels;
 
-namespace WiXComponents.State.Navigators
+namespace devTools.WiXComponents.State.Navigators
 {
 	public interface INavigator
 	{

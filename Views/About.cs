@@ -1,6 +1,6 @@
 ﻿using System.Windows.Controls;
 
-namespace WiXComponents.Views
+namespace devTools.WiXComponents.Views
 {
 	/// <summary>
 	/// Interaction logic for Home.xaml

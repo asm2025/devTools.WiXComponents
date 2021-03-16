@@ -2,7 +2,7 @@
 using JetBrains.Annotations;
 using Microsoft.Extensions.Logging;
 
-namespace WiXComponents
+namespace devTools.WiXComponents
 {
 	public class Logger<T> : ILogger<T>
 	{

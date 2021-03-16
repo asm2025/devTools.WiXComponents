@@ -6,11 +6,12 @@ using System.Reflection;
 using System.Threading;
 using System.Windows;
 using System.Xml;
+using CommandLine;
+using devTools.WiXComponents.Properties;
 using essentialMix.Data.Helpers;
 using essentialMix.Extensions;
 using essentialMix.Helpers;
 using essentialMix.Newtonsoft.Helpers;
-using CommandLine;
 using JetBrains.Annotations;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -19,11 +20,10 @@ using Newtonsoft.Json;
 using Serilog;
 using Serilog.Events;
 using Serilog.Sinks.SystemConsole.Themes;
-using WiXComponents.Properties;
 using ILogger = Microsoft.Extensions.Logging.ILogger;
 using LogLevel = Microsoft.Extensions.Logging.LogLevel;
 
-namespace WiXComponents
+namespace devTools.WiXComponents
 {
 	/// <summary>
 	/// Interaction logic for App.xaml

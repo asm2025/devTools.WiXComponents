@@ -1,13 +1,13 @@
 ﻿using System;
 using System.Collections.Concurrent;
 using System.Windows.Input;
+using devTools.WiXComponents.State.Navigators;
+using devTools.WiXComponents.ViewModels;
 using essentialMix.Extensions;
 using JetBrains.Annotations;
 using Microsoft.Extensions.Logging;
-using WiXComponents.State.Navigators;
-using WiXComponents.ViewModels;
 
-namespace WiXComponents.Commands
+namespace devTools.WiXComponents.Commands
 {
 	public class UpdateViewModelCommand : ICommand
 	{

@@ -1,11 +1,11 @@
 ﻿using System;
 using System.Windows;
 using System.Windows.Input;
+using devTools.WiXComponents.Commands;
+using devTools.WiXComponents.ViewModels;
 using Microsoft.Extensions.Logging;
-using WiXComponents.Commands;
-using WiXComponents.ViewModels;
 
-namespace WiXComponents
+namespace devTools.WiXComponents
 {
 	/// <summary>
 	/// Interaction logic for MainWindow.xaml

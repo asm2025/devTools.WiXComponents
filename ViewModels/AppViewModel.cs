@@ -3,7 +3,7 @@ using essentialMix.Extensions;
 using essentialMix.Helpers;
 using Microsoft.Extensions.Logging;
 
-namespace WiXComponents.ViewModels
+namespace devTools.WiXComponents.ViewModels
 {
 	/// <inheritdoc />
 	public abstract class AppViewModel : ViewModelBase

@@ -1,7 +1,7 @@
-﻿using Microsoft.Extensions.Logging;
-using WiXComponents.State.Navigators;
+﻿using devTools.WiXComponents.State.Navigators;
+using Microsoft.Extensions.Logging;
 
-namespace WiXComponents.ViewModels
+namespace devTools.WiXComponents.ViewModels
 {
 	/// <inheritdoc />
 	public class MainViewModel : AppViewModel

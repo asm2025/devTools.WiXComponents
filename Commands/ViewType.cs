@@ -1,4 +1,4 @@
-﻿namespace WiXComponents.Commands
+﻿namespace devTools.WiXComponents.Commands
 {
 	public enum ViewType
 	{

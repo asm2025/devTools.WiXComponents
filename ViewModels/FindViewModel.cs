@@ -1,6 +1,6 @@
 ﻿using Microsoft.Extensions.Logging;
 
-namespace WiXComponents.ViewModels
+namespace devTools.WiXComponents.ViewModels
 {
 	/// <inheritdoc />
 	public class FindViewModel : ViewModelBase

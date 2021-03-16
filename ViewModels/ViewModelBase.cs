@@ -2,7 +2,7 @@
 using essentialMix.Patterns.NotifyChange;
 using Microsoft.Extensions.Logging;
 
-namespace WiXComponents.ViewModels
+namespace devTools.WiXComponents.ViewModels
 {
 	public abstract class ViewModelBase : NotifyPropertyChangedBase
 	{

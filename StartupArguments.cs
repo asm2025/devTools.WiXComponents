@@ -1,12 +1,12 @@
 ﻿using System.Collections.Generic;
 using System.Reflection;
-using essentialMix.Extensions;
 using CommandLine;
 using CommandLine.Text;
+using essentialMix.Extensions;
 using JetBrains.Annotations;
 using Microsoft.Extensions.Logging;
 
-namespace WiXComponents
+namespace devTools.WiXComponents
 {
 	public class StartupArguments
 	{

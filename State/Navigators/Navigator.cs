@@ -1,9 +1,9 @@
 ﻿using System.Windows.Input;
+using devTools.WiXComponents.Commands;
+using devTools.WiXComponents.ViewModels;
 using essentialMix.Patterns.NotifyChange;
-using WiXComponents.Commands;
-using WiXComponents.ViewModels;
 
-namespace WiXComponents.State.Navigators
+namespace devTools.WiXComponents.State.Navigators
 {
 	public class Navigator : NotifyPropertyChangedBase, INavigator
 	{
