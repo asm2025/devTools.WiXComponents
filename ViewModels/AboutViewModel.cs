@@ -7,7 +7,7 @@ namespace devTools.WiXComponents.ViewModels
 	{
 		/// <inheritdoc />
 		public AboutViewModel(ILogger logger)
-			: base(logger)
+			: base("About", logger)
 		{
 		}
 	}

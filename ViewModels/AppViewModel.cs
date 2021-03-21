@@ -22,7 +22,13 @@ namespace devTools.WiXComponents.ViewModels
 
 		/// <inheritdoc />
 		protected AppViewModel(ILogger logger)
-			: base(logger)
+			: this(null, logger)
+		{
+		}
+
+		/// <inheritdoc />
+		protected AppViewModel(string displayName, ILogger logger)
+			: base(displayName, logger)
 		{
 		}
 

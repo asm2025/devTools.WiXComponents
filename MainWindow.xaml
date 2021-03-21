@@ -4,7 +4,6 @@
 	xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
 	xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
 	xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-	xmlns:viewType="clr-namespace:devTools.WiXComponents.Commands"
 	mc:Ignorable="d" Title="{Binding Title}" Width="800" Height="600"
 	ResizeMode="NoResize" WindowStyle="None" Background="Transparent" AllowsTransparency="True">
 	<Border CornerRadius="8" Background="Transparent">
@@ -17,25 +16,42 @@
 					<RowDefinition Height="Auto" />
 					<RowDefinition Height="*" />
 				</Grid.RowDefinitions>
-				<Border Height="40px" Padding="0" Margin="0" CornerRadius="8, 8, 0, 0" 
+				<Border Padding="0" Margin="0" CornerRadius="8, 8, 0, 0" 
 						VerticalAlignment="Top" Background="{DynamicResource {x:Static SystemColors.ActiveBorderBrushKey}}">
-					<Image Source="wixtoolset.ico" HorizontalAlignment="Left" Width="32" Height="32" Margin="16,4,4,4" />
+					<Grid>
+						<Grid.ColumnDefinitions>
+							<ColumnDefinition Width="Auto" />
+							<ColumnDefinition Width="*" />
+							<ColumnDefinition Width="Auto" />
+							<ColumnDefinition Width="Auto" />
+						</Grid.ColumnDefinitions>
+						<Image Grid.Column="0" Source="wixtoolset.ico" HorizontalAlignment="Left" Width="32" Height="32" Margin="16,4,4,4" />
+						<TextBlock Grid.Column="1" Text="{Binding Title}" Style="{DynamicResource TextWindowTitle}" />
+						<Button Grid.Column="2" Name="MinimizeButton" Style="{DynamicResource ButtonWindowTitle}" Width="28"
+								Content="-" Click="MinimizeButton_Click" />
+						<Button Grid.Column="3" Name="CloseButton" Style="{DynamicResource ButtonWindowTitle}" Width="28" Margin="0, 0, 8, 0" 
+								Content="x" Click="CloseButton_Click" />
+					</Grid>
 				</Border>
-				<StackPanel Grid.Row="0" Height="40px" Margin="0, 0, 16, 0"
-							Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Top">
-					<Button Name="MinimizeButton" Style="{DynamicResource TextHighlight}" Width="24" Height="24" Content="-" Click="MinimizeButton_Click" />
-					<Button Name="CloseButton" Style="{DynamicResource TextHighlight}" Width="24" Height="24" Content="x" Click="CloseButton_Click" />
-				</StackPanel>
 				<DockPanel Grid.Row="1">
-					<ToolBarTray DockPanel.Dock="Top" Height="30" VerticalAlignment="Top">
-						<ToolBar>
-							<Button Content="Home" Command="{Binding Navigator.UpdateViewModel}" CommandParameter="{x:Static viewType:ViewType.Home}" />
-							<Button Content="Generate" Command="{Binding Navigator.UpdateViewModel}" CommandParameter="{x:Static viewType:ViewType.Generate}" />
-							<Button Content="Find" Command="{Binding Navigator.UpdateViewModel}" CommandParameter="{x:Static viewType:ViewType.Find}" />
-							<Button Content="?" Command="{Binding Navigator.UpdateViewModel}" CommandParameter="{x:Static viewType:ViewType.About}" />
-						</ToolBar>
-					</ToolBarTray>
-					<ContentControl Content="{Binding Navigator.ViewModel}"></ContentControl>
+					<Border DockPanel.Dock="Left">
+						<ItemsControl ItemsSource="{Binding ViewModels}">
+							<ItemsControl.ItemsPanel>
+								<ItemsPanelTemplate>
+									<WrapPanel />
+								</ItemsPanelTemplate>
+							</ItemsControl.ItemsPanel>
+							<ItemsControl.ItemTemplate>
+								<DataTemplate>
+									<Button Content="{Binding DisplayName}"
+											Command="{Binding DataContext.ChangeView, RelativeSource={RelativeSource AncestorType={x:Type Window}}}"
+											CommandParameter="{Binding}"
+											Margin="2" />
+								</DataTemplate>
+							</ItemsControl.ItemTemplate>
+						</ItemsControl>
+					</Border>
+					<ContentControl Content="{Binding ViewModel}" />
 				</DockPanel>
 			</Grid>
 		</Border>

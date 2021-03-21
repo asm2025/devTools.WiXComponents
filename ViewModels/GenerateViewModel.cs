@@ -7,7 +7,7 @@ namespace devTools.WiXComponents.ViewModels
 	{
 		/// <inheritdoc />
 		public GenerateViewModel(ILogger logger)
-			: base(logger)
+			: base("Generate", logger)
 		{
 		}
 	}

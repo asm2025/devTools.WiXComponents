@@ -13,9 +13,12 @@
 		<Setter Property="ScrollViewer.PanningMode" Value="VerticalFirst" />
 		<Setter Property="Stylus.IsFlicksEnabled" Value="False" />
 	</Style>
-	<Style TargetType="Button">
+	<Style TargetType="ButtonBase">
 		<Setter Property="Cursor" Value="Hand"></Setter>
-		<Setter Property="Margin" Value="4" />
+		<Setter Property="Padding" Value="4"></Setter>
+		<Setter Property="Background" Value="Transparent"></Setter>
+	</Style>
+	<Style TargetType="Button">
 		<Setter Property="Template">
 			<Setter.Value>
 				<ControlTemplate TargetType="{x:Type Button}">
@@ -24,17 +27,17 @@
 					</Border>
 					<ControlTemplate.Triggers>
 						<Trigger Property="IsKeyboardFocused" Value="true">
-							<Setter Property="Foreground" Value="{DynamicResource {x:Static SystemColors.ControlDarkBrushKey}}" />
-							<Setter Property="Background" Value="{DynamicResource {x:Static SystemColors.ControlLightBrushKey}}" />
+							<Setter Property="Foreground" Value="{DynamicResource {x:Static SystemColors.ControlLightLightBrushKey}}" />
+							<Setter Property="Background" Value="{DynamicResource {x:Static SystemColors.ControlDarkBrushKey}}" />
 							<Setter TargetName="Border" Property="Background" Value="{DynamicResource {x:Static SystemColors.ControlDarkBrushKey}}" />
 						</Trigger>
 						<Trigger Property="IsMouseOver" Value="true">
-							<Setter Property="Foreground" Value="{DynamicResource {x:Static SystemColors.ControlDarkBrushKey}}" />
-							<Setter Property="Background" Value="{DynamicResource {x:Static SystemColors.ControlLightBrushKey}}" />
-							<Setter TargetName="Border" Property="Background" Value="{DynamicResource {x:Static SystemColors.ControlDarkBrushKey}}" />
+							<Setter Property="Foreground" Value="{DynamicResource {x:Static SystemColors.ControlLightLightBrushKey}}" />
+							<Setter Property="Background" Value="{DynamicResource {x:Static SystemColors.ControlDarkDarkBrushKey}}" />
+							<Setter TargetName="Border" Property="Background" Value="{DynamicResource {x:Static SystemColors.ControlDarkDarkBrushKey}}" />
 						</Trigger>
 						<Trigger Property="IsPressed" Value="true">
-							<Setter Property="Foreground" Value="{DynamicResource {x:Static SystemColors.ControlLightBrushKey}}" />
+							<Setter Property="Foreground" Value="{DynamicResource {x:Static SystemColors.ControlLightLightBrushKey}}" />
 							<Setter Property="Background" Value="{DynamicResource {x:Static SystemColors.ControlDarkBrushKey}}" />
 							<Setter TargetName="Border" Property="Background" Value="{DynamicResource {x:Static SystemColors.ControlDarkBrushKey}}" />
 						</Trigger>
@@ -48,9 +51,19 @@
 			</Setter.Value>
 		</Setter>
 	</Style>
-	<Style x:Key="TextHighlight" TargetType="Button">
-		<Setter Property="Cursor" Value="Hand"></Setter>
-		<Setter Property="Margin" Value="4" />
+	<Style x:Key="TextWindowTitle" TargetType="TextBlock">
+		<Setter Property="Foreground" Value="{DynamicResource {x:Static SystemColors.ActiveCaptionTextBrushKey}}"></Setter>
+		<Setter Property="FontSize" Value="16"></Setter>
+		<Setter Property="IsHyphenationEnabled" Value="False"></Setter>
+		<Setter Property="TextAlignment" Value="Left"></Setter>
+		<Setter Property="VerticalAlignment" Value="Center"></Setter>
+	</Style>
+	<Style x:Key="ButtonWindowTitle" TargetType="Button">
+		<Setter Property="IsTabStop" Value="False"></Setter>
+		<Setter Property="Foreground" Value="{DynamicResource {x:Static SystemColors.ActiveCaptionTextBrushKey}}"></Setter>
+		<Setter Property="FontSize" Value="18"></Setter>
+		<Setter Property="HorizontalContentAlignment" Value="Center"></Setter>
+		<Setter Property="VerticalContentAlignment" Value="Center"></Setter>
 		<Setter Property="Template">
 			<Setter.Value>
 				<ControlTemplate TargetType="{x:Type Button}">
@@ -75,8 +88,33 @@
 			</Setter.Value>
 		</Setter>
 	</Style>
-	<Style TargetType="{x:Type ButtonBase}">
-		<Setter Property="Background" Value="Transparent"></Setter>
+	<Style x:Key="ButtonHighlight" TargetType="Button">
+		<Setter Property="Template">
+			<Setter.Value>
+				<ControlTemplate TargetType="{x:Type Button}">
+					<Border x:Name="Border" BorderThickness="0" Background="Transparent" BorderBrush="Transparent">
+						<ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" RecognizesAccessKey="True" />
+					</Border>
+					<ControlTemplate.Triggers>
+						<Trigger Property="IsKeyboardFocused" Value="true">
+							<Setter Property="Foreground" Value="{DynamicResource {x:Static SystemColors.ControlLightBrushKey}}" />
+						</Trigger>
+						<Trigger Property="IsMouseOver" Value="true">
+							<Setter Property="Foreground" Value="{DynamicResource {x:Static SystemColors.ControlLightBrushKey}}" />
+						</Trigger>
+						<Trigger Property="IsPressed" Value="true">
+							<Setter Property="Foreground" Value="{DynamicResource {x:Static SystemColors.ControlLightBrushKey}}" />
+						</Trigger>
+						<Trigger Property="IsEnabled" Value="false">
+							<Setter Property="Foreground" Value="{DynamicResource {x:Static SystemColors.ControlDarkBrushKey}}" />
+						</Trigger>
+					</ControlTemplate.Triggers>
+				</ControlTemplate>
+			</Setter.Value>
+		</Setter>
+	</Style>
+	<Style x:Key="ButtonEmphasized" TargetType="Button" BasedOn="{StaticResource ButtonHighlight}">
+		<Setter Property="FontSize" Value="16"></Setter>
 	</Style>
 	<Style TargetType="ToolBar">
 		<Setter Property="Background" Value="Transparent"></Setter>

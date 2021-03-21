@@ -5,9 +5,9 @@ namespace devTools.WiXComponents.Views
 	/// <summary>
 	/// Interaction logic for Home.xaml
 	/// </summary>
-	public partial class Generate : UserControl
+	public partial class AboutView : UserControl
 	{
-		public Generate()
+		public AboutView()
 		{
 			InitializeComponent();
 		}

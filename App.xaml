@@ -2,24 +2,21 @@
 	x:Class="devTools.WiXComponents.App"
 	xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
 	xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-	xmlns:viewModels="clr-namespace:devTools.WiXComponents.ViewModels"
-	xmlns:views="clr-namespace:devTools.WiXComponents.Views">
+	xmlns:views="clr-namespace:devTools.WiXComponents.Views"
+	xmlns:viewModels="clr-namespace:devTools.WiXComponents.ViewModels">
 	<Application.Resources>
 		<ResourceDictionary>
 			<ResourceDictionary.MergedDictionaries>
-				<ResourceDictionary Source="Styles/Common.xaml"></ResourceDictionary>
+				<ResourceDictionary Source="Styles/Common.xaml" />
 			</ResourceDictionary.MergedDictionaries>
-			<DataTemplate DataType="{x:Type viewModels:HomeViewModel}">
-				<views:Home />
-			</DataTemplate>
 			<DataTemplate DataType="{x:Type viewModels:GenerateViewModel}">
-				<views:Generate />
+				<views:GenerateView />
 			</DataTemplate>
 			<DataTemplate DataType="{x:Type viewModels:FindViewModel}">
-				<views:Find />
+				<views:FindView />
 			</DataTemplate>
 			<DataTemplate DataType="{x:Type viewModels:AboutViewModel}">
-				<views:About />
+				<views:AboutView />
 			</DataTemplate>
 		</ResourceDictionary>
 	</Application.Resources>

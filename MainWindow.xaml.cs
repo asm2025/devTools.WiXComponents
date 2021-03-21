@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Windows;
 using System.Windows.Input;
-using devTools.WiXComponents.Commands;
 using devTools.WiXComponents.ViewModels;
 using Microsoft.Extensions.Logging;
 
@@ -15,9 +14,7 @@ namespace devTools.WiXComponents
 		/// <inheritdoc />
 		public MainWindow(ILogger<MainWindow> logger)
 		{
-			MainViewModel viewModel = new MainViewModel(logger);
-			viewModel.Navigator.UpdateViewModel.Execute(ViewType.Home);
-			DataContext = viewModel;
+			DataContext = new MainViewModel(logger);
 			InitializeComponent();
 			Logger = logger;
 		}
