@@ -1,4 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using System.Collections.ObjectModel;
+using System.Windows.Input;
+using devTools.WiXComponents.Core.Commands;
 using essentialMix;
 using essentialMix.Helpers;
 using JetBrains.Annotations;
@@ -9,16 +11,32 @@ namespace devTools.WiXComponents.Core.ViewModels
 	/// <inheritdoc />
 	public class MainViewModel : ViewModelBase
 	{
+		private const string STATUS_DEF = "Ready...";
+
 		private ViewModelCommandBase _selectedViewModel;
+		private string _status;
+		private string _operation;
+		private int _progress;
 
 		/// <inheritdoc />
-		public MainViewModel([NotNull] IReadOnlyList<ViewModelCommandBase> viewModels, ILogger logger)
+		public MainViewModel(ILogger logger)
 			: base(logger)
 		{
 			AppInfo appInfo = new AppInfo(AssemblyHelper.GetEntryAssembly());
 			Title = appInfo.Title;
-			ViewModels = viewModels;
+			ViewModels = new ObservableCollection<ViewModelCommandBase>();
+			ChangeView = new RelayCommand<ViewModelCommandBase>(vm => SelectedViewModel = vm,
+																vm => vm != SelectedViewModel &&
+																	(SelectedViewModel == null || !SelectedViewModel.IsBusy));
+			Reset();
+			Progress = 50;
 		}
+
+		[NotNull]
+		public string Title { get; }
+
+		[NotNull]
+		public ICommand ChangeView { get; }
 
 		public ViewModelCommandBase SelectedViewModel
 		{
@@ -31,10 +49,43 @@ namespace devTools.WiXComponents.Core.ViewModels
 			}
 		}
 
-		[NotNull]
-		public IReadOnlyList<ViewModelCommandBase> ViewModels { get; }
+		public string Status
+		{
+			get => _status;
+			set
+			{
+				_status = value ?? STATUS_DEF;
+				OnPropertyChanged();
+			}
+		}
+
+		public string Operation
+		{
+			get => _operation;
+			set
+			{
+				_operation = value;
+				OnPropertyChanged();
+			}
+		}
+
+		public int Progress
+		{
+			get => _progress;
+			set
+			{
+				_progress = value;
+				OnPropertyChanged();
+			}
+		}
 
 		[NotNull]
-		public string Title { get; }
+		public ObservableCollection<ViewModelCommandBase> ViewModels { get; }
+
+		public void Reset()
+		{
+			Status = Operation = null;
+			Progress = 0;
+		}
 	}
 }

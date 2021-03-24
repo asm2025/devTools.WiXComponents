@@ -1,24 +1,88 @@
 ﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
 					xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
-	<Color x:Key="LightHighlight">LightSkyBlue</Color>
-	<Color x:Key="DarkHighlight">DodgerBlue</Color>
-	<Style TargetType="Control">
-		<Setter Property="Background" Value="{DynamicResource {x:Static SystemColors.ControlBrushKey}}"></Setter>
+	<LinearGradientBrush x:Key="ActiveWindowBackground" StartPoint="0.5, 0" EndPoint="0.5, 1">
+		<LinearGradientBrush.RelativeTransform>
+			<RotateTransform CenterX="0.5" CenterY="0.5" Angle="270" />
+		</LinearGradientBrush.RelativeTransform>
+		<GradientStop Color="{DynamicResource {x:Static SystemColors.GradientActiveCaptionColor}}" Offset="0.0" />
+		<GradientStop Color="{DynamicResource {x:Static SystemColors.GradientInactiveCaptionColor}}" Offset="1.0" />
+	</LinearGradientBrush>
+	<LinearGradientBrush x:Key="InactiveWindowBackground" StartPoint="0.5, 0" EndPoint="0.5, 1">
+		<LinearGradientBrush.RelativeTransform>
+			<RotateTransform CenterX="0.5" CenterY="0.5" Angle="270" />
+		</LinearGradientBrush.RelativeTransform>
+		<GradientStop Color="{DynamicResource {x:Static SystemColors.GradientInactiveCaptionColor}}" Offset="0.0" />
+		<GradientStop Color="{DynamicResource {x:Static SystemColors.GradientInactiveCaptionColor}}" Offset="1.0" />
+	</LinearGradientBrush>
+	<Style x:Key="WindowCaption" TargetType="{x:Type Border}">
+		<Setter Property="Background" Value="{DynamicResource {x:Static SystemColors.ActiveCaptionBrushKey}}"></Setter>
+		<Setter Property="Padding" Value="0"></Setter>
+		<Setter Property="Margin" Value="0"></Setter>
+		<Setter Property="BorderThickness" Value="0"></Setter>
+		<Setter Property="CornerRadius" Value="8, 8, 0, 0"></Setter>
+		<Setter Property="VerticalAlignment" Value="Top"></Setter>
+		<Style.Resources>
+			<Style TargetType="{x:Type Control}">
+				<Setter Property="Foreground" Value="{DynamicResource {x:Static SystemColors.ActiveCaptionTextBrushKey}}" />
+				<Setter Property="FontSize" Value="16" />
+				<Setter Property="VerticalAlignment" Value="Center" />
+			</Style>
+			<Style TargetType="{x:Type TextBlock}">
+				<Setter Property="Foreground" Value="{DynamicResource {x:Static SystemColors.ActiveCaptionTextBrushKey}}" />
+				<Setter Property="FontSize" Value="16" />
+				<Setter Property="VerticalAlignment" Value="Center" />
+				<Setter Property="IsHyphenationEnabled" Value="False" />
+				<Setter Property="TextAlignment" Value="Left" />
+			</Style>
+			<Style TargetType="{x:Type Button}">
+				<Setter Property="IsTabStop" Value="False" />
+				<Setter Property="Foreground" Value="{DynamicResource {x:Static SystemColors.ActiveCaptionTextBrushKey}}" />
+				<Setter Property="FontSize" Value="18" />
+				<Setter Property="HorizontalContentAlignment" Value="Center" />
+				<Setter Property="VerticalContentAlignment" Value="Center" />
+				<Setter Property="Template">
+					<Setter.Value>
+						<ControlTemplate TargetType="{x:Type Button}">
+							<Border x:Name="Border" BorderThickness="0" Background="Transparent" BorderBrush="Transparent">
+								<ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" RecognizesAccessKey="True" />
+							</Border>
+							<ControlTemplate.Triggers>
+								<Trigger Property="IsKeyboardFocused" Value="true">
+									<Setter Property="Foreground" Value="{DynamicResource {x:Static SystemColors.ControlLightBrushKey}}" />
+								</Trigger>
+								<Trigger Property="IsMouseOver" Value="true">
+									<Setter Property="Foreground" Value="{DynamicResource {x:Static SystemColors.ControlLightBrushKey}}" />
+								</Trigger>
+								<Trigger Property="IsPressed" Value="true">
+									<Setter Property="Foreground" Value="{DynamicResource {x:Static SystemColors.ControlLightBrushKey}}" />
+								</Trigger>
+								<Trigger Property="IsEnabled" Value="false">
+									<Setter Property="Foreground" Value="{DynamicResource {x:Static SystemColors.ControlDarkBrushKey}}" />
+								</Trigger>
+							</ControlTemplate.Triggers>
+						</ControlTemplate>
+					</Setter.Value>
+				</Setter>
+			</Style>
+		</Style.Resources>
 	</Style>
-	<Style TargetType="TextBlock">
+	<Style TargetType="{x:Type Control}">
+		<Setter Property="Background" Value="{DynamicResource {x:Static SystemColors.ControlBrushKey}}" />
+	</Style>
+	<Style TargetType="{x:Type TextBlock}">
 		<Setter Property="Margin" Value="4" />
 	</Style>
-	<Style TargetType="TextBox">
+	<Style TargetType="{x:Type TextBox}">
 		<Setter Property="BorderThickness" Value="1" />
 		<Setter Property="ScrollViewer.PanningMode" Value="VerticalFirst" />
 		<Setter Property="Stylus.IsFlicksEnabled" Value="False" />
 	</Style>
-	<Style TargetType="ButtonBase">
-		<Setter Property="Cursor" Value="Hand"></Setter>
-		<Setter Property="Padding" Value="4"></Setter>
-		<Setter Property="Background" Value="Transparent"></Setter>
+	<Style TargetType="{x:Type ButtonBase}">
+		<Setter Property="Cursor" Value="Hand" />
+		<Setter Property="Padding" Value="4" />
+		<Setter Property="Background" Value="Transparent" />
 	</Style>
-	<Style TargetType="Button">
+	<Style TargetType="{x:Type Button}">
 		<Setter Property="Template">
 			<Setter.Value>
 				<ControlTemplate TargetType="{x:Type Button}">
@@ -51,19 +115,7 @@
 			</Setter.Value>
 		</Setter>
 	</Style>
-	<Style x:Key="TextWindowTitle" TargetType="TextBlock">
-		<Setter Property="Foreground" Value="{DynamicResource {x:Static SystemColors.ActiveCaptionTextBrushKey}}"></Setter>
-		<Setter Property="FontSize" Value="16"></Setter>
-		<Setter Property="IsHyphenationEnabled" Value="False"></Setter>
-		<Setter Property="TextAlignment" Value="Left"></Setter>
-		<Setter Property="VerticalAlignment" Value="Center"></Setter>
-	</Style>
-	<Style x:Key="ButtonWindowTitle" TargetType="Button">
-		<Setter Property="IsTabStop" Value="False"></Setter>
-		<Setter Property="Foreground" Value="{DynamicResource {x:Static SystemColors.ActiveCaptionTextBrushKey}}"></Setter>
-		<Setter Property="FontSize" Value="18"></Setter>
-		<Setter Property="HorizontalContentAlignment" Value="Center"></Setter>
-		<Setter Property="VerticalContentAlignment" Value="Center"></Setter>
+	<Style x:Key="ButtonHighlight" TargetType="{x:Type Button}">
 		<Setter Property="Template">
 			<Setter.Value>
 				<ControlTemplate TargetType="{x:Type Button}">
@@ -88,37 +140,12 @@
 			</Setter.Value>
 		</Setter>
 	</Style>
-	<Style x:Key="ButtonHighlight" TargetType="Button">
-		<Setter Property="Template">
-			<Setter.Value>
-				<ControlTemplate TargetType="{x:Type Button}">
-					<Border x:Name="Border" BorderThickness="0" Background="Transparent" BorderBrush="Transparent">
-						<ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" RecognizesAccessKey="True" />
-					</Border>
-					<ControlTemplate.Triggers>
-						<Trigger Property="IsKeyboardFocused" Value="true">
-							<Setter Property="Foreground" Value="{DynamicResource {x:Static SystemColors.ControlLightBrushKey}}" />
-						</Trigger>
-						<Trigger Property="IsMouseOver" Value="true">
-							<Setter Property="Foreground" Value="{DynamicResource {x:Static SystemColors.ControlLightBrushKey}}" />
-						</Trigger>
-						<Trigger Property="IsPressed" Value="true">
-							<Setter Property="Foreground" Value="{DynamicResource {x:Static SystemColors.ControlLightBrushKey}}" />
-						</Trigger>
-						<Trigger Property="IsEnabled" Value="false">
-							<Setter Property="Foreground" Value="{DynamicResource {x:Static SystemColors.ControlDarkBrushKey}}" />
-						</Trigger>
-					</ControlTemplate.Triggers>
-				</ControlTemplate>
-			</Setter.Value>
-		</Setter>
+	<Style x:Key="ButtonEmphasized" TargetType="{x:Type Button}" BasedOn="{StaticResource ButtonHighlight}">
+		<Setter Property="FontSize" Value="16" />
 	</Style>
-	<Style x:Key="ButtonEmphasized" TargetType="Button" BasedOn="{StaticResource ButtonHighlight}">
-		<Setter Property="FontSize" Value="16"></Setter>
-	</Style>
-	<Style TargetType="ToolBar">
-		<Setter Property="Background" Value="Transparent"></Setter>
-		<Setter Property="OverflowMode" Value="Never"></Setter>
+	<Style TargetType="{x:Type ToolBar}">
+		<Setter Property="Background" Value="Transparent" />
+		<Setter Property="OverflowMode" Value="Never" />
 		<Setter Property="Template">
 			<Setter.Value>
 				<ControlTemplate TargetType="{x:Type ToolBar}">
@@ -127,30 +154,17 @@
 			</Setter.Value>
 		</Setter>
 	</Style>
-	<Style TargetType="ToolBarTray">
-		<Setter Property="Background" Value="Transparent"></Setter>
-		<Setter Property="IsLocked" Value="True"></Setter>
+	<Style TargetType="{x:Type ToolBarTray}">
+		<Setter Property="Background" Value="Transparent" />
+		<Setter Property="IsLocked" Value="True" />
 	</Style>
-	<Style TargetType="ProgressBar">
-		<Setter Property="Height" Value="20" />
-		<Setter Property="Margin" Value="4" />
-		<Setter Property="Template">
-			<Setter.Value>
-				<ControlTemplate TargetType="{x:Type ProgressBar}">
-					<Border BorderThickness="0" Height="20" Padding="1" CornerRadius="4">
-						<Grid x:Name="PART_Track">
-							<Rectangle x:Name="PART_Indicator" HorizontalAlignment="Left" RadiusX="5" RadiusY="5">
-								<Rectangle.Fill>
-									<LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
-										<GradientStop Color="{StaticResource LightHighlight}" Offset="0" />
-										<GradientStop Color="{StaticResource DarkHighlight}" Offset="1.0" />
-									</LinearGradientBrush>
-								</Rectangle.Fill>
-							</Rectangle>
-						</Grid>
-					</Border>
-				</ControlTemplate>
-			</Setter.Value>
-		</Setter>
+	<Style TargetType="{x:Type ProgressBar}">
+		<Setter Property="Minimum" Value="0" />
+		<Setter Property="Maximum" Value="100" />
+		<Setter Property="RenderTransformOrigin" Value="0.5, 0.5" />
+		<Setter Property="UseLayoutRounding" Value="False" />
+		<Setter Property="Foreground" Value="{DynamicResource {x:Static SystemColors.ScrollBarBrushKey}}" />
+		<Setter Property="Background" Value="{StaticResource ActiveWindowBackground}" />
+		<Setter Property="BorderThickness" Value="0" />
 	</Style>
 </ResourceDictionary>

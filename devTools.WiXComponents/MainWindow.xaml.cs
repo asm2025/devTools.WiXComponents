@@ -1,13 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Reflection;
 using System.Windows;
 using System.Windows.Input;
-using devTools.WiXComponents.Core.Commands;
 using devTools.WiXComponents.Core.ViewModels;
-using essentialMix.Collections;
 using essentialMix.Extensions;
 using JetBrains.Annotations;
 using Microsoft.Extensions.Logging;
@@ -22,10 +21,26 @@ namespace devTools.WiXComponents
 		/// <inheritdoc />
 		public MainWindow([NotNull] IServiceProvider services)
 		{
+			Services = services;
 			Logger = (ILogger)services.GetService(typeof(ILogger<MainWindow>));
+			ViewModel = new MainViewModel((ILogger)services.GetService(typeof(ILogger<MainViewModel>)));
+			DataContext = ViewModel;
+			InitializeComponent();
+		}
 
+		[NotNull]
+		public IServiceProvider Services { get; }
+
+		[NotNull]
+		public MainViewModel ViewModel { get; }
+
+		public ILogger Logger { get; }
+
+		/// <inheritdoc />
+		protected override void OnSourceInitialized(EventArgs e)
+		{
 			Assembly asm = typeof(ViewModelCommandBase).Assembly;
-			List<ViewModelCommandBase> viewModels = new List<ViewModelCommandBase>();
+			ObservableCollection<ViewModelCommandBase> viewModels = ViewModel.ViewModels;
 			IEnumerable<(Type e, DisplayAttribute)> viewModelTypes = asm.GetTypes()
 																		.Where(type => !type.IsAbstract && typeof(ViewModelCommandBase).IsAssignableFrom(type))
 																		.Select(type => (type, type.GetCustomAttribute<DisplayAttribute>()))
@@ -34,26 +49,16 @@ namespace devTools.WiXComponents
 			foreach ((Type type, DisplayAttribute displayAttribute) in viewModelTypes)
 			{
 				Type loggerType = typeof(ILogger<>).MakeGenericType(type);
-				ILogger viewModelLogger = (ILogger)services.GetService(loggerType);
+				ILogger viewModelLogger = (ILogger)Services.GetService(loggerType);
 				ViewModelCommandBase viewModel = (ViewModelCommandBase)type.CreateInstance(viewModelLogger);
 				viewModel.Order = viewModels.Count;
 				if (displayAttribute != null && !string.IsNullOrWhiteSpace(displayAttribute.Name)) viewModel.DisplayName = displayAttribute.Name;
 				viewModels.Add(viewModel);
 			}
 
-			MainViewModel mainViewModel = new MainViewModel(new ReadOnlyList<ViewModelCommandBase>(viewModels), (ILogger)services.GetService(typeof(ILogger<MainViewModel>)));
-			ChangeView = new RelayCommand<ViewModelCommandBase>(vm => mainViewModel.SelectedViewModel = vm,
-																vm => vm != mainViewModel.SelectedViewModel &&
-																	(mainViewModel.SelectedViewModel == null || !mainViewModel.SelectedViewModel.IsBusy));
-			ChangeView.Execute(mainViewModel.ViewModels[0]);
-			DataContext = mainViewModel;
-			InitializeComponent();
+			ViewModel.ChangeView.Execute(ViewModel.ViewModels[0]);
+			base.OnSourceInitialized(e);
 		}
-
-		[NotNull]
-		public ICommand ChangeView { get; }
-
-		public ILogger Logger { get; }
 
 		/// <inheritdoc />
 		protected override void OnClosed(EventArgs e)

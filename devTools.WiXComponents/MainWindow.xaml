@@ -7,7 +7,8 @@
 	xmlns:views="clr-namespace:devTools.WiXComponents.Views"
 	xmlns:viewModels="clr-namespace:devTools.WiXComponents.Core.ViewModels;assembly=WiXComp.Core"
 	mc:Ignorable="d" Title="{Binding Title}" Width="800" Height="600"
-	ResizeMode="NoResize" WindowStyle="None" Background="Transparent" AllowsTransparency="True">
+	ResizeMode="NoResize" WindowStyle="None" Background="Transparent" AllowsTransparency="True"
+	d:DataContext="{d:DesignData MainViewModel}">
 	<Window.Resources>
 		<ResourceDictionary>
 			<ResourceDictionary.MergedDictionaries>
@@ -34,8 +35,7 @@
 					<RowDefinition Height="Auto" />
 					<RowDefinition Height="*" />
 				</Grid.RowDefinitions>
-				<Border Padding="0" Margin="0" CornerRadius="8, 8, 0, 0" 
-						VerticalAlignment="Top" Background="{DynamicResource {x:Static SystemColors.ActiveBorderBrushKey}}">
+				<Border Style="{StaticResource WindowCaption}">
 					<Grid>
 						<Grid.ColumnDefinitions>
 							<ColumnDefinition Width="Auto" />
@@ -44,16 +44,15 @@
 							<ColumnDefinition Width="Auto" />
 						</Grid.ColumnDefinitions>
 						<Image Grid.Column="0" Source="wixtoolset.ico" HorizontalAlignment="Left" Width="32" Height="32" Margin="16,4,4,4" />
-						<TextBlock Grid.Column="1" Text="{Binding Title}" Style="{DynamicResource TextWindowTitle}" />
-						<Button Grid.Column="2" Name="MinimizeButton" Style="{DynamicResource ButtonWindowTitle}" Width="28"
+						<TextBlock Grid.Column="1" Text="{Binding Title}" />
+						<Button Grid.Column="2" Name="MinimizeButton" Width="28"
 								Content="-" Click="MinimizeButton_Click" />
-						<Button Grid.Column="3" Name="CloseButton" Style="{DynamicResource ButtonWindowTitle}" Width="28" Margin="0, 0, 8, 0" 
+						<Button Grid.Column="3" Name="CloseButton" Width="28" Margin="0, 0, 8, 0" 
 								Content="x" Click="CloseButton_Click" />
 					</Grid>
 				</Border>
-				<DockPanel Grid.Row="1">
-					<ItemsControl DockPanel.Dock="Top" d:DataContext="{d:DesignData MainViewModel}"
-								ItemsSource="{Binding ViewModels}">
+				<DockPanel Grid.Row="1" LastChildFill="True">
+					<ItemsControl DockPanel.Dock="Top" ItemsSource="{Binding ViewModels}">
 						<ItemsControl.ItemsPanel>
 							<ItemsPanelTemplate>
 								<WrapPanel />
@@ -62,12 +61,41 @@
 						<ItemsControl.ItemTemplate>
 							<DataTemplate DataType="viewModels:ViewModelCommandBase">
 								<Button Content="{Binding DisplayName}"
-										Command="{Binding ChangeView, RelativeSource={RelativeSource AncestorType={x:Type Window}}}"
+										Command="{Binding RelativeSource={RelativeSource AncestorType={x:Type Window}}, Path=DataContext.ChangeView}"
 										CommandParameter="{Binding}"
 										Padding="8" />
 							</DataTemplate>
 						</ItemsControl.ItemTemplate>
 					</ItemsControl>
+					<StatusBar DockPanel.Dock="Bottom">
+						<StatusBar.ItemsPanel>
+							<ItemsPanelTemplate>
+								<Grid>
+									<Grid.RowDefinitions>
+										<RowDefinition Height="*" />
+									</Grid.RowDefinitions>
+									<Grid.ColumnDefinitions>
+										<ColumnDefinition Width="*" />
+										<ColumnDefinition Width="Auto" />
+										<ColumnDefinition Width="2*" />
+										<ColumnDefinition Width="Auto" />
+										<ColumnDefinition Width="100" />
+									</Grid.ColumnDefinitions>
+								</Grid>
+							</ItemsPanelTemplate>
+						</StatusBar.ItemsPanel>
+						<StatusBarItem>
+							<TextBlock Text="{Binding Status}"></TextBlock>
+						</StatusBarItem>
+						<Separator Grid.Column="1"></Separator>
+						<StatusBarItem Grid.Column="2">
+							<TextBlock Text="{Binding Operation}"></TextBlock>
+						</StatusBarItem>
+						<Separator Grid.Column="3"></Separator>
+						<StatusBarItem Grid.Column="4">
+							<ProgressBar Width="90" Height="18" Value="{Binding Progress}"></ProgressBar>
+						</StatusBarItem>
+					</StatusBar>
 					<ContentControl Content="{Binding SelectedViewModel}" />
 				</DockPanel>
 			</Grid>
