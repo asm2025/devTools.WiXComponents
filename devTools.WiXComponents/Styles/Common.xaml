@@ -23,7 +23,7 @@
 			<Setter.Value>
 				<ControlTemplate TargetType="{x:Type Button}">
 					<Border x:Name="Border" BorderThickness="1" Background="Transparent" BorderBrush="Transparent">
-						<ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" RecognizesAccessKey="True" />
+						<ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" RecognizesAccessKey="True" Margin="{TemplateBinding Padding}" />
 					</Border>
 					<ControlTemplate.Triggers>
 						<Trigger Property="IsKeyboardFocused" Value="true">

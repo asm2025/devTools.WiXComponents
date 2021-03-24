@@ -2,7 +2,7 @@
 using System.Windows.Input;
 using JetBrains.Annotations;
 
-namespace devTools.WiXComponents.Commands
+namespace devTools.WiXComponents.Core.Commands
 {
 	public class RelayCommand<T> : ICommand
 	{

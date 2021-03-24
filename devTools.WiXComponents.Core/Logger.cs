@@ -2,12 +2,12 @@
 using JetBrains.Annotations;
 using Microsoft.Extensions.Logging;
 
-namespace devTools.WiXComponents
+namespace devTools.WiXComponents.Core
 {
 	public class Logger<T> : ILogger<T>
 	{
 		private readonly ILogger _writer;
-		internal ILogger _logger;
+		private ILogger _logger;
 
 		public Logger([NotNull] ILogger writer)
 			: this(writer, null)
@@ -37,6 +37,11 @@ namespace devTools.WiXComponents
 		{
 			_writer.Log(logLevel, eventId, state, exception, formatter);
 			_logger?.Log(logLevel, eventId, state, exception, formatter);
+		}
+
+		public void Combine(ILogger logger)
+		{
+			_logger = logger;
 		}
 	}
 }

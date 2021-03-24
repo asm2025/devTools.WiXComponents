@@ -4,12 +4,30 @@
 	xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
 	xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
 	xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+	xmlns:views="clr-namespace:devTools.WiXComponents.Views"
+	xmlns:viewModels="clr-namespace:devTools.WiXComponents.Core.ViewModels;assembly=WiXComp.Core"
 	mc:Ignorable="d" Title="{Binding Title}" Width="800" Height="600"
 	ResizeMode="NoResize" WindowStyle="None" Background="Transparent" AllowsTransparency="True">
+	<Window.Resources>
+		<ResourceDictionary>
+			<ResourceDictionary.MergedDictionaries>
+				<ResourceDictionary Source="Styles/Common.xaml" />
+			</ResourceDictionary.MergedDictionaries>
+			<DataTemplate DataType="{x:Type viewModels:GenerateViewModel}">
+				<views:GenerateView />
+			</DataTemplate>
+			<DataTemplate DataType="{x:Type viewModels:FindViewModel}">
+				<views:FindView />
+			</DataTemplate>
+			<DataTemplate DataType="{x:Type viewModels:AboutViewModel}">
+				<views:AboutView />
+			</DataTemplate>
+		</ResourceDictionary>
+	</Window.Resources>
 	<Border CornerRadius="8" Background="Transparent">
 		<Border Background="{DynamicResource {x:Static SystemColors.ControlBrushKey}}" Margin="8" CornerRadius="8">
 			<Border.Effect>
-				<DropShadowEffect Direction="270" ShadowDepth="4" BlurRadius="10" Opacity="0.5" />
+				<DropShadowEffect Direction="270" ShadowDepth="2" BlurRadius="8" Opacity="0.2" />
 			</Border.Effect>
 			<Grid>
 				<Grid.RowDefinitions>
@@ -34,24 +52,23 @@
 					</Grid>
 				</Border>
 				<DockPanel Grid.Row="1">
-					<Border DockPanel.Dock="Left">
-						<ItemsControl ItemsSource="{Binding ViewModels}">
-							<ItemsControl.ItemsPanel>
-								<ItemsPanelTemplate>
-									<WrapPanel />
-								</ItemsPanelTemplate>
-							</ItemsControl.ItemsPanel>
-							<ItemsControl.ItemTemplate>
-								<DataTemplate>
-									<Button Content="{Binding DisplayName}"
-											Command="{Binding DataContext.ChangeView, RelativeSource={RelativeSource AncestorType={x:Type Window}}}"
-											CommandParameter="{Binding}"
-											Margin="2" />
-								</DataTemplate>
-							</ItemsControl.ItemTemplate>
-						</ItemsControl>
-					</Border>
-					<ContentControl Content="{Binding ViewModel}" />
+					<ItemsControl DockPanel.Dock="Top" d:DataContext="{d:DesignData MainViewModel}"
+								ItemsSource="{Binding ViewModels}">
+						<ItemsControl.ItemsPanel>
+							<ItemsPanelTemplate>
+								<WrapPanel />
+							</ItemsPanelTemplate>
+						</ItemsControl.ItemsPanel>
+						<ItemsControl.ItemTemplate>
+							<DataTemplate DataType="viewModels:ViewModelCommandBase">
+								<Button Content="{Binding DisplayName}"
+										Command="{Binding ChangeView, RelativeSource={RelativeSource AncestorType={x:Type Window}}}"
+										CommandParameter="{Binding}"
+										Padding="8" />
+							</DataTemplate>
+						</ItemsControl.ItemTemplate>
+					</ItemsControl>
+					<ContentControl Content="{Binding SelectedViewModel}" />
 				</DockPanel>
 			</Grid>
 		</Border>

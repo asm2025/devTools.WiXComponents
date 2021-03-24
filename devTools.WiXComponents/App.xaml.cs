@@ -56,15 +56,13 @@ namespace devTools.WiXComponents
 				builder.ClearProviders();
 				builder.AddSerilog(serilogLogger, true);
 			});
-			Logger = new Logger<App>(factory.CreateLogger(nameof(App)));
+			Logger = new Core.Logger<App>(factory.CreateLogger(nameof(App)));
 		}
 
 		public IServiceProvider ServiceProvider { get; private set; }
 
-		public static App Instance => (App)Current;
-
 		[NotNull]
-		public Logger<App> Logger { get; }
+		public Core.Logger<App> Logger { get; }
 
 		/// <inheritdoc />
 		protected override void OnStartup(StartupEventArgs e)
@@ -157,7 +155,7 @@ namespace devTools.WiXComponents
 			// Services
 			Logger.LogInformation("Configuring services.");
 			ConfigureServices(args, configuration);
-			Logger._logger = ServiceProvider.GetService<ILogger<App>>();
+			Logger.Combine(ServiceProvider.GetService<ILogger<App>>());
 
 			if (args.Files.Count > 0 || !string.IsNullOrEmpty(args.Directory))
 			{
@@ -197,13 +195,12 @@ namespace devTools.WiXComponents
 				builder.AddEventSourceLogger();
 				builder.AddSerilog(null, true);
 			});
-			services.AddSingleton<MainWindow>();
 			ServiceProvider = services.BuildServiceProvider();
 		}
 
 		private void Start()
 		{
-			MainWindow window = ServiceProvider.GetRequiredService<MainWindow>();
+			MainWindow window = new MainWindow(ServiceProvider);
 			window.Show();
 		}
 

@@ -1,26 +1,21 @@
 ﻿using System.Threading;
-using essentialMix.Extensions;
-using essentialMix.Patterns.NotifyChange;
+using JetBrains.Annotations;
 using Microsoft.Extensions.Logging;
 
-namespace devTools.WiXComponents.ViewModels
+namespace devTools.WiXComponents.Core.ViewModels
 {
-	public abstract class ViewModelBase : NotifyPropertyChangedBase
+	public abstract class ViewModelCommandBase : ViewModelBase
 	{
 		private string _displayName;
 		private volatile int _isBusy;
 
-		protected ViewModelBase(ILogger logger)
-			: this(null, logger)
+		/// <inheritdoc />
+		protected ViewModelCommandBase(ILogger logger)
+			: base(logger)
 		{
 		}
 
-		protected ViewModelBase(string displayName, ILogger logger)
-		{
-			DisplayName = displayName.ToNullIfEmpty();
-			Logger = logger;
-		}
-
+		[NotNull]
 		public string DisplayName
 		{
 			get => _displayName ??= GetType().Name;
@@ -39,6 +34,6 @@ namespace devTools.WiXComponents.ViewModels
 			}
 		}
 
-		public ILogger Logger { get; }
+		public int Order { get; set; }
 	}
 }
