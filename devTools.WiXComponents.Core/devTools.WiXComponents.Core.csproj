@@ -35,6 +35,7 @@
 	<ItemGroup>
 		<PackageReference Include="essentialMix" Version="12.26.0" />
 		<PackageReference Include="essentialMix.Data" Version="12.26.0" />
+		<PackageReference Include="essentialMix.Threading" Version="12.26.0" />
 		<PackageReference Include="JetBrains.Annotations" Version="2020.3.0" />
 		<PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="5.0.0" />
 	</ItemGroup>

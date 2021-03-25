@@ -8,7 +8,7 @@ namespace devTools.WiXComponents.Core.ViewModels
 {
 	/// <inheritdoc />
 	[Display(Name = "About", Order = int.MaxValue)]
-	public class AboutViewModel : ViewModelCommandBase
+	public sealed class AboutViewModel : ViewModelCommandBase
 	{
 		/// <inheritdoc />
 		public AboutViewModel(ILogger logger)

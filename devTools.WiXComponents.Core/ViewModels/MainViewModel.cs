@@ -9,7 +9,7 @@ using Microsoft.Extensions.Logging;
 namespace devTools.WiXComponents.Core.ViewModels
 {
 	/// <inheritdoc />
-	public class MainViewModel : ViewModelBase
+	public sealed class MainViewModel : ViewModelBase
 	{
 		private const string STATUS_DEF = "Ready...";
 
@@ -25,9 +25,11 @@ namespace devTools.WiXComponents.Core.ViewModels
 			AppInfo appInfo = new AppInfo(AssemblyHelper.GetEntryAssembly());
 			Title = appInfo.Title;
 			ViewModels = new ObservableCollection<ViewModelCommandBase>();
-			ChangeView = new RelayCommand<ViewModelCommandBase>(vm => SelectedViewModel = vm,
-																vm => vm != SelectedViewModel &&
-																	(SelectedViewModel == null || !SelectedViewModel.IsBusy));
+			ChangeView = new RelayCommand<ViewModelCommandBase>(vm =>
+			{
+				if (vm is IResettableView resettableView) resettableView.Reset();
+				SelectedViewModel = vm;
+			}, vm => vm != SelectedViewModel && SelectedViewModel is not ViewModelCancellableCommandBase { IsBusy: true });
 			Reset();
 			Progress = 50;
 		}

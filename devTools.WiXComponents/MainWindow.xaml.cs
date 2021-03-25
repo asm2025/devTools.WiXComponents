@@ -41,7 +41,7 @@ namespace devTools.WiXComponents
 		{
 			Assembly asm = typeof(ViewModelCommandBase).Assembly;
 			ObservableCollection<ViewModelCommandBase> viewModels = ViewModel.ViewModels;
-			IEnumerable<(Type e, DisplayAttribute)> viewModelTypes = asm.GetTypes()
+			IEnumerable<(Type, DisplayAttribute)> viewModelTypes = asm.GetTypes()
 																		.Where(type => !type.IsAbstract && typeof(ViewModelCommandBase).IsAssignableFrom(type))
 																		.Select(type => (type, type.GetCustomAttribute<DisplayAttribute>()))
 																		.OrderBy(tuple => tuple.Item2?.Order ?? short.MaxValue);
@@ -49,9 +49,8 @@ namespace devTools.WiXComponents
 			foreach ((Type type, DisplayAttribute displayAttribute) in viewModelTypes)
 			{
 				Type loggerType = typeof(ILogger<>).MakeGenericType(type);
-				ILogger viewModelLogger = (ILogger)Services.GetService(loggerType);
-				ViewModelCommandBase viewModel = (ViewModelCommandBase)type.CreateInstance(viewModelLogger);
-				viewModel.Order = viewModels.Count;
+				ILogger logger = (ILogger)Services.GetService(loggerType);
+				ViewModelCommandBase viewModel = (ViewModelCommandBase)type.CreateInstance(logger);
 				if (displayAttribute != null && !string.IsNullOrWhiteSpace(displayAttribute.Name)) viewModel.DisplayName = displayAttribute.Name;
 				viewModels.Add(viewModel);
 			}

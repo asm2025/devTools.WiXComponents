@@ -75,7 +75,7 @@
 		<PackageReference Include="essentialMix.Extensions.Configuration" Version="12.26.0" />
 		<PackageReference Include="essentialMix.Json.Abstraction" Version="12.26.0" />
 		<PackageReference Include="essentialMix.Logging" Version="12.26.0" />
-		<PackageReference Include="essentialMix.Newtonsoft" Version="12.25.0" />
+		<PackageReference Include="essentialMix.Newtonsoft" Version="12.26.0" />
 		<PackageReference Include="JetBrains.Annotations" Version="2020.3.0" />
 		<PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="5.0.1" />
 		<PackageReference Include="Microsoft.Extensions.Logging" Version="5.0.0" />

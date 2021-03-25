@@ -24,19 +24,24 @@
 		<Style.Resources>
 			<Style TargetType="{x:Type Control}">
 				<Setter Property="Foreground" Value="{DynamicResource {x:Static SystemColors.ActiveCaptionTextBrushKey}}" />
+				<Setter Property="Background" Value="Transparent" />
 				<Setter Property="FontSize" Value="16" />
 				<Setter Property="VerticalAlignment" Value="Center" />
 			</Style>
 			<Style TargetType="{x:Type TextBlock}">
 				<Setter Property="Foreground" Value="{DynamicResource {x:Static SystemColors.ActiveCaptionTextBrushKey}}" />
+				<Setter Property="Background" Value="Transparent" />
 				<Setter Property="FontSize" Value="16" />
 				<Setter Property="VerticalAlignment" Value="Center" />
 				<Setter Property="IsHyphenationEnabled" Value="False" />
 				<Setter Property="TextAlignment" Value="Left" />
 			</Style>
 			<Style TargetType="{x:Type Button}">
+				<Setter Property="Cursor" Value="Hand" />
+				<Setter Property="Padding" Value="4" />
 				<Setter Property="IsTabStop" Value="False" />
 				<Setter Property="Foreground" Value="{DynamicResource {x:Static SystemColors.ActiveCaptionTextBrushKey}}" />
+				<Setter Property="Background" Value="Transparent" />
 				<Setter Property="FontSize" Value="18" />
 				<Setter Property="HorizontalContentAlignment" Value="Center" />
 				<Setter Property="VerticalContentAlignment" Value="Center" />
@@ -80,9 +85,10 @@
 	<Style TargetType="{x:Type ButtonBase}">
 		<Setter Property="Cursor" Value="Hand" />
 		<Setter Property="Padding" Value="4" />
-		<Setter Property="Background" Value="Transparent" />
 	</Style>
 	<Style TargetType="{x:Type Button}">
+		<Setter Property="Cursor" Value="Hand" />
+		<Setter Property="Padding" Value="4" />
 		<Setter Property="Template">
 			<Setter.Value>
 				<ControlTemplate TargetType="{x:Type Button}">
@@ -116,6 +122,8 @@
 		</Setter>
 	</Style>
 	<Style x:Key="ButtonHighlight" TargetType="{x:Type Button}">
+		<Setter Property="Cursor" Value="Hand" />
+		<Setter Property="Padding" Value="4" />
 		<Setter Property="Template">
 			<Setter.Value>
 				<ControlTemplate TargetType="{x:Type Button}">

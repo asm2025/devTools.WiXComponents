@@ -5,9 +5,9 @@ namespace devTools.WiXComponents.Views
 	/// <summary>
 	/// Interaction logic for Home.xaml
 	/// </summary>
-	public partial class FindView : UserControl
+	public partial class EntriesFromMissingView : UserControl
 	{
-		public FindView()
+		public EntriesFromMissingView()
 		{
 			InitializeComponent();
 		}
