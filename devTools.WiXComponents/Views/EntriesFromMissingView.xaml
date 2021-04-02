@@ -4,9 +4,20 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+	xmlns:viewModels="clr-namespace:devTools.WiXComponents.Core.ViewModels;assembly=WiXComp.Core" 
+	xmlns:controls="clr-namespace:devTools.WiXComponents.Controls;assembly=WiXComp.Controls" 
 	mc:Ignorable="d" 
-    d:DesignWidth="800" d:DesignHeight="500">
-    <Grid>
-        <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center">Entries from missing components page</TextBlock>
+    d:DesignWidth="800" d:DesignHeight="500"
+	d:DataContext="{d:DesignData EntriesFromMissingViewModel}">
+	<Grid>
+		<Grid.RowDefinitions>
+			<RowDefinition Height="28" />
+			<RowDefinition Height="28" />
+			<RowDefinition Height="Auto" />
+			<RowDefinition Height="*" />
+		</Grid.RowDefinitions>
+		<controls:SelectFolder SelectedPath="{Binding Path}" />
+		<controls:OpenFile Grid.Row="1" FileName="{Binding FileName}" 
+							Filter="Supported Files|*.wsx;*.wsi;*.xml;*.csproj;*.vbproj|WiX Toolset files|*.wsx;*.wsi|XML Files|*.xml|Project Files|*.csproj;*.vbproj" />
 	</Grid>
 </UserControl>

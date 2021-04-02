@@ -84,6 +84,10 @@ namespace devTools.WiXComponents.Core.Services
 			RaiseEntriesChanged();
 		}
 
+		public void GenerateFromMissing(string path, string fileName, GenerateSettings settings = default(GenerateSettings))
+		{
+		}
+
 		public bool Add([NotNull] string fileName)
 		{
 			fileName = Path.GetFullPath(fileName);

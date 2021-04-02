@@ -38,9 +38,8 @@ namespace devTools.WiXComponents.Core.ViewModels
 			get => _generator.RootPath;
 			set
 			{
-				string path = System.IO.Path.GetFullPath(value.ToNullIfEmpty() ?? ".\\");
-				if (path.Equals(_generator.RootPath, StringComparison.OrdinalIgnoreCase)) return;
-				_generator.RootPath = path;
+				if (_generator.RootPath == value) return;
+				_generator.RootPath = value;
 				OnPropertyChanged();
 			}
 		}
@@ -50,9 +49,8 @@ namespace devTools.WiXComponents.Core.ViewModels
 			get => _path;
 			set
 			{
-				string path = System.IO.Path.GetFullPath(value.ToNullIfEmpty() ?? ".\\");
-				if (path.Equals(_path, StringComparison.OrdinalIgnoreCase)) return;
-				_path = path;
+				if (_path == value) return;
+				_path = System.IO.Path.GetFullPath(value.ToNullIfEmpty() ?? ".\\");
 				OnPropertyChanged();
 			}
 		}
@@ -62,9 +60,8 @@ namespace devTools.WiXComponents.Core.ViewModels
 			get => _pattern;
 			set
 			{
-				value = value.ToNullIfEmpty();
-				if (string.Equals(_pattern, value, StringComparison.OrdinalIgnoreCase)) return;
-				_pattern = value;
+				if (_pattern == value) return;
+				_pattern = value.ToNullIfEmpty();
 				OnPropertyChanged();
 			}
 		}
@@ -74,9 +71,8 @@ namespace devTools.WiXComponents.Core.ViewModels
 			get => _exclude;
 			set
 			{
-				value = value.ToNullIfEmpty();
-				if (string.Equals(_exclude, value, StringComparison.OrdinalIgnoreCase)) return;
-				_exclude = value;
+				if (_exclude == value) return;
+				_exclude = value.ToNullIfEmpty();
 				OnPropertyChanged();
 			}
 		}
@@ -112,10 +108,7 @@ namespace devTools.WiXComponents.Core.ViewModels
 		public override bool CanView() => true;
 
 		/// <inheritdoc />
-		public override void Reset()
-		{
-			Path = null;
-		}
+		public override void Reset() { }
 
 		public void Generate()
 		{
