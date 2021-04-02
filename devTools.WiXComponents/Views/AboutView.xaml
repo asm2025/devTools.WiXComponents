@@ -4,9 +4,27 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-	mc:Ignorable="d" 
+	mc:Ignorable="d" d:DataContext="{d:DesignData AboutViewModel}"
     d:DesignWidth="800" d:DesignHeight="500">
     <Grid>
-        <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center">About page!</TextBlock>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+			<RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+		</Grid.RowDefinitions>
+		<TextBlock Grid.Row="0" Text="{Binding Title}" Style="{StaticResource H1}" />
+		<TextBlock Grid.Row="1" Text="{Binding Version, StringFormat={} Version {0}}" />
+		<TextBlock Grid.Row="2">
+			<TextBlock.Text>
+				<MultiBinding StringFormat="{}©{0} {1}">
+					<Binding Path="Copyright"></Binding>
+					<Binding Path="Company"></Binding>
+				</MultiBinding>
+			</TextBlock.Text>
+		</TextBlock>
+		<TextBlock Grid.Row="3" Grid.Column="0"
+					Text="{Binding Description}" 
+					TextWrapping="WrapWithOverflow" />
 	</Grid>
 </UserControl>

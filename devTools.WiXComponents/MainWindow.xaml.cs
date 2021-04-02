@@ -1,13 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Reflection;
 using System.Windows;
 using System.Windows.Input;
 using devTools.WiXComponents.Core.ViewModels;
-using essentialMix.Extensions;
 using JetBrains.Annotations;
 using Microsoft.Extensions.Logging;
 
@@ -19,45 +13,18 @@ namespace devTools.WiXComponents
 	public partial class MainWindow : Window
 	{
 		/// <inheritdoc />
-		public MainWindow([NotNull] IServiceProvider services)
+		public MainWindow([NotNull] MainViewModel viewModel, ILogger<MainWindow> logger)
 		{
-			Services = services;
-			Logger = (ILogger)services.GetService(typeof(ILogger<MainWindow>));
-			ViewModel = new MainViewModel((ILogger)services.GetService(typeof(ILogger<MainViewModel>)));
+			Logger = logger;
+			ViewModel = viewModel;
 			DataContext = ViewModel;
 			InitializeComponent();
 		}
 
 		[NotNull]
-		public IServiceProvider Services { get; }
-
-		[NotNull]
 		public MainViewModel ViewModel { get; }
 
 		public ILogger Logger { get; }
-
-		/// <inheritdoc />
-		protected override void OnSourceInitialized(EventArgs e)
-		{
-			Assembly asm = typeof(ViewModelCommandBase).Assembly;
-			ObservableCollection<ViewModelCommandBase> viewModels = ViewModel.ViewModels;
-			IEnumerable<(Type, DisplayAttribute)> viewModelTypes = asm.GetTypes()
-																		.Where(type => !type.IsAbstract && typeof(ViewModelCommandBase).IsAssignableFrom(type))
-																		.Select(type => (type, type.GetCustomAttribute<DisplayAttribute>()))
-																		.OrderBy(tuple => tuple.Item2?.Order ?? short.MaxValue);
-
-			foreach ((Type type, DisplayAttribute displayAttribute) in viewModelTypes)
-			{
-				Type loggerType = typeof(ILogger<>).MakeGenericType(type);
-				ILogger logger = (ILogger)Services.GetService(loggerType);
-				ViewModelCommandBase viewModel = (ViewModelCommandBase)type.CreateInstance(logger);
-				if (displayAttribute != null && !string.IsNullOrWhiteSpace(displayAttribute.Name)) viewModel.DisplayName = displayAttribute.Name;
-				viewModels.Add(viewModel);
-			}
-
-			ViewModel.ChangeView.Execute(ViewModel.ViewModels[0]);
-			base.OnSourceInitialized(e);
-		}
 
 		/// <inheritdoc />
 		protected override void OnClosed(EventArgs e)

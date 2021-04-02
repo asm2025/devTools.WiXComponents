@@ -79,7 +79,7 @@
 							<ProgressBar Width="90" Height="18" Value="{Binding Progress}"></ProgressBar>
 						</StatusBarItem>
 					</StatusBar>
-					<ContentControl Content="{Binding SelectedViewModel}" />
+					<ContentControl Margin="16" Content="{Binding SelectedViewModel}" />
 				</DockPanel>
 			</Grid>
 		</Border>

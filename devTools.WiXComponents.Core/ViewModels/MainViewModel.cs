@@ -29,9 +29,8 @@ namespace devTools.WiXComponents.Core.ViewModels
 			{
 				if (vm is IResettableView resettableView) resettableView.Reset();
 				SelectedViewModel = vm;
-			}, vm => vm != SelectedViewModel && SelectedViewModel is not ViewModelCancellableCommandBase { IsBusy: true });
+			}, vm => vm != SelectedViewModel && vm.CanView() && SelectedViewModel is not ViewModelCancellableCommandBase { IsBusy: true });
 			Reset();
-			Progress = 50;
 		}
 
 		[NotNull]

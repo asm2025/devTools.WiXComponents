@@ -14,6 +14,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "devTools.WiXComponents.Core", "devTools.WiXComponents.Core\devTools.WiXComponents.Core.csproj", "{60032474-3290-4965-BE22-CD16E13F59BB}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "devTools.WiXComponents.Controls", "devTools.WiXComponents.Controls\devTools.WiXComponents.Controls.csproj", "{663ABB46-9482-482F-B513-59AA0F7EA9F9}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -28,6 +30,10 @@ Global
 		{60032474-3290-4965-BE22-CD16E13F59BB}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{60032474-3290-4965-BE22-CD16E13F59BB}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{60032474-3290-4965-BE22-CD16E13F59BB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{663ABB46-9482-482F-B513-59AA0F7EA9F9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{663ABB46-9482-482F-B513-59AA0F7EA9F9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{663ABB46-9482-482F-B513-59AA0F7EA9F9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{663ABB46-9482-482F-B513-59AA0F7EA9F9}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

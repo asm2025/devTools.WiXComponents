@@ -1,5 +1,6 @@
-﻿using System.Collections.ObjectModel;
+﻿using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using devTools.WiXComponents.Core.Services;
 using JetBrains.Annotations;
 using Microsoft.Extensions.Logging;
 
@@ -9,22 +10,22 @@ namespace devTools.WiXComponents.Core.ViewModels
 	[Display(Name = "Output", Order = 3)]
 	public sealed class OutputViewModel : ViewModelCommandBase, IResettableView
 	{
+		private readonly ComponentsGeneratorService _service;
+
 		/// <inheritdoc />
-		public OutputViewModel(ILogger logger)
+		public OutputViewModel([NotNull] ComponentsGeneratorService service, ILogger<OutputViewModel> logger)
 			: base(logger)
 		{
+			_service = service;
 		}
 
 		[NotNull]
-		public ObservableCollection<string> Directories { get; } = new ObservableCollection<string>();
+		public IReadOnlyDictionary<string, IDictionary<string, ComponentInfo>> Entries => _service.Entries;
 
-		[NotNull]
-		public ObservableDictionary<string, > Directories { get; } = new ObservableCollection<string>();
+		/// <inheritdoc />
+		public override bool CanView() => Entries.Count > 0;
 
 		/// <inheritdoc />
 		public void Reset() { }
-
-		/// <inheritdoc />
-		public override bool CanView() { return Directories.Count > 0; }
 	}
 }

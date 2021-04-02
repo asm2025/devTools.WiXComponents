@@ -9,7 +9,7 @@
 		<LangVersion>9.0</LangVersion>
 		<TreatWarningsAsErrors>true</TreatWarningsAsErrors>
 		<OutputPath>..\bin\$(Configuration)\$(Platform)</OutputPath>
-		<AssemblyName>WiXComp.Core</AssemblyName>
+		<AssemblyName>WiXComp.Controls</AssemblyName>
 	</PropertyGroup>
 	
 	<PropertyGroup Condition="'$(Configuration)' == 'Debug'">
@@ -33,12 +33,21 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<PackageReference Include="essentialMix" Version="12.26.1" />
-		<PackageReference Include="essentialMix.Collections" Version="12.26.1" />
-		<PackageReference Include="essentialMix.Data" Version="12.26.1" />
-		<PackageReference Include="essentialMix.Threading" Version="12.26.1" />
 		<PackageReference Include="JetBrains.Annotations" Version="2020.3.0" />
-		<PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="5.0.0" />
+		<PackageReference Include="Ookii.Dialogs.Wpf" Version="3.1.0" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <Compile Update="SelectFolder.xaml.cs">
+	    <SubType>Code</SubType>
+	  </Compile>
+	</ItemGroup>
+
+	<ItemGroup>
+	  <Page Update="SelectFolder.xaml">
+	    <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
+	    <SubType>Designer</SubType>
+	  </Page>
 	</ItemGroup>
 
 	<PropertyGroup>

@@ -11,7 +11,7 @@ namespace devTools.WiXComponents.Core.ViewModels
 	public sealed class AboutViewModel : ViewModelCommandBase
 	{
 		/// <inheritdoc />
-		public AboutViewModel(ILogger logger)
+		public AboutViewModel(ILogger<AboutViewModel> logger)
 			: base(logger)
 		{
 			AppInfo appInfo = new AppInfo(AssemblyHelper.GetEntryAssembly());
@@ -36,5 +36,8 @@ namespace devTools.WiXComponents.Core.ViewModels
 
 		[NotNull]
 		public string Copyright { get; }
+
+		/// <inheritdoc />
+		public override bool CanView() => true;
 	}
 }

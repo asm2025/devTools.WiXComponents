@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.ComponentModel.DataAnnotations;
 using System.IO;
 using System.Linq;
 using System.Reflection;
@@ -7,6 +9,8 @@ using System.Threading;
 using System.Windows;
 using System.Xml;
 using CommandLine;
+using devTools.WiXComponents.Core.Services;
+using devTools.WiXComponents.Core.ViewModels;
 using devTools.WiXComponents.Properties;
 using essentialMix.Data.Helpers;
 using essentialMix.Extensions;
@@ -195,12 +199,41 @@ namespace devTools.WiXComponents
 				builder.AddEventSourceLogger();
 				builder.AddSerilog(null, true);
 			});
+			services.AddSingleton<EntriesGeneratorService>();
+			services.AddSingleton<ComponentsGeneratorService>();
+
+			Assembly asm = typeof(ViewModelCommandBase).Assembly;
+			Type[] viewModelTypes = asm.GetTypes()
+										.Where(type => !type.IsAbstract && typeof(ViewModelCommandBase).IsAssignableFrom(type))
+										.OrderBy(type => type.GetCustomAttribute<DisplayAttribute>()?.Order ?? short.MaxValue)
+										.ToArray();
+
+			foreach (Type type in viewModelTypes) 
+				services.AddSingleton(type);
+
+			services.AddSingleton(svc =>
+			{
+				ILogger<MainViewModel> lg = (ILogger<MainViewModel>)svc.GetService(typeof(ILogger<MainViewModel>));
+				MainViewModel vm = new MainViewModel(lg);
+				ObservableCollection<ViewModelCommandBase> viewModels = vm.ViewModels;
+
+				foreach (Type type in viewModelTypes)
+				{
+					ViewModelCommandBase vmc = (ViewModelCommandBase)ServiceProvider.GetRequiredService(type);
+					viewModels.Add(vmc);
+				}
+
+				if (viewModels.Count > 0) vm.ChangeView.Execute(viewModels[0]);
+				return vm;
+			});
+
+			services.AddSingleton<MainWindow>();
 			ServiceProvider = services.BuildServiceProvider();
 		}
 
 		private void Start()
 		{
-			MainWindow window = new MainWindow(ServiceProvider);
+			MainWindow window = ServiceProvider.GetRequiredService<MainWindow>();
 			window.Show();
 		}
 

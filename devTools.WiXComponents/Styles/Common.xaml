@@ -58,9 +58,6 @@
 								<Trigger Property="IsMouseOver" Value="true">
 									<Setter Property="Foreground" Value="{DynamicResource {x:Static SystemColors.ControlLightBrushKey}}" />
 								</Trigger>
-								<Trigger Property="IsPressed" Value="true">
-									<Setter Property="Foreground" Value="{DynamicResource {x:Static SystemColors.ControlLightBrushKey}}" />
-								</Trigger>
 								<Trigger Property="IsEnabled" Value="false">
 									<Setter Property="Foreground" Value="{DynamicResource {x:Static SystemColors.ControlDarkBrushKey}}" />
 								</Trigger>
@@ -76,6 +73,28 @@
 	</Style>
 	<Style TargetType="{x:Type TextBlock}">
 		<Setter Property="Margin" Value="4" />
+	</Style>
+	<Style x:Key="Header" TargetType="{x:Type TextBlock}">
+		<Setter Property="Margin" Value="0 8" />
+		<Setter Property="FontWeight" Value="DemiBold" />
+	</Style>
+	<Style x:Key="H1" TargetType="{x:Type TextBlock}" BasedOn="{StaticResource Header}">
+		<Setter Property="FontSize" Value="26" />
+	</Style>
+	<Style x:Key="H2" TargetType="{x:Type TextBlock}" BasedOn="{StaticResource Header}">
+		<Setter Property="FontSize" Value="24" />
+	</Style>
+	<Style x:Key="H3" TargetType="{x:Type TextBlock}" BasedOn="{StaticResource Header}">
+		<Setter Property="FontSize" Value="22" />
+	</Style>
+	<Style x:Key="H4" TargetType="{x:Type TextBlock}" BasedOn="{StaticResource Header}">
+		<Setter Property="FontSize" Value="20" />
+	</Style>
+	<Style x:Key="H5" TargetType="{x:Type TextBlock}" BasedOn="{StaticResource Header}">
+		<Setter Property="FontSize" Value="18" />
+	</Style>
+	<Style x:Key="H6" TargetType="{x:Type TextBlock}" BasedOn="{StaticResource Header}">
+		<Setter Property="FontSize" Value="16" />
 	</Style>
 	<Style TargetType="{x:Type TextBox}">
 		<Setter Property="BorderThickness" Value="1" />
@@ -106,11 +125,6 @@
 							<Setter Property="Background" Value="{DynamicResource {x:Static SystemColors.ControlDarkDarkBrushKey}}" />
 							<Setter TargetName="Border" Property="Background" Value="{DynamicResource {x:Static SystemColors.ControlDarkDarkBrushKey}}" />
 						</Trigger>
-						<Trigger Property="IsPressed" Value="true">
-							<Setter Property="Foreground" Value="{DynamicResource {x:Static SystemColors.ControlLightLightBrushKey}}" />
-							<Setter Property="Background" Value="{DynamicResource {x:Static SystemColors.ControlDarkBrushKey}}" />
-							<Setter TargetName="Border" Property="Background" Value="{DynamicResource {x:Static SystemColors.ControlDarkBrushKey}}" />
-						</Trigger>
 						<Trigger Property="IsEnabled" Value="false">
 							<Setter Property="Foreground" Value="{DynamicResource {x:Static SystemColors.ControlDarkBrushKey}}" />
 							<Setter Property="Background" Value="{DynamicResource {x:Static SystemColors.ControlBrushKey}}" />
@@ -135,9 +149,6 @@
 							<Setter Property="Foreground" Value="{DynamicResource {x:Static SystemColors.ControlLightBrushKey}}" />
 						</Trigger>
 						<Trigger Property="IsMouseOver" Value="true">
-							<Setter Property="Foreground" Value="{DynamicResource {x:Static SystemColors.ControlLightBrushKey}}" />
-						</Trigger>
-						<Trigger Property="IsPressed" Value="true">
 							<Setter Property="Foreground" Value="{DynamicResource {x:Static SystemColors.ControlLightBrushKey}}" />
 						</Trigger>
 						<Trigger Property="IsEnabled" Value="false">

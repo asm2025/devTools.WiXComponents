@@ -15,6 +15,17 @@
 		<AssemblyName>WiXComp</AssemblyName>
 	</PropertyGroup>
 	
+	<PropertyGroup>
+		<PackageId>devTools.WiXComponents</PackageId>
+		<AssemblyTitle>WiX Toolset Components</AssemblyTitle>
+		<Description>A helper tool for generating WiX toolset components and manipulating WiX toolset files.</Description>
+		<Authors>asm</Authors>
+		<Company>asm</Company>
+		<Copyright>2021</Copyright>
+		<PackageProjectUrl>https://github.com/asm2025/devTools.WiXComponents</PackageProjectUrl>
+		<RepositoryUrl>https://github.com/asm2025/devTools.WiXComponents</RepositoryUrl>
+	</PropertyGroup>
+
 	<PropertyGroup Condition="'$(Configuration)' == 'Debug'">
 		<DebugSymbols>true</DebugSymbols>
 		<DefineConstants>DEBUG;TRACE</DefineConstants>
@@ -70,12 +81,13 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<PackageReference Include="essentialMix" Version="12.26.0" />
-		<PackageReference Include="essentialMix.Data" Version="12.26.0" />
-		<PackageReference Include="essentialMix.Extensions.Configuration" Version="12.26.0" />
-		<PackageReference Include="essentialMix.Json.Abstraction" Version="12.26.0" />
-		<PackageReference Include="essentialMix.Logging" Version="12.26.0" />
-		<PackageReference Include="essentialMix.Newtonsoft" Version="12.26.0" />
+		<PackageReference Include="essentialMix" Version="12.26.1" />
+		<PackageReference Include="essentialMix.Collections" Version="12.26.1" />
+		<PackageReference Include="essentialMix.Data" Version="12.26.1" />
+		<PackageReference Include="essentialMix.Extensions.Configuration" Version="12.26.1" />
+		<PackageReference Include="essentialMix.Json.Abstraction" Version="12.26.1" />
+		<PackageReference Include="essentialMix.Logging" Version="12.26.1" />
+		<PackageReference Include="essentialMix.Newtonsoft" Version="12.26.1" />
 		<PackageReference Include="JetBrains.Annotations" Version="2020.3.0" />
 		<PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="5.0.1" />
 		<PackageReference Include="Microsoft.Extensions.Logging" Version="5.0.0" />
@@ -99,6 +111,7 @@
 	</ItemGroup>
 
 	<ItemGroup>
+	  <ProjectReference Include="..\devTools.WiXComponents.Controls\devTools.WiXComponents.Controls.csproj" />
 	  <ProjectReference Include="..\devTools.WiXComponents.Core\devTools.WiXComponents.Core.csproj" />
 	</ItemGroup>
 

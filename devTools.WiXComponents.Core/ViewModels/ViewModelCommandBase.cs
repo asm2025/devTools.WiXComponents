@@ -1,9 +1,14 @@
-﻿using essentialMix.Extensions;
+﻿using System;
+using System.ComponentModel.DataAnnotations;
+using System.Diagnostics;
+using System.Reflection;
+using essentialMix.Extensions;
 using JetBrains.Annotations;
 using Microsoft.Extensions.Logging;
 
 namespace devTools.WiXComponents.Core.ViewModels
 {
+	[DebuggerDisplay("{DisplayName}")]
 	public abstract class ViewModelCommandBase : ViewModelBase
 	{
 		private string _displayName;
@@ -12,7 +17,9 @@ namespace devTools.WiXComponents.Core.ViewModels
 		protected ViewModelCommandBase(ILogger logger)
 			: base(logger)
 		{
-			_displayName = GetType().Name;
+			Type type = GetType();
+			DisplayAttribute display = type.GetCustomAttribute<DisplayAttribute>();
+			_displayName = display?.Name.ToNullIfEmpty() ?? type.Name;
 		}
 
 		[NotNull]
