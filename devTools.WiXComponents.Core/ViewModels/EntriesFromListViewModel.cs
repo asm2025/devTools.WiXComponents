@@ -19,9 +19,6 @@ namespace devTools.WiXComponents.Core.ViewModels
 		public ObservableList<string> Entries { get; set; } = new ObservableList<string>();
 
 		/// <inheritdoc />
-		public override bool CanView() => true;
-
-		/// <inheritdoc />
 		public void Reset() { }
 	}
 }

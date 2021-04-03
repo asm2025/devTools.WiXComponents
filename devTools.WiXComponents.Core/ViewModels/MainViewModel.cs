@@ -1,4 +1,6 @@
-﻿using System.Collections.ObjectModel;
+﻿using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.Windows.Input;
 using devTools.WiXComponents.Core.Commands;
 using essentialMix;
@@ -13,10 +15,15 @@ namespace devTools.WiXComponents.Core.ViewModels
 	{
 		private const string STATUS_DEF = "Ready...";
 
+		private static readonly HashSet<string> WATCHED_CHILD_PROPERTIES = new HashSet<string>
+		{
+			nameof(Status),
+			nameof(Operation),
+			nameof(Progress)
+		};
+
 		private ViewModelCommandBase _selectedViewModel;
-		private string _status;
-		private string _operation;
-		private int _progress;
+		private ViewModelCancellableCommandBase _cancellableCommandBaseRef;
 
 		/// <inheritdoc />
 		public MainViewModel(ILogger logger)
@@ -30,7 +37,6 @@ namespace devTools.WiXComponents.Core.ViewModels
 				if (vm is IResettableView resettableView) resettableView.Reset();
 				SelectedViewModel = vm;
 			}, vm => vm != SelectedViewModel && vm.CanView() && SelectedViewModel is not ViewModelCancellableCommandBase { IsBusy: true });
-			Reset();
 		}
 
 		[NotNull]
@@ -39,43 +45,31 @@ namespace devTools.WiXComponents.Core.ViewModels
 		[NotNull]
 		public ICommand ChangeView { get; }
 
+		public string Status => _cancellableCommandBaseRef?.Status ?? STATUS_DEF;
+		public string Operation => _cancellableCommandBaseRef?.Operation;
+		public int Progress => _cancellableCommandBaseRef?.Progress ?? 0;
+
 		public ViewModelCommandBase SelectedViewModel
 		{
 			get => _selectedViewModel;
 			set
 			{
 				if (_selectedViewModel == value) return;
+				if (_cancellableCommandBaseRef != null) _cancellableCommandBaseRef.PropertyChanged -= OnChildPropertyChanged;
 				_selectedViewModel = value;
-				OnPropertyChanged();
-			}
-		}
+				_cancellableCommandBaseRef = _selectedViewModel as ViewModelCancellableCommandBase;
 
-		public string Status
-		{
-			get => _status;
-			set
-			{
-				_status = value ?? STATUS_DEF;
-				OnPropertyChanged();
-			}
-		}
+				if (_cancellableCommandBaseRef != null)
+				{
+					_cancellableCommandBaseRef.PropertyChanged += OnChildPropertyChanged;
+					_cancellableCommandBaseRef.Reset();
+				}
+				else
+				{
+					foreach (string prop in WATCHED_CHILD_PROPERTIES) 
+						OnPropertyChanged(prop);
+				}
 
-		public string Operation
-		{
-			get => _operation;
-			set
-			{
-				_operation = value;
-				OnPropertyChanged();
-			}
-		}
-
-		public int Progress
-		{
-			get => _progress;
-			set
-			{
-				_progress = value;
 				OnPropertyChanged();
 			}
 		}
@@ -83,10 +77,10 @@ namespace devTools.WiXComponents.Core.ViewModels
 		[NotNull]
 		public ObservableCollection<ViewModelCommandBase> ViewModels { get; }
 
-		public void Reset()
+		private void OnChildPropertyChanged(object sender, [NotNull] PropertyChangedEventArgs e)
 		{
-			Status = Operation = null;
-			Progress = 0;
+			if (!WATCHED_CHILD_PROPERTIES.Contains(e.PropertyName)) return;
+			OnPropertyChanged(e);
 		}
 	}
 }

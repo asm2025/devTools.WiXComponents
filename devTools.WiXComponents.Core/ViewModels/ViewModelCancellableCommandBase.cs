@@ -16,6 +16,9 @@ namespace devTools.WiXComponents.Core.ViewModels
 		private const int CTO_MAX = 3000;
 		private const int CTO_MIN_WAIT = 20;
 
+		private string _status;
+		private string _operation;
+		private int _progress;
 		private CancellationTokenSource _cancellationTokenSource;
 		private int _cancellationTimeout;
 		private volatile int _isBusy;
@@ -33,6 +36,36 @@ namespace devTools.WiXComponents.Core.ViewModels
 		{
 			if (disposing) Stop();
 			base.Dispose(disposing);
+		}
+
+		public string Status
+		{
+			get => _status;
+			set
+			{
+				_status = value;
+				OnPropertyChanged();
+			}
+		}
+
+		public string Operation
+		{
+			get => _operation;
+			set
+			{
+				_operation = value;
+				OnPropertyChanged();
+			}
+		}
+
+		public int Progress
+		{
+			get => _progress;
+			set
+			{
+				_progress = value;
+				OnPropertyChanged();
+			}
 		}
 
 		public bool IsBusy
@@ -83,7 +116,11 @@ namespace devTools.WiXComponents.Core.ViewModels
 			CancellationTokenSource.CancelIfNotDisposed();
 		}
 
-		public abstract void Reset();
+		public virtual void Reset()
+		{
+			Status = Operation = null;
+			Progress = 0;
+		}
 
 		protected virtual void Prepare()
 		{

@@ -34,6 +34,6 @@ namespace devTools.WiXComponents.Core.ViewModels
 			}
 		}
 
-		public abstract bool CanView();
+		public virtual bool CanView() => true;
 	}
 }

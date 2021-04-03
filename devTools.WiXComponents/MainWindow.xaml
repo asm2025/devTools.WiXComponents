@@ -76,7 +76,7 @@
 						</StatusBarItem>
 						<Separator Grid.Column="3"></Separator>
 						<StatusBarItem Grid.Column="4">
-							<ProgressBar Width="90" Height="18" Value="{Binding Progress}"></ProgressBar>
+							<ProgressBar Width="90" Height="18" Value="{Binding Progress, Mode=OneWay}"></ProgressBar>
 						</StatusBarItem>
 					</StatusBar>
 					<ContentControl Margin="16" Content="{Binding SelectedViewModel}" />

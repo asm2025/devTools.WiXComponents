@@ -2,18 +2,35 @@
 	xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" 
 	xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" 
 	xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-	xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
-	xmlns:viewModels="clr-namespace:devTools.WiXComponents.Core.ViewModels;assembly=WiXComp.Core" 
+	xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
 	xmlns:controls="clr-namespace:devTools.WiXComponents.Controls;assembly=WiXComp.Controls" 
 	mc:Ignorable="d" 
 	d:DesignWidth="800" d:DesignHeight="500" 
 	d:DataContext="{d:DesignData EntriesFromDirectoryViewModel}">
 	<Grid>
 		<Grid.RowDefinitions>
-			<RowDefinition Height="28" />
 			<RowDefinition Height="Auto" />
 			<RowDefinition Height="*" />
 		</Grid.RowDefinitions>
-		<controls:SelectFolder SelectedPath="{Binding Path}" />
+		<ItemsControl Grid.IsSharedSizeScope="True">
+			<controls:FormControlItem Label="Root Path:">
+				<controls:SelectFolder SelectedPath="{Binding RootPath}" />
+			</controls:FormControlItem>
+			<controls:FormControlItem Label="Path:">
+				<controls:SelectFolder SelectedPath="{Binding Path}" />
+			</controls:FormControlItem>
+			<controls:FormControlItem Label="Pattern:">
+				<TextBox Text="{Binding Pattern}"></TextBox>
+			</controls:FormControlItem>
+			<controls:FormControlItem Label="Exclude:">
+				<TextBox Text="{Binding Exclude}"></TextBox>
+			</controls:FormControlItem>
+			<controls:FormControlItem Label="Include Subdirectories:">
+				<CheckBox IsChecked="{Binding IncludeSubdirectories}"></CheckBox>
+			</controls:FormControlItem>
+			<controls:FormControlItem Label="Append:">
+				<CheckBox IsChecked="{Binding Append}"></CheckBox>
+			</controls:FormControlItem>
+		</ItemsControl>
 	</Grid>
 </UserControl>

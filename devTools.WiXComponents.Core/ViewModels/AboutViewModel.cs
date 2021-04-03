@@ -36,8 +36,5 @@ namespace devTools.WiXComponents.Core.ViewModels
 
 		[NotNull]
 		public string Copyright { get; }
-
-		/// <inheritdoc />
-		public override bool CanView() => true;
 	}
 }

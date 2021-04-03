@@ -21,7 +21,7 @@ namespace devTools.WiXComponents.Core.ViewModels
 		private string _fileName;
 		private string _pattern;
 		private string _exclude;
-		private bool _includeSubDirectories;
+		private bool _includeSubdirectories;
 		private bool _append;
 
 		/// <inheritdoc />
@@ -91,13 +91,13 @@ namespace devTools.WiXComponents.Core.ViewModels
 			}
 		}
 
-		public bool IncludeSubDirectories
+		public bool IncludeSubdirectories
 		{
-			get => _includeSubDirectories;
+			get => _includeSubdirectories;
 			set
 			{
-				if (_includeSubDirectories == value) return;
-				_includeSubDirectories = value;
+				if (_includeSubdirectories == value) return;
+				_includeSubdirectories = value;
 				OnPropertyChanged();
 			}
 		}
@@ -118,12 +118,6 @@ namespace devTools.WiXComponents.Core.ViewModels
 		/// <inheritdoc />
 		public override ICommand StartCommand { get; }
 
-		/// <inheritdoc />
-		public override bool CanView() => true;
-
-		/// <inheritdoc />
-		public override void Reset() { }
-
 		public void Generate()
 		{
 			if (IsBusy) return;
@@ -131,7 +125,7 @@ namespace devTools.WiXComponents.Core.ViewModels
 
 			try
 			{
-				_generator.GenerateFromMissing(Path, FileName, new GenerateSettings(Pattern, IncludeSubDirectories, Append)
+				_generator.GenerateFromMissing(Path, FileName, new GenerateSettings(Pattern, IncludeSubdirectories, Append)
 				{
 					Exclude = Exclude
 				});
