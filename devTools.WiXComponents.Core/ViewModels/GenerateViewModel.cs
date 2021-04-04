@@ -1,7 +1,6 @@
 ﻿using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.IO;
-using System.Windows;
 using System.Windows.Input;
 using devTools.WiXComponents.Core.Commands;
 using devTools.WiXComponents.Core.Models;
@@ -29,9 +28,12 @@ namespace devTools.WiXComponents.Core.ViewModels
 		{
 			_service = service;
 			_service.PropertyChanged += OnServiceChanged;
-			UseHeatCommand = new RelayCommand<GenerateViewModel>(vm => vm.GenerateUsingHeat(), vm => !vm.IsBusy && vm.HeatPath != null && vm.TargetPath != null);
-			FromDirectoryCommand = new RelayCommand<GenerateViewModel>(vm => vm.GenerateFromDirectory(), vm => !vm.IsBusy && vm.TargetPath != null);
-			FromMissingCommand = new RelayCommand<GenerateViewModel>(vm => vm.GenerateFromMissing(), vm => !vm.IsBusy && vm.TargetPath != null && vm.TargetFile != null);
+			UseHeatCommand = new RelayCommand(GenerateUsingHeat, () => !IsBusy && HeatPath != null && TargetPath != null)
+				.ListenOn(this, nameof(HeatPath), nameof(TargetPath));
+			FromDirectoryCommand = new RelayCommand(GenerateFromDirectory, () => !IsBusy && TargetPath != null)
+				.ListenOn(this, nameof(TargetPath));
+			FromMissingCommand = new RelayCommand(GenerateFromMissing, () => !IsBusy && TargetPath != null && TargetFile != null)
+				.ListenOn(this, nameof(TargetPath), nameof(TargetFile));
 		}
 
 		public string HeatPath
@@ -129,13 +131,6 @@ namespace devTools.WiXComponents.Core.ViewModels
 			{
 				IsBusy = false;
 			}
-		}
-
-		/// <inheritdoc />
-		protected override void OnPropertyChanged(PropertyChangedEventArgs args)
-		{
-			base.OnPropertyChanged(args);
-			Application.Current.Dispatcher.Invoke(CommandManager.InvalidateRequerySuggested);
 		}
 
 		private void OnServiceChanged(object sender, [NotNull] PropertyChangedEventArgs e)

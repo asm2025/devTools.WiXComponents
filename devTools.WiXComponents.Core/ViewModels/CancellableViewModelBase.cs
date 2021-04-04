@@ -30,7 +30,7 @@ namespace devTools.WiXComponents.Core.ViewModels
 			: base(logger)
 		{
 			_cancellationTimeout = TimeSpanHelper.HALF_SCHEDULE;
-			CancelCommand = new RelayCommand<CancellableViewModelBase>(vm => vm.Cancel(), vm => !vm.IsCancellationRequested);
+			CancelCommand = new RelayCommand(Cancel, () => !IsCancellationRequested);
 		}
 
 		/// <inheritdoc />
