@@ -2,6 +2,7 @@
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Windows.Input;
+using System.Windows.Shell;
 using devTools.WiXComponents.Core.Commands;
 using essentialMix;
 using essentialMix.Helpers;
@@ -19,7 +20,8 @@ namespace devTools.WiXComponents.Core.ViewModels
 		{
 			nameof(Status),
 			nameof(Operation),
-			nameof(Progress)
+			nameof(Progress),
+			nameof(ProgressState),
 		};
 
 		private ViewModelCommandBase _selectedViewModel;
@@ -48,6 +50,7 @@ namespace devTools.WiXComponents.Core.ViewModels
 		public string Status => _cancellableCommandBaseRef?.Status ?? STATUS_DEF;
 		public string Operation => _cancellableCommandBaseRef?.Operation;
 		public int Progress => _cancellableCommandBaseRef?.Progress ?? 0;
+		public TaskbarItemProgressState ProgressState => _cancellableCommandBaseRef?.ProgressState ?? TaskbarItemProgressState.None;
 
 		public ViewModelCommandBase SelectedViewModel
 		{

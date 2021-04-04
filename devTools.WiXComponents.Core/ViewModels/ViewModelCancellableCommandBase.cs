@@ -2,6 +2,7 @@
 using System.Diagnostics;
 using System.Threading;
 using System.Windows.Input;
+using System.Windows.Shell;
 using devTools.WiXComponents.Core.Commands;
 using essentialMix.Extensions;
 using essentialMix.Helpers;
@@ -19,6 +20,7 @@ namespace devTools.WiXComponents.Core.ViewModels
 		private string _status;
 		private string _operation;
 		private int _progress;
+		private TaskbarItemProgressState _progressState;
 		private CancellationTokenSource _cancellationTokenSource;
 		private int _cancellationTimeout;
 		private volatile int _isBusy;
@@ -64,6 +66,16 @@ namespace devTools.WiXComponents.Core.ViewModels
 			set
 			{
 				_progress = value;
+				OnPropertyChanged();
+			}
+		}
+
+		public TaskbarItemProgressState ProgressState
+		{
+			get => _progressState;
+			set
+			{
+				_progressState = value;
 				OnPropertyChanged();
 			}
 		}
@@ -120,6 +132,7 @@ namespace devTools.WiXComponents.Core.ViewModels
 		{
 			Status = Operation = null;
 			Progress = 0;
+			ProgressState = TaskbarItemProgressState.None;
 		}
 
 		protected virtual void Prepare()

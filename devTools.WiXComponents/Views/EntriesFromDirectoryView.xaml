@@ -10,6 +10,7 @@
 	<Grid>
 		<Grid.RowDefinitions>
 			<RowDefinition Height="Auto" />
+			<RowDefinition Height="Auto" />
 			<RowDefinition Height="*" />
 		</Grid.RowDefinitions>
 		<ItemsControl Grid.IsSharedSizeScope="True">
@@ -19,18 +20,24 @@
 			<controls:FormControlItem Label="Path:">
 				<controls:SelectFolder SelectedPath="{Binding Path}" />
 			</controls:FormControlItem>
-			<controls:FormControlItem Label="Pattern:">
-				<TextBox Text="{Binding Pattern}"></TextBox>
-			</controls:FormControlItem>
-			<controls:FormControlItem Label="Exclude:">
-				<TextBox Text="{Binding Exclude}"></TextBox>
-			</controls:FormControlItem>
-			<controls:FormControlItem Label="Include Subdirectories:">
-				<CheckBox IsChecked="{Binding IncludeSubdirectories}"></CheckBox>
-			</controls:FormControlItem>
-			<controls:FormControlItem Label="Append:">
-				<CheckBox IsChecked="{Binding Append}"></CheckBox>
-			</controls:FormControlItem>
+			<Grid>
+				<Grid.ColumnDefinitions>
+					<ColumnDefinition Width="*" />
+					<ColumnDefinition Width="*" />
+				</Grid.ColumnDefinitions>
+				<StackPanel>
+					<controls:FormControlItem Label="Pattern:">
+						<TextBox Text="{Binding Pattern}"></TextBox>
+					</controls:FormControlItem>
+					<controls:FormControlItem Label="Exclude:">
+						<TextBox Text="{Binding Exclude}"></TextBox>
+					</controls:FormControlItem>
+				</StackPanel>
+				<StackPanel Grid.Column="1" Margin="4 0">
+					<CheckBox IsChecked="{Binding IncludeSubdirectories}">Include Subdirectories</CheckBox>
+					<CheckBox IsChecked="{Binding Append}">Append</CheckBox>
+				</StackPanel>
+			</Grid>
 		</ItemsControl>
 	</Grid>
 </UserControl>

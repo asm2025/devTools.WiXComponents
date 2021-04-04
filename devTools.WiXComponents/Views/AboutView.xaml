@@ -23,7 +23,7 @@
 				</MultiBinding>
 			</TextBlock.Text>
 		</TextBlock>
-		<TextBlock Grid.Row="3" Grid.Column="0"
+		<TextBlock Grid.Row="3" Grid.Column="0" VerticalAlignment="Stretch"
 					Text="{Binding Description}" 
 					TextWrapping="WrapWithOverflow" />
 	</Grid>
