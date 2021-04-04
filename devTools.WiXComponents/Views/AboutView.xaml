@@ -13,8 +13,8 @@
 			<RowDefinition Height="Auto" />
             <RowDefinition Height="*" />
 		</Grid.RowDefinitions>
-		<TextBlock Grid.Row="0" Text="{Binding Title}" Style="{StaticResource H1}" />
-		<TextBlock Grid.Row="1" Text="{Binding Version, StringFormat={} Version {0}}" />
+		<TextBlock Grid.Row="0" Text="{Binding Path=Title}" Style="{StaticResource H1}" />
+		<TextBlock Grid.Row="1" Text="{Binding Path=Version, StringFormat={} Version {0}}" />
 		<TextBlock Grid.Row="2">
 			<TextBlock.Text>
 				<MultiBinding StringFormat="{}©{0} {1}">
@@ -24,7 +24,7 @@
 			</TextBlock.Text>
 		</TextBlock>
 		<TextBlock Grid.Row="3" Grid.Column="0" VerticalAlignment="Stretch"
-					Text="{Binding Description}" 
+					Text="{Binding Path=Description}" 
 					TextWrapping="WrapWithOverflow" />
 	</Grid>
 </UserControl>

@@ -2,13 +2,14 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.IO;
+using devTools.WiXComponents.Core.Models;
 using essentialMix.Extensions;
 using essentialMix.Patterns.NotifyChange;
 using JetBrains.Annotations;
 
 namespace devTools.WiXComponents.Core.Services
 {
-	public class ComponentsGeneratorService : NotifyPropertyChangedBase
+	public class ComponentsService : NotifyPropertyChangedBase
 	{
 		private const string DEF_DIR = "INSTALLDIR";
 
@@ -26,7 +27,7 @@ namespace devTools.WiXComponents.Core.Services
 		[NotNull]
 		private string _rootPath;
 
-		public ComponentsGeneratorService() 
+		public ComponentsService() 
 		{
 			_rootPath = Directory.GetCurrentDirectory();
 			_entries = new Dictionary<string, IDictionary<string, ComponentInfo>>(StringComparer.OrdinalIgnoreCase);

@@ -5,12 +5,12 @@ using Microsoft.Extensions.Logging;
 
 namespace devTools.WiXComponents.Core.ViewModels
 {
-	/// <inheritdoc cref="ViewModelCommandBase" />
-	[Display(Name = "From list", Order = 2)]
-	public sealed class EntriesFromListViewModel : ViewModelCommandBase, IResettableView
+	/// <inheritdoc cref="CommandViewModelBase" />
+	[Display(Name = "List", Order = 1)]
+	public sealed class EntriesViewModel : CommandViewModelBase, IResettableView
 	{
 		/// <inheritdoc />
-		public EntriesFromListViewModel(ILogger<EntriesFromListViewModel> logger)
+		public EntriesViewModel(ILogger<EntriesViewModel> logger)
 			: base(logger)
 		{
 		}

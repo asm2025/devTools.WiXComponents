@@ -22,10 +22,10 @@ namespace devTools.WiXComponents.Core.ViewModels
 			propertyChanged?.Invoke(this, args);
 		}
 
-		protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
+		protected void OnPropertyChanged([CallerMemberName] string propertyName = null)
 		{
-			PropertyChangedEventHandler propertyChanged = PropertyChanged;
-			propertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+			if (PropertyChanged == null) return;
+			OnPropertyChanged(new PropertyChangedEventArgs(propertyName));
 		}
 	}
 }

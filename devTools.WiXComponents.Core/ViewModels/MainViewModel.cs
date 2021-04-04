@@ -24,8 +24,8 @@ namespace devTools.WiXComponents.Core.ViewModels
 			nameof(ProgressState),
 		};
 
-		private ViewModelCommandBase _selectedViewModel;
-		private ViewModelCancellableCommandBase _cancellableCommandBaseRef;
+		private CommandViewModelBase _selectedViewModel;
+		private CancellableViewModelBase _cancellableBaseRef;
 
 		/// <inheritdoc />
 		public MainViewModel(ILogger logger)
@@ -33,12 +33,12 @@ namespace devTools.WiXComponents.Core.ViewModels
 		{
 			AppInfo appInfo = new AppInfo(AssemblyHelper.GetEntryAssembly());
 			Title = appInfo.Title;
-			ViewModels = new ObservableCollection<ViewModelCommandBase>();
-			ChangeView = new RelayCommand<ViewModelCommandBase>(vm =>
+			ViewModels = new ObservableCollection<CommandViewModelBase>();
+			ChangeView = new RelayCommand<CommandViewModelBase>(vm =>
 			{
 				if (vm is IResettableView resettableView) resettableView.Reset();
 				SelectedViewModel = vm;
-			}, vm => vm != SelectedViewModel && vm.CanView() && SelectedViewModel is not ViewModelCancellableCommandBase { IsBusy: true });
+			}, vm => vm != SelectedViewModel && vm.CanView() && SelectedViewModel is not CancellableViewModelBase { IsBusy: true });
 		}
 
 		[NotNull]
@@ -47,25 +47,25 @@ namespace devTools.WiXComponents.Core.ViewModels
 		[NotNull]
 		public ICommand ChangeView { get; }
 
-		public string Status => _cancellableCommandBaseRef?.Status ?? STATUS_DEF;
-		public string Operation => _cancellableCommandBaseRef?.Operation;
-		public int Progress => _cancellableCommandBaseRef?.Progress ?? 0;
-		public TaskbarItemProgressState ProgressState => _cancellableCommandBaseRef?.ProgressState ?? TaskbarItemProgressState.None;
+		public string Status => _cancellableBaseRef?.Status ?? STATUS_DEF;
+		public string Operation => _cancellableBaseRef?.Operation;
+		public int Progress => _cancellableBaseRef?.Progress ?? 0;
+		public TaskbarItemProgressState ProgressState => _cancellableBaseRef?.ProgressState ?? TaskbarItemProgressState.None;
 
-		public ViewModelCommandBase SelectedViewModel
+		public CommandViewModelBase SelectedViewModel
 		{
 			get => _selectedViewModel;
 			set
 			{
 				if (_selectedViewModel == value) return;
-				if (_cancellableCommandBaseRef != null) _cancellableCommandBaseRef.PropertyChanged -= OnChildPropertyChanged;
+				if (_cancellableBaseRef != null) _cancellableBaseRef.PropertyChanged -= OnChildPropertyChanged;
 				_selectedViewModel = value;
-				_cancellableCommandBaseRef = _selectedViewModel as ViewModelCancellableCommandBase;
+				_cancellableBaseRef = _selectedViewModel as CancellableViewModelBase;
 
-				if (_cancellableCommandBaseRef != null)
+				if (_cancellableBaseRef != null)
 				{
-					_cancellableCommandBaseRef.PropertyChanged += OnChildPropertyChanged;
-					_cancellableCommandBaseRef.Reset();
+					_cancellableBaseRef.PropertyChanged += OnChildPropertyChanged;
+					_cancellableBaseRef.Reset();
 				}
 				else
 				{
@@ -78,7 +78,7 @@ namespace devTools.WiXComponents.Core.ViewModels
 		}
 
 		[NotNull]
-		public ObservableCollection<ViewModelCommandBase> ViewModels { get; }
+		public ObservableCollection<CommandViewModelBase> ViewModels { get; }
 
 		private void OnChildPropertyChanged(object sender, [NotNull] PropertyChangedEventArgs e)
 		{

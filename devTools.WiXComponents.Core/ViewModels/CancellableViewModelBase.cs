@@ -11,7 +11,7 @@ using Microsoft.Extensions.Logging;
 
 namespace devTools.WiXComponents.Core.ViewModels
 {
-	public abstract class ViewModelCancellableCommandBase : ViewModelCommandBase, IResettableView
+	public abstract class CancellableViewModelBase : CommandViewModelBase, IResettableView
 	{
 		private const int CTO_MIN = 0;
 		private const int CTO_MAX = 3000;
@@ -26,11 +26,11 @@ namespace devTools.WiXComponents.Core.ViewModels
 		private volatile int _isBusy;
 
 		/// <inheritdoc />
-		protected ViewModelCancellableCommandBase(ILogger logger)
+		protected CancellableViewModelBase(ILogger logger)
 			: base(logger)
 		{
 			_cancellationTimeout = TimeSpanHelper.HALF_SCHEDULE;
-			CancelCommand = new RelayCommand<ViewModelCancellableCommandBase>(vm => vm.Cancel(), vm => !vm.IsCancellationRequested);
+			CancelCommand = new RelayCommand<CancellableViewModelBase>(vm => vm.Cancel(), vm => !vm.IsCancellationRequested);
 		}
 
 		/// <inheritdoc />
@@ -116,9 +116,6 @@ namespace devTools.WiXComponents.Core.ViewModels
 		public CancellationToken Token { get; private set; }
 
 		public bool IsCancellationRequested => Token.CanBeCanceled && Token.IsCancellationRequested;
-
-		[NotNull]
-		public abstract ICommand StartCommand { get; }
 
 		[NotNull]
 		public ICommand CancelCommand { get; }

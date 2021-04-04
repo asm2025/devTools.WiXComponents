@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace devTools.WiXComponents.Core
+namespace devTools.WiXComponents.Core.Models
 {
 	public class ComponentInfo
 	{

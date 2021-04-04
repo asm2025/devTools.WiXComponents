@@ -1,19 +1,20 @@
 ﻿using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using devTools.WiXComponents.Core.Models;
 using devTools.WiXComponents.Core.Services;
 using JetBrains.Annotations;
 using Microsoft.Extensions.Logging;
 
 namespace devTools.WiXComponents.Core.ViewModels
 {
-	/// <inheritdoc cref="ViewModelCommandBase" />
-	[Display(Name = "Output", Order = 3)]
-	public sealed class OutputViewModel : ViewModelCommandBase, IResettableView
+	/// <inheritdoc cref="CommandViewModelBase" />
+	[Display(Name = "Output", Order = 2)]
+	public sealed class OutputViewModel : CommandViewModelBase, IResettableView
 	{
-		private readonly ComponentsGeneratorService _service;
+		private readonly ComponentsService _service;
 
 		/// <inheritdoc />
-		public OutputViewModel([NotNull] ComponentsGeneratorService service, ILogger<OutputViewModel> logger)
+		public OutputViewModel([NotNull] ComponentsService service, ILogger<OutputViewModel> logger)
 			: base(logger)
 		{
 			_service = service;

@@ -9,12 +9,12 @@ using Microsoft.Extensions.Logging;
 namespace devTools.WiXComponents.Core.ViewModels
 {
 	[DebuggerDisplay("{DisplayName}")]
-	public abstract class ViewModelCommandBase : ViewModelBase
+	public abstract class CommandViewModelBase : ViewModelBase
 	{
 		private string _displayName;
 
 		/// <inheritdoc />
-		protected ViewModelCommandBase(ILogger logger)
+		protected CommandViewModelBase(ILogger logger)
 			: base(logger)
 		{
 			Type type = GetType();

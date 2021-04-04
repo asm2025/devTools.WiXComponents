@@ -6,7 +6,7 @@
 	xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
 	xmlns:viewModels="clr-namespace:devTools.WiXComponents.Core.ViewModels;assembly=WiXComp.Core"
 	mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="600" d:DataContext="{d:DesignData MainViewModel}"
-	Title="{Binding Title}" WindowStyle="None" AllowsTransparency="True" Background="Transparent"
+	Title="{Binding Path=Title}" WindowStyle="None" AllowsTransparency="True" Background="Transparent"
 	Width="800" Height="600" MinWidth="800" MinHeight="600"
 	MaxWidth="{Binding Source={x:Static SystemParameters.WorkArea}, Path=Width}"
 	MaxHeight="{Binding Source={x:Static SystemParameters.WorkArea}, Path=Height}">
@@ -15,7 +15,7 @@
 					UseAeroCaptionButtons="False" ResizeBorderThickness="{x:Static SystemParameters.WindowResizeBorderThickness}" />
 	</WindowChrome.WindowChrome>
 	<Window.TaskbarItemInfo>
-		<TaskbarItemInfo ProgressState="{Binding ProgressState}" ProgressValue="{Binding Progress}"></TaskbarItemInfo>
+		<TaskbarItemInfo ProgressState="{Binding Path=ProgressState}" ProgressValue="{Binding Path=Progress}"></TaskbarItemInfo>
 	</Window.TaskbarItemInfo>
 	<Border Style="{StaticResource WindowBorder}">
 		<Grid>
@@ -33,7 +33,7 @@
 						<ColumnDefinition Width="Auto" />
 					</Grid.ColumnDefinitions>
 					<Image Source="wixtoolset.ico" Width="22" Height="22" Margin="4" />
-					<TextBlock Grid.Column="1" Text="{Binding Title}" />
+					<TextBlock Grid.Column="1" Text="{Binding Path=Title}" />
 					<Button Grid.Column="2" Name="MinimizeButton" RenderOptions.EdgeMode="Aliased" Click="OnMinimizeClick">
 						<Path Width="46" Height="32" Data="M 18,15 H 28" StrokeThickness="1"
 							Stroke="{Binding Path=Foreground, RelativeSource={RelativeSource AncestorType={x:Type Button}}}" />
@@ -53,15 +53,15 @@
 				</Grid>
 			</Border>
 			<DockPanel Grid.Row="1" LastChildFill="True">
-				<ItemsControl DockPanel.Dock="Top" ItemsSource="{Binding ViewModels}">
+				<ItemsControl DockPanel.Dock="Top" ItemsSource="{Binding Path=ViewModels}">
 					<ItemsControl.ItemsPanel>
 						<ItemsPanelTemplate>
 							<WrapPanel />
 						</ItemsPanelTemplate>
 					</ItemsControl.ItemsPanel>
 					<ItemsControl.ItemTemplate>
-						<DataTemplate DataType="viewModels:ViewModelCommandBase">
-							<Button Content="{Binding DisplayName}"
+						<DataTemplate DataType="viewModels:CommandViewModelBase">
+							<Button Content="{Binding Path=DisplayName}"
 									Command="{Binding RelativeSource={RelativeSource AncestorType={x:Type Window}}, Path=DataContext.ChangeView}"
 									CommandParameter="{Binding}"
 									Padding="8" />
@@ -86,18 +86,18 @@
 						</ItemsPanelTemplate>
 					</StatusBar.ItemsPanel>
 					<StatusBarItem>
-						<TextBlock Text="{Binding Status}"></TextBlock>
+						<TextBlock Text="{Binding Path=Status}"></TextBlock>
 					</StatusBarItem>
 					<Separator Grid.Column="1"></Separator>
 					<StatusBarItem Grid.Column="2">
-						<TextBlock Text="{Binding Operation}"></TextBlock>
+						<TextBlock Text="{Binding Path=Operation}"></TextBlock>
 					</StatusBarItem>
 					<Separator Grid.Column="3"></Separator>
 					<StatusBarItem Grid.Column="4">
-						<ProgressBar Width="90" Height="18" Value="{Binding Progress, Mode=OneWay}"></ProgressBar>
+						<ProgressBar Width="90" Height="18" Value="{Binding Path=Progress, Mode=OneWay}"></ProgressBar>
 					</StatusBarItem>
 				</StatusBar>
-				<ContentControl Margin="16" Content="{Binding SelectedViewModel}" />
+				<ContentControl Margin="16" Content="{Binding Path=SelectedViewModel}" />
 			</DockPanel>
 		</Grid>
 	</Border>

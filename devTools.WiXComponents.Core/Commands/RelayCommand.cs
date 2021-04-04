@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Windows;
 using System.Windows.Input;
 using JetBrains.Annotations;
 
@@ -23,8 +24,16 @@ namespace devTools.WiXComponents.Core.Commands
 
 		public event EventHandler CanExecuteChanged
 		{
-			add => CommandManager.RequerySuggested += value;
-			remove => CommandManager.RequerySuggested -= value;
+			add
+			{
+				if (_canExecute == null) return;
+				CommandManager.RequerySuggested += value;
+			}
+			remove
+			{
+				if (_canExecute == null) return;
+				CommandManager.RequerySuggested -= value;
+			}
 		}
 
 		/// <inheritdoc />

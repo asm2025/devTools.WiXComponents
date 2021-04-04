@@ -9,14 +9,11 @@
 			<ResourceDictionary.MergedDictionaries>
 				<ResourceDictionary Source="Themes/Generic.xaml" />
 			</ResourceDictionary.MergedDictionaries>
-			<DataTemplate DataType="{x:Type viewModels:EntriesFromDirectoryViewModel}">
-				<views:EntriesFromDirectoryView />
+			<DataTemplate DataType="{x:Type viewModels:GenerateViewModel}">
+				<views:GenerateView />
 			</DataTemplate>
-			<DataTemplate DataType="{x:Type viewModels:EntriesFromMissingViewModel}">
-				<views:EntriesFromMissingView />
-			</DataTemplate>
-			<DataTemplate DataType="{x:Type viewModels:EntriesFromListViewModel}">
-				<views:EntriesFromListView />
+			<DataTemplate DataType="{x:Type viewModels:EntriesViewModel}">
+				<views:EntriesView />
 			</DataTemplate>
 			<DataTemplate DataType="{x:Type viewModels:OutputViewModel}">
 				<views:OutputView />

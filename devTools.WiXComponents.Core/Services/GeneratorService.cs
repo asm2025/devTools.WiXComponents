@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Text.RegularExpressions;
+using devTools.WiXComponents.Core.Models;
 using essentialMix.Collections;
 using essentialMix.Extensions;
 using essentialMix.Helpers;
@@ -10,59 +11,49 @@ using JetBrains.Annotations;
 
 namespace devTools.WiXComponents.Core.Services
 {
-	public class EntriesGeneratorService : NotifyPropertyChangedBase
+	public class GeneratorService : NotifyPropertyChangedBase
 	{
 		[NotNull]
 		private readonly HashSet<string> _entries;
 
-		[NotNull]
-		private string _rootPath;
-
-		public EntriesGeneratorService()
+		public GeneratorService()
 		{
-			_rootPath = Directory.GetCurrentDirectory();
+			Settings = new GenerateSettings();
 			_entries = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
 			Entries = new ReadOnlySet<string>(_entries);
 		}
 
 		[NotNull]
-		public string RootPath
-		{
-			get => _rootPath;
-			set
-			{
-				string path = Path.GetFullPath(value.ToNullIfEmpty() ?? ".\\").Suffix(Path.DirectorySeparatorChar);
-				if (path.Equals(_rootPath, StringComparison.OrdinalIgnoreCase)) return;
-				_rootPath = value;
-				OnPropertyChanged();
-			}
-		}
-
+		public GenerateSettings Settings { get; }
 		[NotNull]
 		public essentialMix.Collections.IReadOnlySet<string> Entries { get; }
 
-		public void GenerateFromDirectory(string path, GenerateSettings settings = default(GenerateSettings))
+		public void GenerateUsingHeat(string heatPath, string path)
+		{
+		}
+
+		public void GenerateFromDirectory(string path)
 		{
 			path = Path.GetFullPath(path.ToNullIfEmpty() ?? ".\\");
 			if (!Directory.Exists(path)) throw new DirectoryNotFoundException();
 
 			bool changed = false;
 
-			if (!settings.Append)
+			if (!Settings.Append)
 			{
 				_entries.Clear();
 				changed = true;
 			}
 			
-			IEnumerable<string> files = DirectoryHelper.EnumerateFiles(path, settings.Pattern, settings.IncludeSubDirectories
+			IEnumerable<string> files = DirectoryHelper.EnumerateFiles(path, Settings.Pattern, Settings.IncludeSubdirectories
 																									? SearchOption.AllDirectories
 																									: SearchOption.TopDirectoryOnly);
-			string exclude = settings.Exclude == null
+			string exclude = Settings.Exclude == null
 								? null
-								: RegexHelper.FromFilePattern(settings.Exclude);
+								: RegexHelper.FromFilePattern(Settings.Exclude);
 			if (exclude != null && RegexHelper.AllAsterisks.IsMatch(exclude)) exclude = null;
 
-			string rootPath = RootPath;
+			string rootPath = Settings.RootPath;
 
 			if (exclude == null)
 			{
@@ -84,14 +75,14 @@ namespace devTools.WiXComponents.Core.Services
 			RaiseEntriesChanged();
 		}
 
-		public void GenerateFromMissing(string path, string fileName, GenerateSettings settings = default(GenerateSettings))
+		public void GenerateFromMissing(string path, string fileName)
 		{
 		}
 
 		public bool Add([NotNull] string fileName)
 		{
 			fileName = Path.GetFullPath(fileName);
-			if (!_entries.Add(Path.GetRelativePath(RootPath, fileName))) return false;
+			if (!_entries.Add(Path.GetRelativePath(Settings.RootPath, fileName))) return false;
 			RaiseEntriesChanged();
 			return true;
 		}
@@ -99,7 +90,7 @@ namespace devTools.WiXComponents.Core.Services
 		public bool Remove(string fileName)
 		{
 			fileName = Path.GetFullPath(fileName);
-			if (!_entries.Remove(Path.GetRelativePath(RootPath, fileName))) return false;
+			if (!_entries.Remove(Path.GetRelativePath(Settings.RootPath, fileName))) return false;
 			RaiseEntriesChanged();
 			return true;
 		}
@@ -115,7 +106,7 @@ namespace devTools.WiXComponents.Core.Services
 						: RegexHelper.FromFilePattern(exclude);
 			if (exclude != null && RegexHelper.AllAsterisks.IsMatch(exclude)) exclude = null;
 
-			string rootPath = RootPath;
+			string rootPath = Settings.RootPath;
 			Func<string, bool> _add;
 
 			if (pattern == null && exclude == null)
@@ -156,7 +147,7 @@ namespace devTools.WiXComponents.Core.Services
 		public bool RemoveRange([NotNull] IEnumerable<string> collection)
 		{
 			bool changed = false;
-			string rootPath = RootPath;
+			string rootPath = Settings.RootPath;
 
 			foreach (string item in collection)
 				changed |= _entries.Remove(Path.GetRelativePath(rootPath, item));

@@ -5,9 +5,9 @@ namespace devTools.WiXComponents.Views
 	/// <summary>
 	/// Interaction logic for Home.xaml
 	/// </summary>
-	public partial class EntriesFromMissingView : UserControl
+	public partial class EntriesView : UserControl
 	{
-		public EntriesFromMissingView()
+		public EntriesView()
 		{
 			InitializeComponent();
 		}

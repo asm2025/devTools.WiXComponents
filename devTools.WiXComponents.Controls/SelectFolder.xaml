@@ -10,7 +10,7 @@
 			<ColumnDefinition Width="*" />
 			<ColumnDefinition Width="Auto" />
 		</Grid.ColumnDefinitions>
-		<TextBox Text="{Binding Path}" Height="Auto" Margin="0" Padding="0" HorizontalAlignment="Stretch" VerticalAlignment="Center" />
-		<Button Grid.Column="1" Width="Auto" Height="Auto" Margin="0" Padding="0" Content="..." VerticalAlignment="Center" Click="OnBrowseClick"></Button>
+		<TextBox Text="{Binding Path=SelectedPath, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=UserControl}}" HorizontalAlignment="Stretch" />
+		<Button Grid.Column="1" Content="..." Click="OnBrowseClick"></Button>
 	</Grid>
 </UserControl>

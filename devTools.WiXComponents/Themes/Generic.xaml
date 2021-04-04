@@ -130,7 +130,7 @@
 	<Style x:Key="WindowBorder" TargetType="Border">
 		<Setter Property="BorderThickness" Value="1"></Setter>
 		<Setter Property="CornerRadius" Value="8"></Setter>
-		<Setter Property="Background" Value="{DynamicResource {x:Static SystemColors.WindowBrushKey}}"></Setter>
+		<Setter Property="Background" Value="{DynamicResource {x:Static SystemColors.ControlBrushKey}}"></Setter>
 		<Setter Property="BorderBrush" Value="{DynamicResource {x:Static SystemColors.InactiveBorderBrushKey}}"></Setter>
 		<Style.Triggers>
 			<DataTrigger Binding="{Binding IsActive, RelativeSource={RelativeSource AncestorType=Window}}" Value="True">

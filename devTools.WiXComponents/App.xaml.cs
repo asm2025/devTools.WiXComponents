@@ -5,7 +5,6 @@ using System.ComponentModel.DataAnnotations;
 using System.IO;
 using System.Linq;
 using System.Reflection;
-using System.Threading;
 using System.Windows;
 using System.Xml;
 using CommandLine;
@@ -34,19 +33,19 @@ namespace devTools.WiXComponents
 	/// </summary>
 	public partial class App : Application
 	{
-		private static readonly Lazy<IReadOnlySet<string>> __supportedProjects = new Lazy<IReadOnlySet<string>>(() => new HashSet<string>(StringComparer.OrdinalIgnoreCase)
+		private static readonly IReadOnlySet<string> __supportedProjects = new HashSet<string>(StringComparer.OrdinalIgnoreCase)
 		{
 			".WiXProj",
 			".CSProj",
 			".VBProj",
-		}, LazyThreadSafetyMode.PublicationOnly);
+		};
 
-		private static readonly Lazy<IReadOnlySet<string>> __supportedFiles = new Lazy<IReadOnlySet<string>>(() => new HashSet<string>(StringComparer.OrdinalIgnoreCase)
+		private static readonly IReadOnlySet<string> __supportedFiles = new HashSet<string>(StringComparer.OrdinalIgnoreCase)
 		{
 			".wxs",
 			".wsi",
 			".xml",
-		}, LazyThreadSafetyMode.PublicationOnly);
+		};
 
 		/// <inheritdoc />
 		public App()
@@ -199,12 +198,12 @@ namespace devTools.WiXComponents
 				builder.AddEventSourceLogger();
 				builder.AddSerilog(null, true);
 			});
-			services.AddSingleton<EntriesGeneratorService>();
-			services.AddSingleton<ComponentsGeneratorService>();
+			services.AddSingleton<GeneratorService>();
+			services.AddSingleton<ComponentsService>();
 
-			Assembly asm = typeof(ViewModelCommandBase).Assembly;
+			Assembly asm = typeof(CommandViewModelBase).Assembly;
 			Type[] viewModelTypes = asm.GetTypes()
-										.Where(type => !type.IsAbstract && typeof(ViewModelCommandBase).IsAssignableFrom(type))
+										.Where(type => !type.IsAbstract && typeof(CommandViewModelBase).IsAssignableFrom(type))
 										.OrderBy(type => type.GetCustomAttribute<DisplayAttribute>()?.Order ?? short.MaxValue)
 										.ToArray();
 
@@ -215,11 +214,11 @@ namespace devTools.WiXComponents
 			{
 				ILogger<MainViewModel> lg = (ILogger<MainViewModel>)svc.GetService(typeof(ILogger<MainViewModel>));
 				MainViewModel vm = new MainViewModel(lg);
-				ObservableCollection<ViewModelCommandBase> viewModels = vm.ViewModels;
+				ObservableCollection<CommandViewModelBase> viewModels = vm.ViewModels;
 
 				foreach (Type type in viewModelTypes)
 				{
-					ViewModelCommandBase vmc = (ViewModelCommandBase)ServiceProvider.GetRequiredService(type);
+					CommandViewModelBase vmc = (CommandViewModelBase)ServiceProvider.GetRequiredService(type);
 					viewModels.Add(vmc);
 				}
 
@@ -267,8 +266,8 @@ namespace devTools.WiXComponents
 			{
 				string ext = PathHelper.Extension(fileName);
 				if (ext == null) continue;
-				if (__supportedProjects.Value.Contains(ext)) ProcessProjectFile(fileName);
-				if (__supportedFiles.Value.Contains(ext)) ProcessWiXFile(fileName);
+				if (__supportedProjects.Contains(ext)) ProcessProjectFile(fileName);
+				if (__supportedFiles.Contains(ext)) ProcessWiXFile(fileName);
 			}
 		}
 
@@ -346,7 +345,7 @@ namespace devTools.WiXComponents
 
 					string ext = PathHelper.Extension(itemName);
 						
-					if (ext == null || !__supportedFiles.Value.Contains(ext))
+					if (ext == null || !__supportedFiles.Contains(ext))
 					{
 						logger.LogInformation($"Skipping '{itemName}'.");
 						continue;
