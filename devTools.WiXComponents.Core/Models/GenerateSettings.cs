@@ -40,14 +40,15 @@ namespace devTools.WiXComponents.Core.Models
 			Append = append;
 		}
 
-		[NotNull]
 		public string RootPath
 		{
 			get => _rootPath;
 			set
 			{
 				if (_rootPath == value) return;
-				string path = Path.GetFullPath(value.ToNullIfEmpty() ?? ".\\").Suffix(Path.DirectorySeparatorChar);
+				// Don't use PathHelper.Trim because it's a directory path. So .\ or ..\ can work here
+				string path = value.ToNullIfEmpty();
+				if (path != null) path = Path.GetFullPath(path).Suffix(Path.DirectorySeparatorChar);
 				if (_rootPath == path) return;
 				_rootPath = path;
 				OnPropertyChanged();

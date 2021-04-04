@@ -57,17 +57,36 @@ namespace devTools.WiXComponents.Core.Services
 
 			if (exclude == null)
 			{
-				foreach (string file in files) 
-					changed |= _entries.Add(Path.GetRelativePath(rootPath, file));
+				if (rootPath == null)
+				{
+					foreach (string file in files) 
+						changed |= _entries.Add(file);
+				}
+				else
+				{
+					foreach (string file in files) 
+						changed |= _entries.Add(Path.GetRelativePath(rootPath, file));
+				}
 			}
 			else
 			{
 				Regex rgxExclude = new Regex(exclude, RegexHelper.OPTIONS_I);
 
-				foreach (string file in files)
+				if (rootPath == null)
 				{
-					if (rgxExclude.IsMatch(Path.GetFileName(file))) continue;
-					changed |= _entries.Add(Path.GetRelativePath(rootPath, file));
+					foreach (string file in files)
+					{
+						if (rgxExclude.IsMatch(Path.GetFileName(file))) continue;
+						changed |= _entries.Add(file);
+					}
+				}
+				else
+				{
+					foreach (string file in files)
+					{
+						if (rgxExclude.IsMatch(Path.GetFileName(file))) continue;
+						changed |= _entries.Add(Path.GetRelativePath(rootPath, file));
+					}
 				}
 			}
 
