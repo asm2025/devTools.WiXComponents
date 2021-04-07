@@ -3,7 +3,8 @@
 	xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" 
 	xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
 	xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-	xmlns:controls="clr-namespace:devTools.WiXComponents.Controls;assembly=WiXComp.Controls" 
+	xmlns:controls="clr-namespace:devTools.WiXComponents.Controls;assembly=WiXComp.Controls"
+	xmlns:essentialMix="clr-namespace:essentialMix.Core.WPF.Controls;assembly=essentialMix.Core.WPF"
 	mc:Ignorable="d" 
 	d:DesignWidth="800" d:DesignHeight="500" 
 	d:DataContext="{d:DesignData GenerateViewModel}">
@@ -13,16 +14,16 @@
 			<RowDefinition Height="*" />
 		</Grid.RowDefinitions>
 		<ItemsControl Grid.IsSharedSizeScope="True">
-			<controls:FormControlItem Label="Root path:">
+			<essentialMix:FormControlItem Label="Root path:">
 				<controls:SelectFolder SelectedPath="{Binding Path=Settings.RootPath}" />
-			</controls:FormControlItem>
-			<controls:FormControlItem Label="Target path:">
+			</essentialMix:FormControlItem>
+			<essentialMix:FormControlItem Label="Target path:">
 				<controls:SelectFolder SelectedPath="{Binding Path=TargetPath}" />
-			</controls:FormControlItem>
-			<controls:FormControlItem Label="Target file:">
+			</essentialMix:FormControlItem>
+			<essentialMix:FormControlItem Label="Target file:">
 				<controls:OpenFile FileName="{Binding Path=TargetFile}" 
 									Filter="Supported Files|*.wxs;*.wsi;*.xml|WiX Files|*.wxs;*.wsi|XML Files|*.xml|All Files|*.*" />
-			</controls:FormControlItem>
+			</essentialMix:FormControlItem>
 			<Grid>
 				<Grid.ColumnDefinitions>
 					<ColumnDefinition Width="*" />
@@ -33,12 +34,12 @@
 					<RowDefinition Height="Auto" />
 				</Grid.RowDefinitions>
 				<StackPanel>
-					<controls:FormControlItem Label="Pattern:">
+					<essentialMix:FormControlItem Label="Pattern:">
 						<TextBox Text="{Binding Path=Settings.Pattern}"></TextBox>
-					</controls:FormControlItem>
-					<controls:FormControlItem Label="Exclude:">
+					</essentialMix:FormControlItem>
+					<essentialMix:FormControlItem Label="Exclude:">
 						<TextBox Text="{Binding Path=Settings.Exclude}"></TextBox>
-					</controls:FormControlItem>
+					</essentialMix:FormControlItem>
 				</StackPanel>
 				<StackPanel Grid.Row="0" Grid.Column="1" Margin="4 0">
 					<CheckBox IsChecked="{Binding Path=Settings.IncludeSubdirectories}">Include subdirectories</CheckBox>

@@ -2,9 +2,9 @@
 using System.ComponentModel.DataAnnotations;
 using System.IO;
 using System.Windows.Input;
-using devTools.WiXComponents.Core.Commands;
 using devTools.WiXComponents.Core.Models;
 using devTools.WiXComponents.Core.Services;
+using essentialMix.Core.WPF.Commands;
 using essentialMix.Extensions;
 using essentialMix.Helpers;
 using JetBrains.Annotations;

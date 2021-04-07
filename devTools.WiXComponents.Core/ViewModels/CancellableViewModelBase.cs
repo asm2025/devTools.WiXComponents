@@ -3,7 +3,7 @@ using System.Diagnostics;
 using System.Threading;
 using System.Windows.Input;
 using System.Windows.Shell;
-using devTools.WiXComponents.Core.Commands;
+using essentialMix.Core.WPF.Commands;
 using essentialMix.Extensions;
 using essentialMix.Helpers;
 using JetBrains.Annotations;

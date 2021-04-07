@@ -14,6 +14,7 @@ using devTools.WiXComponents.Properties;
 using essentialMix.Data.Helpers;
 using essentialMix.Extensions;
 using essentialMix.Helpers;
+using essentialMix.Logging;
 using essentialMix.Newtonsoft.Helpers;
 using JetBrains.Annotations;
 using Microsoft.Extensions.Configuration;
@@ -59,13 +60,13 @@ namespace devTools.WiXComponents
 				builder.ClearProviders();
 				builder.AddSerilog(serilogLogger, true);
 			});
-			Logger = new Core.Logger<App>(factory.CreateLogger(nameof(App)));
+			Logger = new CombinedLogger<App>(factory.CreateLogger(nameof(App)));
 		}
 
 		public IServiceProvider ServiceProvider { get; private set; }
 
 		[NotNull]
-		public Core.Logger<App> Logger { get; }
+		public CombinedLogger<App> Logger { get; }
 
 		/// <inheritdoc />
 		protected override void OnStartup(StartupEventArgs e)
