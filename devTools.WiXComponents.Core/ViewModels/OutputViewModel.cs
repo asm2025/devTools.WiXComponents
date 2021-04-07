@@ -21,7 +21,7 @@ namespace devTools.WiXComponents.Core.ViewModels
 		}
 
 		[NotNull]
-		public IReadOnlyDictionary<string, IDictionary<string, ComponentInfo>> Entries => _service.Entries;
+		public IReadOnlyDictionary<string, IDictionary<string, WiXComponent>> Entries => _service.Entries;
 
 		/// <inheritdoc />
 		public override bool CanView() => Entries.Count > 0;

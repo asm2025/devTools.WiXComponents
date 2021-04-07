@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.IO;
 using devTools.WiXComponents.Core.Models;
+using essentialMix.Collections;
 using essentialMix.Extensions;
 using essentialMix.Patterns.NotifyChange;
 using JetBrains.Annotations;
@@ -22,19 +23,17 @@ namespace devTools.WiXComponents.Core.Services
 		private const string ADD_FILE = "<File Id=\"{0}{1}\" Name=\"{2}\" Source=\"$(var.SourcePath){2}\" />";
 
 		[NotNull]
-		private readonly IDictionary<string, IDictionary<string, ComponentInfo>> _entries;
+		private readonly IDictionary<string, KeyedDictionary<string, WiXComponent>> _entries;
 
 		[NotNull]
 		private string _rootPath;
 
 		public ComponentsService() 
 		{
-			_rootPath = Directory.GetCurrentDirectory();
-			_entries = new Dictionary<string, IDictionary<string, ComponentInfo>>(StringComparer.OrdinalIgnoreCase);
-			Entries = new ReadOnlyDictionary<string, IDictionary<string, ComponentInfo>>(_entries);
+			_entries = new Dictionary<string, KeyedDictionary<string, WiXComponent>>(StringComparer.OrdinalIgnoreCase);
+			Entries = new ReadOnlyDictionary<string, KeyedDictionary<string, WiXComponent>>(_entries);
 		}
 
-		[NotNull]
 		public string RootPath
 		{
 			get => _rootPath;
@@ -48,6 +47,6 @@ namespace devTools.WiXComponents.Core.Services
 		}
 
 		[NotNull]
-		public IReadOnlyDictionary<string, IDictionary<string, ComponentInfo>> Entries { get; }
+		public IReadOnlyDictionary<string, KeyedDictionary<string, WiXComponent>> Entries { get; }
 	}
 }

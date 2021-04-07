@@ -52,5 +52,6 @@
 				</StackPanel>
 			</Grid>
 		</ItemsControl>
+		<ListBox Grid.Row="1"></ListBox>
 	</Grid>
 </UserControl>
