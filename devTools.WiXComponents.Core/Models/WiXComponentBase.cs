@@ -29,9 +29,15 @@ namespace devTools.WiXComponents.Core.Models
 
 		public abstract void WriteEndTag([NotNull] TextWriter writer);
 
-		protected void WriteIfNotEmpty([NotNull] TextWriter writer, string key, string value)
+		protected void WriteIf([NotNull] TextWriter writer, string key, string value)
 		{
 			if (string.IsNullOrEmpty(key) || string.IsNullOrEmpty(value)) return;
+			writer.Write($" {key}={value}" + value);
+		}
+
+		protected void WriteIf<T>([NotNull] TextWriter writer, string key, T value)
+		{
+			if (string.IsNullOrEmpty(key) || value is null) return;
 			writer.Write($" {key}={value}" + value);
 		}
 	}

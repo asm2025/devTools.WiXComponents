@@ -1,6 +1,7 @@
 ﻿using System;
 using System.IO;
 using essentialMix.Extensions;
+using essentialMix.Helpers;
 using essentialMix.Patterns.NotifyChange;
 using JetBrains.Annotations;
 
@@ -33,9 +34,8 @@ namespace devTools.WiXComponents.Core.Models
 
 		public GenerateSettings(string pattern, bool includeSubDirectories, bool append)
 		{
-			RootPath = string.Empty;
+			_exclude = EXCLUDE_DEF;
 			Pattern = pattern;
-			Exclude = EXCLUDE_DEF;
 			IncludeSubdirectories = includeSubDirectories;
 			Append = append;
 		}
@@ -46,8 +46,7 @@ namespace devTools.WiXComponents.Core.Models
 			set
 			{
 				if (_rootPath == value) return;
-				// Don't use PathHelper.Trim because it's a directory path. So .\ or ..\ can work here
-				string path = value.ToNullIfEmpty();
+				string path = PathHelper.Trim(value);
 				if (path != null) path = Path.GetFullPath(path).Suffix(Path.DirectorySeparatorChar);
 				if (_rootPath == path) return;
 				_rootPath = path;

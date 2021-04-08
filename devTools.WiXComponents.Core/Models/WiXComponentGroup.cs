@@ -1,9 +1,14 @@
-﻿using System.IO;
+﻿using System;
+using System.IO;
+using essentialMix.Collections;
+using JetBrains.Annotations;
 
 namespace devTools.WiXComponents.Core.Models
 {
 	public class WiXComponentGroup : WiXComponentBase
 	{
+		private KeyedDictionary<string, WiXComponentBase> _components;
+
 		/// <inheritdoc />
 		public WiXComponentGroup() 
 		{
@@ -15,21 +20,28 @@ namespace devTools.WiXComponents.Core.Models
 		public string Directory { get; set; }
 		public string Source { get; set; }
 
+		public bool HasComponents => _components != null && _components.Count > 0;
+
+		[NotNull]
+		public KeyedDictionary<string, WiXComponentBase> Components => _components ??= new KeyedDictionary<string, WiXComponentBase>(e => e.Id, StringComparer.OrdinalIgnoreCase);
+
 		/// <inheritdoc />
 		public override void WriteStartTag(TextWriter writer)
 		{
 			writer.Write("<" + Tag);
-			WriteIfNotEmpty(writer, nameof(Id), Id);
-			WriteIfNotEmpty(writer, nameof(Directory), Directory);
-			WriteIfNotEmpty(writer, nameof(Source), Source);
+			WriteIf(writer, nameof(Id), Id);
+			WriteIf(writer, nameof(Directory), Directory);
+			WriteIf(writer, nameof(Source), Source);
 			writer.Write(">");
 		}
 
 		/// <inheritdoc />
 		public override void WriteContent(TextWriter writer)
 		{
-			// todo
-			???
+			if (!HasComponents) return;
+
+			foreach (WiXComponentBase component in _components) 
+				component.Write(writer);
 		}
 
 		/// <inheritdoc />

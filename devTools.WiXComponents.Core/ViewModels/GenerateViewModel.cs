@@ -56,8 +56,7 @@ namespace devTools.WiXComponents.Core.ViewModels
 			set
 			{
 				if (_targetPath == value) return;
-				// Don't use PathHelper.Trim because it's a directory path. So .\ or ..\ can work here
-				string path = value.ToNullIfEmpty();
+				string path = PathHelper.Trim(value);
 				if (path != null) path = Path.GetFullPath(path).Suffix(Path.DirectorySeparatorChar);
 				if (_targetPath == path) return;
 				_targetPath = path;
@@ -71,9 +70,8 @@ namespace devTools.WiXComponents.Core.ViewModels
 			set
 			{
 				if (_targetFile == value) return;
-				// use PathHelper.Trim because it's a file path. So .\ or ..\ won't work here
 				string path = PathHelper.Trim(value);
-				if (path != null) path = Path.GetFullPath(value);
+				if (path != null) path = Path.GetFullPath(path);
 				if (_targetFile == path) return;
 				_targetFile = path;
 				OnPropertyChanged();
