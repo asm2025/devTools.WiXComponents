@@ -6,99 +6,60 @@
 	xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
 	xmlns:viewModels="clr-namespace:devTools.WiXComponents.Core.ViewModels;assembly=WiXComp.Core"
 	mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="600" d:DataContext="{d:DesignData MainViewModel}"
-	Title="{Binding Path=Title}" WindowStyle="None" AllowsTransparency="True" Background="Transparent"
-	Width="800" Height="600" MinWidth="800" MinHeight="600"
+	MinWidth="512" MinHeight="384"
 	MaxWidth="{Binding Source={x:Static SystemParameters.WorkArea}, Path=Width}"
-	MaxHeight="{Binding Source={x:Static SystemParameters.WorkArea}, Path=Height}">
-	<WindowChrome.WindowChrome>
-		<WindowChrome CaptionHeight="32" CornerRadius="8" GlassFrameThickness="0" NonClientFrameEdges="None" 
-					UseAeroCaptionButtons="False" ResizeBorderThickness="{x:Static SystemParameters.WindowResizeBorderThickness}" />
-	</WindowChrome.WindowChrome>
+	MaxHeight="{Binding Source={x:Static SystemParameters.WorkArea}, Path=Height}"
+	Icon="wixtoolset.ico" Title="{Binding Path=Title}" SizeToContent="WidthAndHeight">
 	<Window.TaskbarItemInfo>
 		<TaskbarItemInfo ProgressState="{Binding Path=ProgressState}" ProgressValue="{Binding Path=Progress}"></TaskbarItemInfo>
 	</Window.TaskbarItemInfo>
-	<Border Style="{StaticResource WindowBorder}">
-		<Grid>
-			<Grid.RowDefinitions>
-				<RowDefinition Height="Auto" />
-				<RowDefinition Height="*" />
-			</Grid.RowDefinitions>
-			<Border Style="{StaticResource WindowCaption}">
-				<Grid>
-					<Grid.ColumnDefinitions>
-						<ColumnDefinition Width="Auto" />
-						<ColumnDefinition Width="*" />
-						<ColumnDefinition Width="Auto" />
-						<ColumnDefinition Width="Auto" />
-						<ColumnDefinition Width="Auto" />
-					</Grid.ColumnDefinitions>
-					<Image Source="wixtoolset.ico" Width="22" Height="22" Margin="4" />
-					<TextBlock Grid.Column="1" Text="{Binding Path=Title}" />
-					<Button Grid.Column="2" Name="MinimizeButton" RenderOptions.EdgeMode="Aliased" Click="OnMinimizeClick">
-						<Path Width="46" Height="32" Data="M 18,15 H 28" StrokeThickness="1"
-							Stroke="{Binding Path=Foreground, RelativeSource={RelativeSource AncestorType={x:Type Button}}}" />
-					</Button>
-					<Button Grid.Column="3" Name="MaximizeButton" Click="OnMaximizeRestoreClick">
-						<Path Width="46" Height="32" Data="M 18.5,10.5 H 27.5 V 19.5 H 18.5 Z" StrokeThickness="1"
-							Stroke="{Binding Path=Foreground, RelativeSource={RelativeSource AncestorType={x:Type Button}}}" />
-					</Button>
-					<Button Grid.Column="3" Name="RestoreButton" Visibility="Collapsed" Click="OnMaximizeRestoreClick">
-						<Path Width="46" Height="32" Data="M 18.5,12.5 H 25.5 V 19.5 H 18.5 Z M 20.5,12.5 V 10.5 H 27.5 V 17.5 H 25.5" StrokeThickness="1"
-							Stroke="{Binding Path=Foreground, RelativeSource={RelativeSource AncestorType={x:Type Button}}}" />
-					</Button>
-					<Button Grid.Column="4" Name="CloseButton" Click="OnCloseClick">
-						<Path Width="46" Height="32" Data="M 18,11 27,20 M 18,20 27,11" StrokeThickness="1"
-							Stroke="{Binding Path=Foreground, RelativeSource={RelativeSource AncestorType={x:Type Button}}}" />
-					</Button>
-				</Grid>
-			</Border>
-			<DockPanel Grid.Row="1" LastChildFill="True">
-				<ItemsControl DockPanel.Dock="Top" ItemsSource="{Binding Path=ViewModels}">
-					<ItemsControl.ItemsPanel>
-						<ItemsPanelTemplate>
-							<WrapPanel />
-						</ItemsPanelTemplate>
-					</ItemsControl.ItemsPanel>
-					<ItemsControl.ItemTemplate>
-						<DataTemplate DataType="viewModels:CommandViewModelBase">
-							<Button Content="{Binding Path=DisplayName}"
-									Command="{Binding RelativeSource={RelativeSource AncestorType={x:Type Window}}, Path=DataContext.ChangeView}"
-									CommandParameter="{Binding}"
-									Padding="8" />
-						</DataTemplate>
-					</ItemsControl.ItemTemplate>
-				</ItemsControl>
-				<StatusBar DockPanel.Dock="Bottom">
-					<StatusBar.ItemsPanel>
-						<ItemsPanelTemplate>
-							<Grid>
-								<Grid.RowDefinitions>
-									<RowDefinition Height="*" />
-								</Grid.RowDefinitions>
-								<Grid.ColumnDefinitions>
-									<ColumnDefinition Width="*" />
-									<ColumnDefinition Width="Auto" />
-									<ColumnDefinition Width="2*" />
-									<ColumnDefinition Width="Auto" />
-									<ColumnDefinition Width="100" />
-								</Grid.ColumnDefinitions>
-							</Grid>
-						</ItemsPanelTemplate>
-					</StatusBar.ItemsPanel>
-					<StatusBarItem>
-						<TextBlock Text="{Binding Path=Status}"></TextBlock>
-					</StatusBarItem>
-					<Separator Grid.Column="1"></Separator>
-					<StatusBarItem Grid.Column="2">
-						<TextBlock Text="{Binding Path=Operation}"></TextBlock>
-					</StatusBarItem>
-					<Separator Grid.Column="3"></Separator>
-					<StatusBarItem Grid.Column="4">
-						<ProgressBar Width="90" Height="18" Value="{Binding Path=Progress, Mode=OneWay}"></ProgressBar>
-					</StatusBarItem>
-				</StatusBar>
-				<ContentControl Margin="16" Content="{Binding Path=SelectedViewModel}" />
-			</DockPanel>
-		</Grid>
-	</Border>
+	<Grid>
+		<Grid.RowDefinitions>
+			<RowDefinition Height="Auto" />
+			<RowDefinition />
+			<RowDefinition Height="Auto" />
+		</Grid.RowDefinitions>
+		<ItemsControl ItemsSource="{Binding Path=ViewModels}">
+			<ItemsControl.ItemsPanel>
+				<ItemsPanelTemplate>
+					<WrapPanel />
+				</ItemsPanelTemplate>
+			</ItemsControl.ItemsPanel>
+			<ItemsControl.ItemTemplate>
+				<DataTemplate DataType="viewModels:CommandViewModelBase">
+					<Button Content="{Binding Path=DisplayName}"
+							Command="{Binding RelativeSource={RelativeSource AncestorType={x:Type Window}}, Path=DataContext.ChangeView}"
+							CommandParameter="{Binding}"
+							Padding="8" />
+				</DataTemplate>
+			</ItemsControl.ItemTemplate>
+		</ItemsControl>
+		<ContentControl Grid.Row="1" Margin="16" Content="{Binding Path=SelectedViewModel}" />
+		<StatusBar Grid.Row="2">
+			<StatusBar.ItemsPanel>
+				<ItemsPanelTemplate>
+					<Grid>
+						<Grid.ColumnDefinitions>
+							<ColumnDefinition Width="*" />
+							<ColumnDefinition Width="Auto" />
+							<ColumnDefinition Width="2*" />
+							<ColumnDefinition Width="Auto" />
+							<ColumnDefinition Width="100" />
+						</Grid.ColumnDefinitions>
+					</Grid>
+				</ItemsPanelTemplate>
+			</StatusBar.ItemsPanel>
+			<StatusBarItem>
+				<TextBlock Text="{Binding Path=Status}"></TextBlock>
+			</StatusBarItem>
+			<Separator Grid.Column="1"></Separator>
+			<StatusBarItem Grid.Column="2">
+				<TextBlock Text="{Binding Path=Operation}"></TextBlock>
+			</StatusBarItem>
+			<Separator Grid.Column="3"></Separator>
+			<StatusBarItem Grid.Column="4">
+				<ProgressBar Width="90" Height="18" Value="{Binding Path=Progress, Mode=OneWay}"></ProgressBar>
+			</StatusBarItem>
+		</StatusBar>
+	</Grid>
 </Window>

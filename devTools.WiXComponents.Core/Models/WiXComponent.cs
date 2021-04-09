@@ -1,25 +1,15 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IO;
 using essentialMix.Extensions;
-using JetBrains.Annotations;
 
 namespace devTools.WiXComponents.Core.Models
 {
 	public class WiXComponent : WiXComponentBase
 	{
-		private ISet<string> _files;
 		private int _diskId = 1;
 
 		public WiXComponent()
-			: this(null)
 		{
-		}
-
-		public WiXComponent(string fileName)
-		{
-			FileName = fileName;
-			Id = fileName?.ToUpperInvariant();
 		}
 
 		/// <inheritdoc />
@@ -27,20 +17,13 @@ namespace devTools.WiXComponents.Core.Models
 
 		public string Directory { get; set; }
 
-		public string FileName { get; set; }
-
-		public bool HasFiles => _files != null && _files.Count > 0;
-
-		[NotNull]
-		public ISet<string> Files => _files ??= new HashSet<string>(StringComparer.OrdinalIgnoreCase);
-
 		public int DiskId
 		{
 			get => _diskId;
 			set => _diskId = value.NotBelow(1);
 		}
 
-		public Guid Guid { get; set; }
+		public Guid Guid { get; set; } = Guid.NewGuid();
 
 		public bool KeyPath { get; set; }
 
@@ -60,12 +43,17 @@ namespace devTools.WiXComponents.Core.Models
 
 		public bool Win64 { get; set; }
 
+		public WiXFile File { get; set; }
+
 		/// <inheritdoc />
 		public override void WriteStartTag(TextWriter writer)
 		{
 			writer.Write("<" + Tag);
 			WriteIf(writer, nameof(Id), Id);
 			WriteIf(writer, nameof(Directory), Directory);
+			WriteIf(writer, nameof(DiskId), DiskId);
+			WriteIf(writer, nameof(Guid), Guid);
+			WriteIf(writer, nameof(KeyPath), KeyPath);
 			writer.Write(">");
 		}
 
@@ -79,7 +67,6 @@ namespace devTools.WiXComponents.Core.Models
 		private const string ADD_FILE = "<File Id=\"{0}{1}\" Name=\"{2}\" Source=\"$(var.SourcePath){2}\" />";
 			 */
 			// todo
-			???
 		}
 
 		/// <inheritdoc />

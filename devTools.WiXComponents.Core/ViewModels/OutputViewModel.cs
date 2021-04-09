@@ -1,7 +1,7 @@
-﻿using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 using devTools.WiXComponents.Core.Models;
 using devTools.WiXComponents.Core.Services;
+using essentialMix.Collections;
 using JetBrains.Annotations;
 using Microsoft.Extensions.Logging;
 
@@ -21,7 +21,7 @@ namespace devTools.WiXComponents.Core.ViewModels
 		}
 
 		[NotNull]
-		public IReadOnlyDictionary<string, IDictionary<string, WiXComponent>> Entries => _service.Entries;
+		public KeyedDictionary<string, WiXComponentBase> Entries => _service.Entries;
 
 		/// <inheritdoc />
 		public override bool CanView() => Entries.Count > 0;

@@ -38,18 +38,6 @@ namespace devTools.WiXComponents
 		}
 
 		/// <inheritdoc />
-		protected override void OnStateChanged(EventArgs e)
-		{
-			base.OnStateChanged(e);
-			MaximizeButton.Visibility = WindowState == WindowState.Maximized
-											? Visibility.Collapsed
-											: Visibility.Visible;
-			RestoreButton.Visibility = MaximizeButton.Visibility == Visibility.Visible
-											? Visibility.Collapsed
-											: Visibility.Visible;
-		}
-
-		/// <inheritdoc />
 		protected override void OnClosed(EventArgs e)
 		{
 			base.OnClosed(e);
@@ -68,8 +56,8 @@ namespace devTools.WiXComponents
 			if (msg != NativeMethods.WM_GETMINMAXINFO) return IntPtr.Zero;
 			// We need to tell the system what our size should be when maximized. Otherwise it will cover the whole screen,
 			// including the task bar.
-			NativeMethods.MINMAXINFO mmi = (NativeMethods.MINMAXINFO)Marshal.PtrToStructure(lParam, typeof(NativeMethods.MINMAXINFO));
-
+			NativeMethods.MINMAXINFO mmi = (NativeMethods.MINMAXINFO)Marshal.PtrToStructure(lParam, typeof(NativeMethods.MINMAXINFO))!;
+			
 			// Adjust the maximized size and position to fit the work area of the correct monitor
 			IntPtr monitor = NativeMethods.MonitorFromWindow(hWnd, NativeMethods.MONITOR_DEFAULTTONEAREST);
 
@@ -88,23 +76,6 @@ namespace devTools.WiXComponents
 
 			Marshal.StructureToPtr(mmi, lParam, true);
 			return IntPtr.Zero;
-		}
-
-		private void OnMinimizeClick(object sender, RoutedEventArgs e)
-		{
-			WindowState = WindowState.Minimized;
-		}
-
-		private void OnMaximizeRestoreClick(object sender, RoutedEventArgs e)
-		{
-			WindowState = WindowState == WindowState.Maximized
-							? WindowState.Normal
-							: WindowState.Maximized;
-		}
-
-		private void OnCloseClick(object sender, RoutedEventArgs e)
-		{
-			Close();
 		}
 	}
 }
