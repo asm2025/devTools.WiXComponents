@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Text.RegularExpressions;
 using devTools.WiXComponents.Core.Models;
 using essentialMix.Collections;
@@ -34,50 +35,52 @@ namespace devTools.WiXComponents.Core.Services
 			if (!Directory.Exists(path)) throw new DirectoryNotFoundException();
 			if (!Settings.Append) Entries.Clear();
 
-			IEnumerable<string> files = DirectoryHelper.EnumerateFiles(path, Settings.Pattern, Settings.IncludeSubdirectories
-																									? SearchOption.AllDirectories
-																									: SearchOption.TopDirectoryOnly);
-			string exclude = Settings.Exclude == null
-								? null
-								: RegexHelper.FromFilePattern(Settings.Exclude);
-			if (exclude != null && RegexHelper.AllAsterisks.IsMatch(exclude)) exclude = null;
+			string excludeDirectories = Settings.ExcludeDirectories == null
+											? null
+											: RegexHelper.FromFilePattern(Settings.ExcludeDirectories);
+			if (excludeDirectories != null && RegexHelper.AllAsterisks.IsMatch(excludeDirectories)) excludeDirectories = null;
 
-			string rootPath = Settings.RootPath;
+			string excludeFiles = Settings.ExcludeFiles == null
+									? null
+									: RegexHelper.FromFilePattern(Settings.ExcludeFiles);
+			if (excludeFiles != null && RegexHelper.AllAsterisks.IsMatch(excludeFiles)) excludeFiles = null;
 
-			if (exclude == null)
+			SearchOption option = Settings.IncludeSubdirectories
+									? SearchOption.AllDirectories
+									: SearchOption.TopDirectoryOnly;
+			IEnumerable<string> files;
+
+			if (excludeDirectories != null)
 			{
-				if (rootPath == null)
+				Regex rgxExcludeDir = new Regex(excludeDirectories, RegexHelper.OPTIONS_I);
+				files = DirectoryHelper.EnumerateFiles(path, Settings.Pattern, option, dir =>
 				{
-					foreach (string file in files) 
-						Entries.Add(file);
-				}
-				else
-				{
-					foreach (string file in files) 
-						Entries.Add(Path.GetRelativePath(rootPath, file));
-				}
+					// use Path.GetFileName for directory too.
+					// the weird naming of Path.GetDirectoryName is misleading
+					string d = Path.GetFileName(dir);
+					return !rgxExcludeDir.IsMatch(d!);
+				});
 			}
 			else
 			{
-				Regex rgxExclude = new Regex(exclude, RegexHelper.OPTIONS_I);
-
-				if (rootPath == null)
-				{
-					foreach (string file in files)
-					{
-						if (rgxExclude.IsMatch(Path.GetFileName(file))) continue;
-						Entries.Add(file);
-					}
-				}
-				else
-				{
-					foreach (string file in files)
-					{
-						if (rgxExclude.IsMatch(Path.GetFileName(file))) continue;
-						Entries.Add(Path.GetRelativePath(rootPath, file));
-					}
-				}
+				files = DirectoryHelper.EnumerateFiles(path, Settings.Pattern, option);
 			}
+
+			if (excludeFiles != null)
+			{
+				Regex rgxExcludeFiles = new Regex(excludeFiles, RegexHelper.OPTIONS_I);
+				files = files.Where(file =>
+				{
+					string f = Path.GetFileName(file);
+					return !rgxExcludeFiles.IsMatch(f);
+				});
+			}
+
+			string rootPath = Settings.RootPath;
+			if (rootPath != null) files = files.Select(file => Path.GetRelativePath(rootPath, file));
+
+			foreach (string file in files) 
+				Entries.Add(file);
 		}
 
 		public void GenerateFromMissing(string path, string fileName)
@@ -87,16 +90,16 @@ namespace devTools.WiXComponents.Core.Services
 		public bool Add([NotNull] string fileName)
 		{
 			fileName = Path.GetFullPath(fileName);
-			return Entries.Add(Path.GetRelativePath(Settings.RootPath, fileName));
+			if (Settings.RootPath != null) fileName = Path.GetRelativePath(Settings.RootPath, fileName);
+			return Entries.Add(fileName);
 		}
 
 		public bool Remove(string fileName)
 		{
-			fileName = Path.GetFullPath(fileName);
-			return Entries.Remove(Path.GetRelativePath(Settings.RootPath, fileName));
+			return Entries.Remove(fileName);
 		}
 
-		public bool AddRange([NotNull] IEnumerable<string> collection, string pattern = null, string exclude = null)
+		public void AddRange([NotNull] IEnumerable<string> collection, string pattern = null, string exclude = null)
 		{
 			pattern = string.IsNullOrWhiteSpace(pattern)
 						? null
@@ -107,48 +110,29 @@ namespace devTools.WiXComponents.Core.Services
 						: RegexHelper.FromFilePattern(exclude);
 			if (exclude != null && RegexHelper.AllAsterisks.IsMatch(exclude)) exclude = null;
 
+			if (pattern != null)
+			{
+				Regex rgxPattern = new Regex(pattern, RegexHelper.OPTIONS_I);
+				collection = collection.Where(e => rgxPattern.IsMatch(Path.GetFileName(e)));
+			}
+
+			if (exclude != null)
+			{
+				Regex rgxExclude = new Regex(exclude, RegexHelper.OPTIONS_I);
+				collection = collection.Where(e => !rgxExclude.IsMatch(Path.GetFileName(e)));
+			}
+
 			string rootPath = Settings.RootPath;
-			Func<string, bool> _add;
+			if (rootPath != null) collection = collection.Select(e => Path.GetRelativePath(rootPath, e));
 
-			if (pattern == null && exclude == null)
-			{
-				_add = item => Entries.Add(Path.GetRelativePath(rootPath, item));
-			}
-			else if (exclude == null)
-			{
-				Regex rgxPattern = new Regex(pattern, RegexHelper.OPTIONS_I);
-				_add = item => rgxPattern.IsMatch(Path.GetFileName(item)) && Entries.Add(Path.GetRelativePath(rootPath, item));
-			}
-			else if (pattern == null)
-			{
-				Regex rgxExclude = new Regex(exclude, RegexHelper.OPTIONS_I);
-				_add = item => !rgxExclude.IsMatch(Path.GetFileName(item)) && Entries.Add(Path.GetRelativePath(rootPath, item));
-			}
-			else
-			{
-				Regex rgxPattern = new Regex(pattern, RegexHelper.OPTIONS_I);
-				Regex rgxExclude = new Regex(exclude, RegexHelper.OPTIONS_I);
-				_add = item =>
-				{
-					string fileName = Path.GetFileName(item);
-					return rgxPattern.IsMatch(fileName) && !rgxExclude.IsMatch(fileName) && Entries.Add(Path.GetRelativePath(rootPath, item));
-				};
-			}
-
-			foreach (string item in collection)
-				_add(item);
-
-			return true;
+			foreach (string item in collection) 
+				Entries.Add(item);
 		}
 
-		public bool RemoveRange([NotNull] IEnumerable<string> collection)
+		public void RemoveRange([NotNull] IEnumerable<string> collection)
 		{
-			string rootPath = Settings.RootPath;
-
 			foreach (string item in collection)
-				Entries.Remove(Path.GetRelativePath(rootPath, item));
-
-			return true;
+				Entries.Remove(item);
 		}
 
 		public void Clear()

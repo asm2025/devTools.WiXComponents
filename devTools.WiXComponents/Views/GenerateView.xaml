@@ -12,6 +12,7 @@
 		<Grid.RowDefinitions>
 			<RowDefinition Height="Auto" />
 			<RowDefinition Height="*" />
+			<RowDefinition Height="Auto" />
 		</Grid.RowDefinitions>
 		<ItemsControl Grid.IsSharedSizeScope="True">
 			<essentialMix:FormControlItem Label="Root path:">
@@ -37,8 +38,11 @@
 					<essentialMix:FormControlItem Label="Pattern:">
 						<TextBox Text="{Binding Path=Settings.Pattern}"></TextBox>
 					</essentialMix:FormControlItem>
-					<essentialMix:FormControlItem Label="Exclude:">
-						<TextBox Text="{Binding Path=Settings.Exclude}"></TextBox>
+					<essentialMix:FormControlItem Label="Exclude Directories:">
+						<TextBox Text="{Binding Path=Settings.ExcludeDirectories}"></TextBox>
+					</essentialMix:FormControlItem>
+					<essentialMix:FormControlItem Label="Exclude Files:">
+						<TextBox Text="{Binding Path=Settings.ExcludeFiles}"></TextBox>
 					</essentialMix:FormControlItem>
 				</StackPanel>
 				<StackPanel Grid.Row="0" Grid.Column="1" Margin="4 0">
@@ -52,6 +56,13 @@
 				</StackPanel>
 			</Grid>
 		</ItemsControl>
-		<ListBox Grid.Row="1" ItemsSource="{Binding Path=Entries}" />
+		<ListBox Name="lbEntries" Grid.Row="1" ItemsSource="{Binding Path=Entries}" SelectionMode="Extended" />
+		<StackPanel Grid.Row="2" Orientation="Horizontal" HorizontalAlignment="Right">
+			<Button Content="*" Click="OnSelectAllClick" />
+			<Button Content="-" Click="OnSelectNoneClick" />
+			<Button Content="¿" Click="OnSelectInvertClick" />
+			<Button Content="x" Command="{Binding Path=ClearSelected}" CommandParameter="{Binding Path=SelectedItems, ElementName=lbEntries}" />
+			<Button Content="Ø" Command="{Binding Path=ClearEntries}" />
+		</StackPanel>
 	</Grid>
 </UserControl>

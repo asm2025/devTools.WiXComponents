@@ -1,4 +1,5 @@
-﻿using System.ComponentModel;
+﻿using System.Collections;
+using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.IO;
 using System.Windows.Input;
@@ -29,12 +30,23 @@ namespace devTools.WiXComponents.Core.ViewModels
 		{
 			_service = service;
 			_service.PropertyChanged += OnServiceChanged;
+			
 			UseHeatCommand = new RelayCommand(GenerateUsingHeat, () => !IsBusy && HeatPath != null && TargetPath != null)
 				.ListenOn(this, nameof(HeatPath), nameof(TargetPath));
 			FromDirectoryCommand = new RelayCommand(GenerateFromDirectory, () => !IsBusy && TargetPath != null)
 				.ListenOn(this, nameof(TargetPath));
 			FromMissingCommand = new RelayCommand(GenerateFromMissing, () => !IsBusy && TargetPath != null && TargetFile != null)
 				.ListenOn(this, nameof(TargetPath), nameof(TargetFile));
+			ClearSelected = new RelayCommand<IList>(list =>
+			{
+				for (int i = list.Count - 1; i >= 0; i--)
+				{
+					string item = (string)list[i];
+					// todo error in ObservableHashSet: Collection must specify item position
+					Entries.Remove(item);
+				}
+			}, list => list != null && list.Count > 0);
+			ClearEntries = new RelayCommand(Entries.Clear, () => Entries.Count > 0);
 		}
 
 		public string HeatPath
@@ -87,6 +99,8 @@ namespace devTools.WiXComponents.Core.ViewModels
 		public ICommand UseHeatCommand { get; }
 		public ICommand FromDirectoryCommand { get; }
 		public ICommand FromMissingCommand { get; }
+		public ICommand ClearSelected { get; }
+		public ICommand ClearEntries { get; }
 
 		public void GenerateUsingHeat()
 		{

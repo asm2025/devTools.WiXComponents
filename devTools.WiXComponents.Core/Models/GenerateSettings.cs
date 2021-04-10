@@ -9,11 +9,13 @@ namespace devTools.WiXComponents.Core.Models
 {
 	public sealed class GenerateSettings : NotifyPropertyChangedBase, ICloneable
 	{
-		private const string EXCLUDE_DEF = "JetBrains.Annotations.*|*.pdb";
+		private const string EXCLUDE_DIR_DEF = "obj|bin|debug|release";
+		private const string EXCLUDE_FILE_DEF = "JetBrains.Annotations.*|*.pdb|*.user";
 
 		private string _rootPath;
 		private string _pattern;
-		private string _exclude;
+		private string _excludeDirectories;
+		private string _excludeFiles;
 		private bool _includeSubdirectories;
 		private bool _append;
 
@@ -34,7 +36,8 @@ namespace devTools.WiXComponents.Core.Models
 
 		public GenerateSettings(string pattern, bool includeSubDirectories, bool append)
 		{
-			_exclude = EXCLUDE_DEF;
+			_excludeDirectories = EXCLUDE_DIR_DEF;
+			_excludeFiles = EXCLUDE_FILE_DEF;
 			Pattern = pattern;
 			IncludeSubdirectories = includeSubDirectories;
 			Append = append;
@@ -65,13 +68,24 @@ namespace devTools.WiXComponents.Core.Models
 			}
 		}
 
-		public string Exclude
+		public string ExcludeDirectories
 		{
-			get => _exclude;
+			get => _excludeDirectories;
 			set
 			{
-				if (_exclude == value) return;
-				_exclude = value.ToNullIfEmpty();
+				if (_excludeDirectories == value) return;
+				_excludeDirectories = value.ToNullIfEmpty();
+				OnPropertyChanged();
+			}
+		}
+
+		public string ExcludeFiles
+		{
+			get => _excludeFiles;
+			set
+			{
+				if (_excludeFiles == value) return;
+				_excludeFiles = value.ToNullIfEmpty();
 				OnPropertyChanged();
 			}
 		}
@@ -106,7 +120,7 @@ namespace devTools.WiXComponents.Core.Models
 			return new GenerateSettings(Pattern, IncludeSubdirectories, Append)
 			{
 				RootPath = RootPath,
-				Exclude = Exclude
+				ExcludeFiles = ExcludeFiles
 			};
 		}
 	}
