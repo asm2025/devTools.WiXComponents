@@ -6,7 +6,7 @@
 	xmlns:controls="clr-namespace:devTools.WiXComponents.Controls;assembly=WiXComp.Controls"
 	xmlns:essentialMix="clr-namespace:essentialMix.Core.WPF.Controls;assembly=essentialMix.Core.WPF"
 	mc:Ignorable="d" 
-	d:DesignWidth="800" d:DesignHeight="500" 
+	d:DesignWidth="800" d:DesignHeight="600" 
 	d:DataContext="{d:DesignData GenerateViewModel}">
 	<Grid>
 		<Grid.RowDefinitions>
@@ -52,6 +52,6 @@
 				</StackPanel>
 			</Grid>
 		</ItemsControl>
-		<ListBox Grid.Row="1"></ListBox>
+		<ListBox Grid.Row="1" ItemsSource="{Binding Path=Entries}" />
 	</Grid>
 </UserControl>

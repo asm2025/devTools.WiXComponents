@@ -4,6 +4,7 @@ using System.IO;
 using System.Windows.Input;
 using devTools.WiXComponents.Core.Models;
 using devTools.WiXComponents.Core.Services;
+using essentialMix.Collections;
 using essentialMix.Core.WPF.Commands;
 using essentialMix.Extensions;
 using essentialMix.Helpers;
@@ -81,7 +82,7 @@ namespace devTools.WiXComponents.Core.ViewModels
 		public GenerateSettings Settings => _service.Settings;
 
 		[NotNull]
-		public essentialMix.Collections.IReadOnlySet<string> Entries => _service.Entries;
+		public ObservableHashSet<string> Entries => _service.Entries;
 
 		public ICommand UseHeatCommand { get; }
 		public ICommand FromDirectoryCommand { get; }

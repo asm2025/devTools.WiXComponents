@@ -9,7 +9,7 @@
 	MinWidth="512" MinHeight="384"
 	MaxWidth="{Binding Source={x:Static SystemParameters.WorkArea}, Path=Width}"
 	MaxHeight="{Binding Source={x:Static SystemParameters.WorkArea}, Path=Height}"
-	Icon="wixtoolset.ico" Title="{Binding Path=Title}" SizeToContent="WidthAndHeight">
+	Icon="wixtoolset.ico" Title="{Binding Path=Title}">
 	<Window.TaskbarItemInfo>
 		<TaskbarItemInfo ProgressState="{Binding Path=ProgressState}" ProgressValue="{Binding Path=Progress}"></TaskbarItemInfo>
 	</Window.TaskbarItemInfo>
