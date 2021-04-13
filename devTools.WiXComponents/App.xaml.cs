@@ -222,8 +222,6 @@ namespace devTools.WiXComponents
 					CommandViewModelBase vmc = (CommandViewModelBase)ServiceProvider.GetRequiredService(type);
 					viewModels.Add(vmc);
 				}
-
-				if (viewModels.Count > 0) vm.ChangeView.Execute(viewModels[0]);
 				return vm;
 			});
 

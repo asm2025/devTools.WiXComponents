@@ -34,7 +34,15 @@
 				</DataTemplate>
 			</ItemsControl.ItemTemplate>
 		</ItemsControl>
-		<ContentControl Grid.Row="1" Margin="16" Content="{Binding Path=SelectedViewModel}" />
+		<ContentControl Grid.Row="1" Margin="16">
+			<ContentControl.Content>
+				<Binding Path="SelectedViewModel">
+					<Binding.TargetNullValue>
+						<TextBlock Text="Select a generator view from the menu." HorizontalAlignment="Center" VerticalAlignment="Center" />
+					</Binding.TargetNullValue>
+				</Binding>
+			</ContentControl.Content>
+		</ContentControl>
 		<StatusBar Grid.Row="2">
 			<StatusBar.ItemsPanel>
 				<ItemsPanelTemplate>
