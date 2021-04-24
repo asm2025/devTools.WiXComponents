@@ -33,10 +33,10 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<PackageReference Include="essentialMix" Version="12.28.2" />
-		<PackageReference Include="essentialMix.Collections" Version="12.28.2" />
-		<PackageReference Include="essentialMix.Core.WPF" Version="12.28.2" />
-		<PackageReference Include="essentialMix.Data" Version="12.28.2" />
+		<PackageReference Include="essentialMix" Version="12.28.3" />
+		<PackageReference Include="essentialMix.Collections" Version="12.28.3" />
+		<PackageReference Include="essentialMix.Core.WPF" Version="12.28.3" />
+		<PackageReference Include="essentialMix.Data" Version="12.28.3" />
 		<PackageReference Include="essentialMix.Threading" Version="12.28.2" />
 		<PackageReference Include="JetBrains.Annotations" Version="2021.1.0" />
 		<PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="5.0.0" />
