@@ -81,14 +81,14 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<PackageReference Include="essentialMix" Version="12.28.3" />
-		<PackageReference Include="essentialMix.Collections" Version="12.28.3" />
-		<PackageReference Include="essentialMix.Core.WPF" Version="12.28.3" />
-		<PackageReference Include="essentialMix.Data" Version="12.28.3" />
-		<PackageReference Include="essentialMix.Extensions.Configuration" Version="12.28.3" />
-		<PackageReference Include="essentialMix.Json.Abstraction" Version="12.28.3" />
-		<PackageReference Include="essentialMix.Logging" Version="12.28.3" />
-		<PackageReference Include="essentialMix.Newtonsoft" Version="12.28.2" />
+		<PackageReference Include="essentialMix" Version="12.29.0" />
+		<PackageReference Include="essentialMix.Collections" Version="12.29.0" />
+		<PackageReference Include="essentialMix.Core.WPF" Version="12.29.0" />
+		<PackageReference Include="essentialMix.Data" Version="12.29.0" />
+		<PackageReference Include="essentialMix.Extensions.Configuration" Version="12.29.0" />
+		<PackageReference Include="essentialMix.Json.Abstraction" Version="12.29.0" />
+		<PackageReference Include="essentialMix.Logging" Version="12.29.0" />
+		<PackageReference Include="essentialMix.Newtonsoft" Version="12.29.0" />
 		<PackageReference Include="JetBrains.Annotations" Version="2021.1.0" />
 		<PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="5.0.1" />
 		<PackageReference Include="Microsoft.Extensions.Logging" Version="5.0.0" />
