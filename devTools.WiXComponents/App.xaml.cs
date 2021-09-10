@@ -70,6 +70,7 @@ namespace devTools.WiXComponents
 				builder.AddSerilog(serilogLogger, true);
 			});
 			Logger = new CombinedLogger<App>(factory.CreateLogger(nameof(App)));
+			if (_paletteHelper.Value.GetThemeManager() is { } themeManager) themeManager.ThemeChanged += (_, e) => _darkTheme = e.NewTheme.GetBaseTheme() == BaseTheme.Dark;
 		}
 
 		public IServiceProvider ServiceProvider { get; private set; }
@@ -82,10 +83,7 @@ namespace devTools.WiXComponents
 				if (_darkTheme == value) return;
 				_darkTheme = value;
 				ITheme theme = _paletteHelper.Value.GetTheme();
-				IBaseTheme baseTheme = value
-											? new MaterialDesignDarkTheme()
-											: new MaterialDesignLightTheme();
-				theme.SetBaseTheme(baseTheme);
+				theme.SetBaseTheme(value ? Theme.Dark : Theme.Light);
 				_paletteHelper.Value.SetTheme(theme);
 			}
 		}
@@ -201,9 +199,10 @@ namespace devTools.WiXComponents
 				{
 					new BundledTheme
 					{
-						BaseTheme = BaseTheme.Light,
+						BaseTheme = BaseTheme.Inherit,
 						PrimaryColor = PrimaryColor.Blue,
-						SecondaryColor = SecondaryColor.LightBlue
+						SecondaryColor = SecondaryColor.LightBlue,
+						ColorAdjustment = new ColorAdjustment()
 					},
 					new ResourceDictionary
 					{
@@ -211,7 +210,7 @@ namespace devTools.WiXComponents
 					},
 					new ResourceDictionary
 					{
-						Source = new Uri("pack://application:,,,/Themes/Colors.xaml", UriKind.Absolute)
+						Source = new Uri("pack://application:,,,/Themes/MDColors.xaml", UriKind.Absolute)
 					}
 				}
 			};
