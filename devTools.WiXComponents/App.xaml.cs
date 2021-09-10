@@ -5,8 +5,10 @@ using System.ComponentModel.DataAnnotations;
 using System.IO;
 using System.Linq;
 using System.Reflection;
+using System.Threading;
 using System.Windows;
 using System.Xml;
+using asm.Helpers;
 using CommandLine;
 using devTools.WiXComponents.Core.Services;
 using devTools.WiXComponents.Core.ViewModels;
@@ -17,6 +19,8 @@ using essentialMix.Helpers;
 using essentialMix.Logging;
 using essentialMix.Newtonsoft.Helpers;
 using JetBrains.Annotations;
+using MaterialDesignColors;
+using MaterialDesignThemes.Wpf;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
@@ -48,6 +52,10 @@ namespace devTools.WiXComponents
 			".xml",
 		};
 
+		private readonly Lazy<PaletteHelper> _paletteHelper = new Lazy<PaletteHelper>(() => new PaletteHelper(), LazyThreadSafetyMode.PublicationOnly);
+
+		private bool? _darkTheme;
+
 		/// <inheritdoc />
 		public App()
 		{
@@ -55,6 +63,7 @@ namespace devTools.WiXComponents
 											.MinimumLevel.Is(LogEventLevel.Verbose)
 											.WriteTo.Console(outputTemplate: "{Level:u3} {Message:lj}{NewLine}{Exception}", theme: SystemConsoleTheme.Literate, applyThemeToRedirectedOutput: true)
 											.CreateLogger();
+
 			ILoggerFactory factory = LoggerFactory.Create(builder =>
 			{
 				builder.ClearProviders();
@@ -65,11 +74,27 @@ namespace devTools.WiXComponents
 
 		public IServiceProvider ServiceProvider { get; private set; }
 
+		public bool DarkTheme
+		{
+			get => _darkTheme ??= _paletteHelper.Value.GetTheme().GetBaseTheme() == BaseTheme.Dark;
+			set
+			{
+				if (_darkTheme == value) return;
+				_darkTheme = value;
+				ITheme theme = _paletteHelper.Value.GetTheme();
+				IBaseTheme baseTheme = value
+											? new MaterialDesignDarkTheme()
+											: new MaterialDesignLightTheme();
+				theme.SetBaseTheme(baseTheme);
+				_paletteHelper.Value.SetTheme(theme);
+			}
+		}
+
 		[NotNull]
 		public CombinedLogger<App> Logger { get; }
 
 		/// <inheritdoc />
-		protected override void OnStartup(StartupEventArgs e)
+		protected override void OnStartup([NotNull] StartupEventArgs e)
 		{
 			// Setup
 			JsonConvert.DefaultSettings = () => JsonHelper.CreateSettings();
@@ -170,6 +195,28 @@ namespace devTools.WiXComponents
 				return;
 			}
 
+			ResourceDictionary themeDictionary = new ResourceDictionary
+			{
+				MergedDictionaries =
+				{
+					new BundledTheme
+					{
+						BaseTheme = BaseTheme.Light,
+						PrimaryColor = PrimaryColor.Blue,
+						SecondaryColor = SecondaryColor.LightBlue
+					},
+					new ResourceDictionary
+					{
+						Source = new Uri("pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.Defaults.xaml", UriKind.Absolute)
+					},
+					new ResourceDictionary
+					{
+						Source = new Uri("pack://application:,,,/Themes/Colors.xaml", UriKind.Absolute)
+					}
+				}
+			};
+			Resources.MergedDictionaries.Add(themeDictionary);
+
 			Logger.LogInformation("Starting main window.");
 			ConsoleHelper.Hide();
 			if (consoleCreated) ConsoleHelper.FreeConsole();
@@ -211,6 +258,7 @@ namespace devTools.WiXComponents
 			foreach (Type type in viewModelTypes) 
 				services.AddSingleton(type);
 
+			services.AddSingleton(this);
 			services.AddSingleton(svc =>
 			{
 				ILogger<MainViewModel> lg = (ILogger<MainViewModel>)svc.GetService(typeof(ILogger<MainViewModel>));

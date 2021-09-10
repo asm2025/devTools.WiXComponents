@@ -46,8 +46,16 @@
 					</essentialMix:FormControlItem>
 				</StackPanel>
 				<StackPanel Grid.Row="0" Grid.Column="1" Margin="4 0">
-					<CheckBox IsChecked="{Binding Path=Settings.IncludeSubdirectories}">Include subdirectories</CheckBox>
-					<CheckBox IsChecked="{Binding Path=Settings.Append}">Append new entries</CheckBox>
+					<StackPanel Orientation="Horizontal" HorizontalAlignment="Left">
+						<CheckBox Content="D" Style="{StaticResource MaterialDesignActionLightToggleButton}"
+								IsChecked="{Binding Path=Settings.IncludeSubdirectories}"></CheckBox>
+						<TextBlock Text="Include subdirectories" VerticalAlignment="Center" Margin="4"></TextBlock>
+					</StackPanel>
+					<StackPanel Orientation="Horizontal" HorizontalAlignment="Left">
+						<CheckBox Content="A" Style="{StaticResource MaterialDesignActionLightToggleButton}"
+								IsChecked="{Binding Path=Settings.Append}"></CheckBox>
+						<TextBlock Text="Append new entries" VerticalAlignment="Center" Margin="4"></TextBlock>
+					</StackPanel>
 				</StackPanel>
 				<StackPanel Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" Orientation="Horizontal" HorizontalAlignment="Right">
 					<Button Content="Use Heat" Margin="2 0" Command="{Binding Path=UseHeatCommand}" />

@@ -90,6 +90,7 @@
 		<PackageReference Include="essentialMix.Logging" Version="12.32.0" />
 		<PackageReference Include="essentialMix.Newtonsoft" Version="12.32.0" />
 		<PackageReference Include="JetBrains.Annotations" Version="2021.2.0" />
+		<PackageReference Include="MaterialDesignThemes" Version="4.1.0" />
 		<PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="5.0.2" />
 		<PackageReference Include="Microsoft.Extensions.Logging" Version="5.0.0" />
 		<PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="5.0.0" />
@@ -120,6 +121,7 @@
 		<PreBuildEvent>if exist "$(TargetPath).locked" del "$(TargetPath).locked"
 if exist "$(TargetPath)" if not exist "$(TargetPath).locked" move "$(TargetPath)" "$(TargetPath).locked"
 		</PreBuildEvent>
+		<AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
 	</PropertyGroup>
 
 </Project>

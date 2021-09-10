@@ -4,12 +4,21 @@
 	xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
 	xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
 	xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+	xmlns:md="http://materialdesigninxaml.net/winfx/xaml/themes"
 	xmlns:viewModels="clr-namespace:devTools.WiXComponents.Core.ViewModels;assembly=WiXComp.Core"
+	xmlns:wiXComponents="clr-namespace:devTools.WiXComponents"
 	mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="600" d:DataContext="{d:DesignData MainViewModel}"
 	MinWidth="512" MinHeight="384"
 	MaxWidth="{Binding Source={x:Static SystemParameters.WorkArea}, Path=Width}"
 	MaxHeight="{Binding Source={x:Static SystemParameters.WorkArea}, Path=Height}"
-	Icon="wixtoolset.ico" Title="{Binding Path=Title}">
+	Icon="wixtoolset.ico" Title="{Binding Path=Title}"
+	TextElement.Foreground="{DynamicResource MaterialDesignBody}"
+	TextElement.FontWeight="Regular"
+	TextElement.FontSize="13"
+	TextOptions.TextFormattingMode="Ideal" 
+	TextOptions.TextRenderingMode="Auto"        
+	Background="{DynamicResource MaterialDesignPaper}"
+	FontFamily="{DynamicResource MaterialDesignFont}">
 	<Window.TaskbarItemInfo>
 		<TaskbarItemInfo ProgressState="{Binding Path=ProgressState}" ProgressValue="{Binding Path=Progress}"></TaskbarItemInfo>
 	</Window.TaskbarItemInfo>
@@ -53,6 +62,7 @@
 							<ColumnDefinition Width="2*" />
 							<ColumnDefinition Width="Auto" />
 							<ColumnDefinition Width="100" />
+							<ColumnDefinition Width="50" />
 						</Grid.ColumnDefinitions>
 					</Grid>
 				</ItemsPanelTemplate>
@@ -67,6 +77,13 @@
 			<Separator Grid.Column="3"></Separator>
 			<StatusBarItem Grid.Column="4">
 				<ProgressBar Width="90" Height="18" Value="{Binding Path=Progress, Mode=OneWay}"></ProgressBar>
+			</StatusBarItem>
+			<StatusBarItem Grid.Column="5">
+				<StackPanel Orientation="Horizontal" HorizontalAlignment="Left">
+					<ToggleButton Content="D" Style="{StaticResource MaterialDesignActionLightToggleButton}"
+							IsChecked="{Binding Path=DarkTheme, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type Window}}}"></ToggleButton>
+					<TextBlock Text="{}" VerticalAlignment="Center" Margin="4"></TextBlock>
+				</StackPanel>
 			</StatusBarItem>
 		</StatusBar>
 	</Grid>

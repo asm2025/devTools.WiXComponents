@@ -29,7 +29,7 @@ namespace devTools.WiXComponents.Core.ViewModels
 		protected CancellableViewModelBase(ILogger logger)
 			: base(logger)
 		{
-			_cancellationTimeout = TimeSpanHelper.HALF_SCHEDULE;
+			_cancellationTimeout = TimeSpanHelper.HALF;
 			CancelCommand = new RelayCommand(Cancel, () => !IsCancellationRequested);
 		}
 

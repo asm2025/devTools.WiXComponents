@@ -13,7 +13,7 @@
 			<RowDefinition Height="Auto" />
             <RowDefinition Height="*" />
 		</Grid.RowDefinitions>
-		<TextBlock Grid.Row="0" Text="{Binding Path=Title}" Style="{StaticResource H1}" />
+		<TextBlock Grid.Row="0" Text="{Binding Path=Title}" />
 		<TextBlock Grid.Row="1" Text="{Binding Path=Version, StringFormat={} Version {0}}" />
 		<TextBlock Grid.Row="2">
 			<TextBlock.Text>

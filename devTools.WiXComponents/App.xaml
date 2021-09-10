@@ -6,9 +6,6 @@
 	xmlns:views="clr-namespace:devTools.WiXComponents.Views">
 	<Application.Resources>
 		<ResourceDictionary>
-			<ResourceDictionary.MergedDictionaries>
-				<ResourceDictionary Source="Themes/Generic.xaml" />
-			</ResourceDictionary.MergedDictionaries>
 			<DataTemplate DataType="{x:Type viewModels:GenerateViewModel}">
 				<views:GenerateView />
 			</DataTemplate>
