@@ -70,7 +70,6 @@ namespace devTools.WiXComponents
 				builder.AddSerilog(serilogLogger, true);
 			});
 			Logger = new CombinedLogger<App>(factory.CreateLogger(nameof(App)));
-			if (_paletteHelper.Value.GetThemeManager() is { } themeManager) themeManager.ThemeChanged += (_, e) => _darkTheme = e.NewTheme.GetBaseTheme() == BaseTheme.Dark;
 		}
 
 		public IServiceProvider ServiceProvider { get; private set; }
@@ -193,6 +192,10 @@ namespace devTools.WiXComponents
 				return;
 			}
 
+			Logger.LogInformation("Starting main window.");
+			ConsoleHelper.Hide();
+			if (consoleCreated) ConsoleHelper.FreeConsole();
+
 			ResourceDictionary themeDictionary = new ResourceDictionary
 			{
 				MergedDictionaries =
@@ -206,19 +209,21 @@ namespace devTools.WiXComponents
 					},
 					new ResourceDictionary
 					{
-						Source = new Uri("pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.Defaults.xaml", UriKind.Absolute)
+						Source = new Uri("MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.Defaults.xaml", UriKind.RelativeOrAbsolute)
 					},
 					new ResourceDictionary
 					{
-						Source = new Uri("pack://application:,,,/Themes/MDColors.xaml", UriKind.Absolute)
+						Source = new Uri("Themes/MDColors.xaml", UriKind.RelativeOrAbsolute)
 					}
 				}
 			};
 			Resources.MergedDictionaries.Add(themeDictionary);
+			if (_paletteHelper.Value.GetThemeManager() is { } themeManager) themeManager.ThemeChanged += (_, arg) => _darkTheme = arg.NewTheme.GetBaseTheme() == BaseTheme.Dark;
+			FrameworkElement.StyleProperty.OverrideMetadata(typeof(Window), new FrameworkPropertyMetadata
+			{
+				DefaultValue = Resources["MaterialDesignWindow"]
+			});
 
-			Logger.LogInformation("Starting main window.");
-			ConsoleHelper.Hide();
-			if (consoleCreated) ConsoleHelper.FreeConsole();
 			base.OnStartup(e);
 			Start();
 		}
@@ -257,7 +262,6 @@ namespace devTools.WiXComponents
 			foreach (Type type in viewModelTypes) 
 				services.AddSingleton(type);
 
-			services.AddSingleton(this);
 			services.AddSingleton(svc =>
 			{
 				ILogger<MainViewModel> lg = (ILogger<MainViewModel>)svc.GetService(typeof(ILogger<MainViewModel>));

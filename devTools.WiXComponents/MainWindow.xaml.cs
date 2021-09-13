@@ -16,12 +16,11 @@ namespace devTools.WiXComponents
 	public partial class MainWindow : Window
 	{
 		/// <inheritdoc />
-		public MainWindow([NotNull] App application, [NotNull] MainViewModel viewModel, ILogger<MainWindow> logger)
+		public MainWindow([NotNull] MainViewModel viewModel, ILogger<MainWindow> logger)
 		{
-			Application = application;
+			Application = (App)System.Windows.Application.Current;
 			Logger = logger;
-			ViewModel = viewModel;
-			DataContext = ViewModel;
+			DataContext = viewModel;
 			InitializeComponent();
 		}
 
@@ -30,9 +29,6 @@ namespace devTools.WiXComponents
 			get => Application.DarkTheme;
 			set => Application.DarkTheme = value;
 		}
-
-		[NotNull]
-		public MainViewModel ViewModel { get; }
 
 		[NotNull]
 		public App Application { get; }

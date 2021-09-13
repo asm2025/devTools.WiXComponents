@@ -4,6 +4,7 @@
 	xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
 	xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
 	xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+	xmlns:md="http://materialdesigninxaml.net/winfx/xaml/themes"
 	xmlns:viewModels="clr-namespace:devTools.WiXComponents.Core.ViewModels;assembly=WiXComp.Core"
 	mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="600" d:DataContext="{d:DesignData MainViewModel}"
 	MinWidth="512" MinHeight="384"
@@ -15,66 +16,68 @@
 	<Window.TaskbarItemInfo>
 		<TaskbarItemInfo ProgressState="{Binding Path=ProgressState}" ProgressValue="{Binding Path=Progress}"></TaskbarItemInfo>
 	</Window.TaskbarItemInfo>
-	<Grid>
-		<Grid.RowDefinitions>
-			<RowDefinition Height="Auto" />
-			<RowDefinition />
-			<RowDefinition Height="Auto" />
-		</Grid.RowDefinitions>
-		<ItemsControl ItemsSource="{Binding Path=ViewModels}">
-			<ItemsControl.ItemsPanel>
-				<ItemsPanelTemplate>
-					<WrapPanel />
-				</ItemsPanelTemplate>
-			</ItemsControl.ItemsPanel>
-			<ItemsControl.ItemTemplate>
-				<DataTemplate DataType="viewModels:CommandViewModelBase">
-					<Button Content="{Binding Path=DisplayName}"
-							Command="{Binding RelativeSource={RelativeSource AncestorType={x:Type Window}}, Path=DataContext.ChangeView}"
-							CommandParameter="{Binding}"
-							Padding="8" />
-				</DataTemplate>
-			</ItemsControl.ItemTemplate>
-		</ItemsControl>
-		<ContentControl Grid.Row="1" Margin="16">
-			<ContentControl.Content>
-				<Binding Path="SelectedViewModel">
-					<Binding.TargetNullValue>
-						<TextBlock Text="Select a generator view from the menu." HorizontalAlignment="Center" VerticalAlignment="Center" />
-					</Binding.TargetNullValue>
-				</Binding>
-			</ContentControl.Content>
-		</ContentControl>
-		<StatusBar Grid.Row="2">
-			<StatusBar.ItemsPanel>
-				<ItemsPanelTemplate>
-					<Grid>
-						<Grid.ColumnDefinitions>
-							<ColumnDefinition Width="*" />
-							<ColumnDefinition Width="Auto" />
-							<ColumnDefinition Width="2*" />
-							<ColumnDefinition Width="Auto" />
-							<ColumnDefinition Width="100" />
-							<ColumnDefinition Width="50" />
-						</Grid.ColumnDefinitions>
-					</Grid>
-				</ItemsPanelTemplate>
-			</StatusBar.ItemsPanel>
-			<StatusBarItem>
-				<TextBlock Text="{Binding Path=Status}"></TextBlock>
-			</StatusBarItem>
-			<Separator Grid.Column="1"></Separator>
-			<StatusBarItem Grid.Column="2">
-				<TextBlock Text="{Binding Path=Operation}"></TextBlock>
-			</StatusBarItem>
-			<Separator Grid.Column="3"></Separator>
-			<StatusBarItem Grid.Column="4">
-				<ProgressBar Width="90" Height="18" Value="{Binding Path=Progress, Mode=OneWay}"></ProgressBar>
-			</StatusBarItem>
-			<StatusBarItem Grid.Column="5">
-				<ToggleButton HorizontalAlignment="Center" VerticalAlignment="Center" ToolTip="Switches between dark and light themes"
-							IsChecked="{Binding Path=DarkTheme, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type Window}}}"></ToggleButton>
-			</StatusBarItem>
-		</StatusBar>
-	</Grid>
+	<md:DialogHost Identifier="RootDialog" DialogTheme="Inherit">
+		<Grid>
+			<Grid.RowDefinitions>
+				<RowDefinition Height="Auto" />
+				<RowDefinition />
+				<RowDefinition Height="Auto" />
+			</Grid.RowDefinitions>
+			<ItemsControl ItemsSource="{Binding Path=ViewModels}">
+				<ItemsControl.ItemsPanel>
+					<ItemsPanelTemplate>
+						<WrapPanel />
+					</ItemsPanelTemplate>
+				</ItemsControl.ItemsPanel>
+				<ItemsControl.ItemTemplate>
+					<DataTemplate DataType="viewModels:CommandViewModelBase">
+						<Button Content="{Binding Path=DisplayName}"
+								Command="{Binding RelativeSource={RelativeSource AncestorType={x:Type Window}}, Path=DataContext.ChangeView}"
+								CommandParameter="{Binding}"
+								Padding="8" />
+					</DataTemplate>
+				</ItemsControl.ItemTemplate>
+			</ItemsControl>
+			<ContentControl Grid.Row="1" Margin="16">
+				<ContentControl.Content>
+					<Binding Path="SelectedViewModel">
+						<Binding.TargetNullValue>
+							<TextBlock Text="Select a generator view from the menu." HorizontalAlignment="Center" VerticalAlignment="Center" />
+						</Binding.TargetNullValue>
+					</Binding>
+				</ContentControl.Content>
+			</ContentControl>
+			<StatusBar Grid.Row="2">
+				<StatusBar.ItemsPanel>
+					<ItemsPanelTemplate>
+						<Grid>
+							<Grid.ColumnDefinitions>
+								<ColumnDefinition Width="*" />
+								<ColumnDefinition Width="Auto" />
+								<ColumnDefinition Width="2*" />
+								<ColumnDefinition Width="Auto" />
+								<ColumnDefinition Width="100" />
+								<ColumnDefinition Width="50" />
+							</Grid.ColumnDefinitions>
+						</Grid>
+					</ItemsPanelTemplate>
+				</StatusBar.ItemsPanel>
+				<StatusBarItem>
+					<TextBlock Text="{Binding Path=Status}"></TextBlock>
+				</StatusBarItem>
+				<Separator Grid.Column="1"></Separator>
+				<StatusBarItem Grid.Column="2">
+					<TextBlock Text="{Binding Path=Operation}"></TextBlock>
+				</StatusBarItem>
+				<Separator Grid.Column="3"></Separator>
+				<StatusBarItem Grid.Column="4">
+					<ProgressBar Width="90" Height="18" Value="{Binding Path=Progress, Mode=OneWay}"></ProgressBar>
+				</StatusBarItem>
+				<StatusBarItem Grid.Column="5">
+					<ToggleButton HorizontalAlignment="Center" VerticalAlignment="Center" ToolTip="Switches between dark and light themes"
+								IsChecked="{Binding Path=DarkTheme, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type Window}}}"></ToggleButton>
+				</StatusBarItem>
+			</StatusBar>
+		</Grid>
+	</md:DialogHost>
 </Window>
