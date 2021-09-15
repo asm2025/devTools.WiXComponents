@@ -7,6 +7,7 @@ using System.Linq;
 using System.Reflection;
 using System.Threading;
 using System.Windows;
+using System.Windows.Media;
 using System.Xml;
 using asm.Helpers;
 using CommandLine;
@@ -52,6 +53,25 @@ namespace devTools.WiXComponents
 			".xml",
 		};
 
+		private static readonly ColorPair[] __light =
+		{
+			new ColorPair(Color.FromRgb(155, 203, 237), Colors.Black),
+			new ColorPair(Color.FromRgb(55, 151, 219), Colors.White),
+			new ColorPair(Color.FromRgb(42, 69, 157), Colors.White),
+			new ColorPair(Color.FromRgb(153, 196, 227), Colors.Black),
+			new ColorPair(Color.FromRgb(50, 136, 198), Colors.White),
+			new ColorPair(Color.FromRgb(42, 48, 127), Colors.White),
+		};
+		private static readonly ColorPair[] __dark =
+		{
+			new ColorPair(Color.FromRgb(202, 205, 207), Colors.Black),
+			new ColorPair(Color.FromRgb(149, 155, 159), Colors.Black),
+			new ColorPair(Color.FromRgb(44, 56, 64), Colors.White),
+			new ColorPair(Color.FromRgb(210, 214, 216), Colors.Black),
+			new ColorPair(Color.FromRgb(165, 172, 176), Colors.Black),
+			new ColorPair(Color.FromRgb(76, 90, 98), Colors.White)
+		};
+
 		private readonly Lazy<PaletteHelper> _paletteHelper = new Lazy<PaletteHelper>(() => new PaletteHelper(), LazyThreadSafetyMode.PublicationOnly);
 
 		private bool? _darkTheme;
@@ -82,7 +102,29 @@ namespace devTools.WiXComponents
 				if (_darkTheme == value) return;
 				_darkTheme = value;
 				ITheme theme = _paletteHelper.Value.GetTheme();
-				theme.SetBaseTheme(value ? Theme.Dark : Theme.Light);
+				int offset = 0;
+
+				if (value)
+				{
+					theme.SetBaseTheme(Theme.Dark);
+					theme.PrimaryLight = __dark[offset++];
+					theme.PrimaryMid = __dark[offset++];
+					theme.PrimaryDark = __dark[offset++];
+					theme.SecondaryLight = __dark[offset++];
+					theme.SecondaryMid = __dark[offset++];
+					theme.SecondaryDark = __dark[offset];
+				}
+				else
+				{
+					theme.SetBaseTheme(Theme.Light);
+					theme.PrimaryLight = __light[offset++];
+					theme.PrimaryMid = __light[offset++];
+					theme.PrimaryDark = __light[offset++];
+					theme.SecondaryLight = __light[offset++];
+					theme.SecondaryMid = __light[offset++];
+					theme.SecondaryDark = __light[offset];
+				}
+
 				_paletteHelper.Value.SetTheme(theme);
 			}
 		}
@@ -203,17 +245,13 @@ namespace devTools.WiXComponents
 					new BundledTheme
 					{
 						BaseTheme = BaseTheme.Inherit,
-						PrimaryColor = PrimaryColor.Blue,
+						PrimaryColor = PrimaryColor.Grey,
 						SecondaryColor = SecondaryColor.LightBlue,
 						ColorAdjustment = new ColorAdjustment()
 					},
 					new ResourceDictionary
 					{
 						Source = new Uri("MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.Defaults.xaml", UriKind.RelativeOrAbsolute)
-					},
-					new ResourceDictionary
-					{
-						Source = new Uri("Themes/MDColors.xaml", UriKind.RelativeOrAbsolute)
 					}
 				}
 			};
@@ -223,6 +261,7 @@ namespace devTools.WiXComponents
 			{
 				DefaultValue = Resources["MaterialDesignWindow"]
 			});
+			DarkTheme = false;
 
 			base.OnStartup(e);
 			Start();
