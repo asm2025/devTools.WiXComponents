@@ -11,6 +11,7 @@ using System.Xml;
 using asm.Helpers;
 using CommandLine;
 using ControlzEx.Theming;
+using devTools.WiXComponents.Core;
 using devTools.WiXComponents.Core.Services;
 using devTools.WiXComponents.Core.ViewModels;
 using devTools.WiXComponents.Properties;
@@ -37,7 +38,7 @@ namespace devTools.WiXComponents
 	/// <summary>
 	/// Interaction logic for App.xaml
 	/// </summary>
-	public partial class App : Application
+	public partial class App : Application, IApp
 	{
 		private static readonly IReadOnlySet<string> __supportedProjects = new HashSet<string>(StringComparer.OrdinalIgnoreCase)
 		{
@@ -264,7 +265,7 @@ namespace devTools.WiXComponents
 			services.AddSingleton(svc =>
 			{
 				ILogger<MainViewModel> lg = (ILogger<MainViewModel>)svc.GetService(typeof(ILogger<MainViewModel>));
-				MainViewModel vm = new MainViewModel(lg);
+				MainViewModel vm = new MainViewModel(this, lg);
 				ObservableCollection<CommandViewModelBase> viewModels = vm.ViewModels;
 
 				foreach (Type type in viewModelTypes)

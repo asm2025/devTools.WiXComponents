@@ -54,8 +54,15 @@ namespace devTools.WiXComponents
 		/// <inheritdoc />
 		protected override void OnMouseLeftButtonDown(MouseButtonEventArgs e)
 		{
-			DragMove();
-			base.OnMouseLeftButtonDown(e);
+			try
+			{
+				DragMove();
+				e.Handled = true;
+			}
+			catch (InvalidOperationException )
+			{
+				// ignored
+			}
 		}
 
 		private static IntPtr HookProc(IntPtr hWnd, int msg, IntPtr wParam, IntPtr lParam, ref bool handled)

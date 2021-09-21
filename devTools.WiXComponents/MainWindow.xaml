@@ -5,24 +5,31 @@
 	xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
 	xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
 	xmlns:mah="http://metro.mahapps.com/winfx/xaml/controls"
-	xmlns:md="http://materialdesigninxaml.net/winfx/xaml/themes"
 	xmlns:viewModels="clr-namespace:devTools.WiXComponents.Core.ViewModels;assembly=WiXComp.Core"
 	mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="600" d:DataContext="{d:DesignData MainViewModel}"
 	MinWidth="512" MinHeight="384"
-	ShowTitleBar="False" Icon="wixtoolset.ico" Title="{Binding Path=Title}"
-	TextOptions.TextFormattingMode="Ideal" 
-	TextOptions.TextRenderingMode="Auto">
+	Title="{Binding Path=Info.Title}" ShowIconOnTitleBar="True" ShowTitleBar="False" 
+	Icon="pack://application:,,,/wixtoolset.ico" 
+	TextOptions.TextFormattingMode="Ideal" TextOptions.TextRenderingMode="Auto">
 	<Window.TaskbarItemInfo>
 		<TaskbarItemInfo ProgressState="{Binding Path=ProgressState}" ProgressValue="{Binding Path=Progress}" />
 	</Window.TaskbarItemInfo>
-	<md:DialogHost Identifier="RootDialog" DialogTheme="Inherit">
-		<Grid>
-			<Grid.RowDefinitions>
-				<RowDefinition Height="Auto" />
-				<RowDefinition />
-				<RowDefinition Height="Auto" />
-			</Grid.RowDefinitions>
-			<Menu HorizontalAlignment="Left" Margin="4" ItemsSource="{Binding Path=ViewModels}">
+	<Grid>
+		<Grid.RowDefinitions>
+			<RowDefinition Height="Auto" />
+			<RowDefinition />
+			<RowDefinition Height="Auto" />
+		</Grid.RowDefinitions>
+		<Grid Margin="8 0 128 0" HorizontalAlignment="Stretch" VerticalAlignment="Top">
+			<Grid.ColumnDefinitions>
+				<ColumnDefinition Width="Auto" />
+				<ColumnDefinition Width="Auto" />
+				<ColumnDefinition />
+				<ColumnDefinition Width="Auto" />
+			</Grid.ColumnDefinitions>
+			<Image Source="{Binding RelativeSource={RelativeSource AncestorType={x:Type Window}}, Path=Icon}"></Image>
+			<TextBlock Grid.Column="1" Padding="8" VerticalAlignment="Center" Text="{Binding RelativeSource={RelativeSource AncestorType={x:Type Window}}, Path=Title}" />
+			<Menu Grid.Column="2" HorizontalAlignment="Left" VerticalAlignment="Center" ItemsSource="{Binding Path=ViewModels}">
 				<Menu.ItemContainerStyle>
 					<Style TargetType="{x:Type MenuItem}">
 						<Setter Property="Padding" Value="8" />
@@ -36,46 +43,44 @@
 					</HierarchicalDataTemplate>
 				</Menu.ItemTemplate>
 			</Menu>
-			<ContentControl Grid.Row="1" Margin="16">
-				<ContentControl.Content>
-					<Binding Path="SelectedViewModel">
-						<Binding.TargetNullValue>
-							<TextBlock Text="Select a generator view from the menu." HorizontalAlignment="Center" VerticalAlignment="Center" />
-						</Binding.TargetNullValue>
-					</Binding>
-				</ContentControl.Content>
-			</ContentControl>
-			<StatusBar Grid.Row="2">
-				<StatusBar.ItemsPanel>
-					<ItemsPanelTemplate>
-						<Grid>
-							<Grid.ColumnDefinitions>
-								<ColumnDefinition Width="*" />
-								<ColumnDefinition Width="Auto" />
-								<ColumnDefinition Width="2*" />
-								<ColumnDefinition Width="Auto" />
-								<ColumnDefinition Width="100" />
-								<ColumnDefinition Width="60" />
-							</Grid.ColumnDefinitions>
-						</Grid>
-					</ItemsPanelTemplate>
-				</StatusBar.ItemsPanel>
-				<StatusBarItem>
-					<TextBlock Text="{Binding Path=Status}" />
-				</StatusBarItem>
-				<Separator Grid.Column="1"></Separator>
-				<StatusBarItem Grid.Column="2">
-					<TextBlock Text="{Binding Path=Operation}" />
-				</StatusBarItem>
-				<Separator Grid.Column="3"></Separator>
-				<StatusBarItem Grid.Column="4">
-					<mah:MetroProgressBar HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Value="{Binding Path=Progress, Mode=OneWay}" />
-				</StatusBarItem>
-				<StatusBarItem Grid.Column="5">
-					<ToggleButton HorizontalAlignment="Center" VerticalAlignment="Center" ToolTip="Switches between dark and light themes"
-								IsChecked="{Binding Path=DarkTheme, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type Window}}}" />
-				</StatusBarItem>
-			</StatusBar>
+			<mah:ToggleSwitch Grid.Column="3" HorizontalAlignment="Right" VerticalAlignment="Center"
+							ToolTip="{Binding Path=ThemeName}" IsOn="{Binding  Path=DarkTheme}"
+							OnContent="" OffContent="" />
 		</Grid>
-	</md:DialogHost>
+		<ContentControl Grid.Row="1" Margin="16">
+			<ContentControl.Content>
+				<Binding Path="SelectedViewModel">
+					<Binding.TargetNullValue>
+						<TextBlock Text="Select a generator view from the menu." HorizontalAlignment="Center" VerticalAlignment="Center" />
+					</Binding.TargetNullValue>
+				</Binding>
+			</ContentControl.Content>
+		</ContentControl>
+		<StatusBar Grid.Row="2">
+			<StatusBar.ItemsPanel>
+				<ItemsPanelTemplate>
+					<Grid>
+						<Grid.ColumnDefinitions>
+							<ColumnDefinition Width="*" />
+							<ColumnDefinition Width="Auto" />
+							<ColumnDefinition Width="2*" />
+							<ColumnDefinition Width="Auto" />
+							<ColumnDefinition Width="100" />
+						</Grid.ColumnDefinitions>
+					</Grid>
+				</ItemsPanelTemplate>
+			</StatusBar.ItemsPanel>
+			<StatusBarItem>
+				<TextBlock Text="{Binding Path=Status}" />
+			</StatusBarItem>
+			<Separator Grid.Column="1"></Separator>
+			<StatusBarItem Grid.Column="2">
+				<TextBlock Text="{Binding Path=Operation}" />
+			</StatusBarItem>
+			<Separator Grid.Column="3"></Separator>
+			<StatusBarItem Grid.Column="4">
+				<mah:MetroProgressBar HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Value="{Binding Path=Progress, Mode=OneWay}" />
+			</StatusBarItem>
+		</StatusBar>
+	</Grid>
 </mah:MetroWindow>

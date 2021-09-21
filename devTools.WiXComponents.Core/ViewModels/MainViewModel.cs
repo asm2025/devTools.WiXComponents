@@ -14,6 +14,8 @@ namespace devTools.WiXComponents.Core.ViewModels
 	/// <inheritdoc />
 	public sealed class MainViewModel : ViewModelBase
 	{
+		private const string THEME_LIGHT = "Light theme";
+		private const string THEME_DARK = "Dark theme";
 		private const string STATUS_DEF = "Ready...";
 
 		private static readonly HashSet<string> WATCHED_CHILD_PROPERTIES = new HashSet<string>
@@ -25,14 +27,13 @@ namespace devTools.WiXComponents.Core.ViewModels
 		};
 
 		private CommandViewModelBase _selectedViewModel;
-		private CancellableViewModelBase _cancellableBaseRef;
 
 		/// <inheritdoc />
-		public MainViewModel(ILogger logger)
+		public MainViewModel([NotNull] IApp app, ILogger logger)
 			: base(logger)
 		{
-			AppInfo appInfo = new AppInfo(AssemblyHelper.GetEntryAssembly());
-			Title = appInfo.Title;
+			App = app;
+			Info = new AppInfo(AssemblyHelper.GetEntryAssembly());
 			ViewModels = new ObservableCollection<CommandViewModelBase>();
 			ChangeView = new RelayCommand<CommandViewModelBase>(vm =>
 			{
@@ -42,15 +43,34 @@ namespace devTools.WiXComponents.Core.ViewModels
 		}
 
 		[NotNull]
-		public string Title { get; }
+		public IApp App { get; }
+
+		[NotNull]
+		public AppInfo Info { get; }
+
+		public bool DarkTheme
+		{
+			get => App.DarkTheme;
+			set
+			{
+				if (App.DarkTheme == value) return;
+				App.DarkTheme = value;
+				OnPropertyChanged();
+				OnPropertyChanged(nameof(ThemeName));
+			}
+		}
+
+		[NotNull]
+		public string ThemeName => DarkTheme ? THEME_DARK : THEME_LIGHT;
 
 		[NotNull]
 		public ICommand ChangeView { get; }
 
-		public string Status => _cancellableBaseRef?.Status ?? STATUS_DEF;
-		public string Operation => _cancellableBaseRef?.Operation;
-		public int Progress => _cancellableBaseRef?.Progress ?? 0;
-		public TaskbarItemProgressState ProgressState => _cancellableBaseRef?.ProgressState ?? TaskbarItemProgressState.None;
+		[NotNull]
+		public string Status => SelectedCancellableViewModel?.Status ?? STATUS_DEF;
+		public string Operation => SelectedCancellableViewModel?.Operation;
+		public int Progress => SelectedCancellableViewModel?.Progress ?? 0;
+		public TaskbarItemProgressState ProgressState => SelectedCancellableViewModel?.ProgressState ?? TaskbarItemProgressState.None;
 
 		public CommandViewModelBase SelectedViewModel
 		{
@@ -58,24 +78,25 @@ namespace devTools.WiXComponents.Core.ViewModels
 			set
 			{
 				if (_selectedViewModel == value) return;
-				if (_cancellableBaseRef != null) _cancellableBaseRef.PropertyChanged -= OnChildPropertyChanged;
+				if (_selectedViewModel != null) _selectedViewModel.PropertyChanged -= OnChildPropertyChanged;
 				_selectedViewModel = value;
-				_cancellableBaseRef = _selectedViewModel as CancellableViewModelBase;
+				if (_selectedViewModel != null) _selectedViewModel.PropertyChanged += OnChildPropertyChanged;
+				SelectedCancellableViewModel = _selectedViewModel as CancellableViewModelBase;
+				OnPropertyChanged();
 
-				if (_cancellableBaseRef != null)
+				if (SelectedCancellableViewModel != null)
 				{
-					_cancellableBaseRef.PropertyChanged += OnChildPropertyChanged;
-					_cancellableBaseRef.Reset();
+					SelectedCancellableViewModel.Reset();
 				}
 				else
 				{
 					foreach (string prop in WATCHED_CHILD_PROPERTIES) 
 						OnPropertyChanged(prop);
 				}
-
-				OnPropertyChanged();
 			}
 		}
+
+		public CancellableViewModelBase SelectedCancellableViewModel { get; private set; }
 
 		[NotNull]
 		public ObservableCollection<CommandViewModelBase> ViewModels { get; }
