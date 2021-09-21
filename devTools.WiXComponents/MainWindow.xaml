@@ -1,18 +1,19 @@
-﻿<Window
+﻿<mah:MetroWindow
 	x:Class="devTools.WiXComponents.MainWindow"
 	xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
 	xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
 	xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
 	xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+	xmlns:mah="http://metro.mahapps.com/winfx/xaml/controls"
 	xmlns:md="http://materialdesigninxaml.net/winfx/xaml/themes"
 	xmlns:viewModels="clr-namespace:devTools.WiXComponents.Core.ViewModels;assembly=WiXComp.Core"
 	mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="600" d:DataContext="{d:DesignData MainViewModel}"
 	MinWidth="512" MinHeight="384"
-	Icon="wixtoolset.ico" Title="{Binding Path=Title}"
+	ShowTitleBar="False" Icon="wixtoolset.ico" Title="{Binding Path=Title}"
 	TextOptions.TextFormattingMode="Ideal" 
 	TextOptions.TextRenderingMode="Auto">
 	<Window.TaskbarItemInfo>
-		<TaskbarItemInfo ProgressState="{Binding Path=ProgressState}" ProgressValue="{Binding Path=Progress}"></TaskbarItemInfo>
+		<TaskbarItemInfo ProgressState="{Binding Path=ProgressState}" ProgressValue="{Binding Path=Progress}" />
 	</Window.TaskbarItemInfo>
 	<md:DialogHost Identifier="RootDialog" DialogTheme="Inherit">
 		<Grid>
@@ -21,21 +22,20 @@
 				<RowDefinition />
 				<RowDefinition Height="Auto" />
 			</Grid.RowDefinitions>
-			<ItemsControl ItemsSource="{Binding Path=ViewModels}">
-				<ItemsControl.ItemsPanel>
-					<ItemsPanelTemplate>
-						<WrapPanel />
-					</ItemsPanelTemplate>
-				</ItemsControl.ItemsPanel>
-				<ItemsControl.ItemTemplate>
-					<DataTemplate DataType="viewModels:CommandViewModelBase">
-						<Button Content="{Binding Path=DisplayName}"
-								Command="{Binding RelativeSource={RelativeSource AncestorType={x:Type Window}}, Path=DataContext.ChangeView}"
-								CommandParameter="{Binding}"
-								Padding="8" />
-					</DataTemplate>
-				</ItemsControl.ItemTemplate>
-			</ItemsControl>
+			<Menu HorizontalAlignment="Left" Margin="4" ItemsSource="{Binding Path=ViewModels}">
+				<Menu.ItemContainerStyle>
+					<Style TargetType="{x:Type MenuItem}">
+						<Setter Property="Padding" Value="8" />
+						<Setter Property="Command" Value="{Binding RelativeSource={RelativeSource AncestorType={x:Type Window}}, Path=DataContext.ChangeView}" />
+						<Setter Property="CommandParameter" Value="{Binding}" />
+					</Style>
+				</Menu.ItemContainerStyle>
+				<Menu.ItemTemplate>
+					<HierarchicalDataTemplate DataType="{x:Type viewModels:CommandViewModelBase}" ItemsSource="{Binding Path=ViewModels}">
+						<TextBlock Text="{Binding DisplayName}"/>
+					</HierarchicalDataTemplate>
+				</Menu.ItemTemplate>
+			</Menu>
 			<ContentControl Grid.Row="1" Margin="16">
 				<ContentControl.Content>
 					<Binding Path="SelectedViewModel">
@@ -55,27 +55,27 @@
 								<ColumnDefinition Width="2*" />
 								<ColumnDefinition Width="Auto" />
 								<ColumnDefinition Width="100" />
-								<ColumnDefinition Width="50" />
+								<ColumnDefinition Width="60" />
 							</Grid.ColumnDefinitions>
 						</Grid>
 					</ItemsPanelTemplate>
 				</StatusBar.ItemsPanel>
 				<StatusBarItem>
-					<TextBlock Text="{Binding Path=Status}"></TextBlock>
+					<TextBlock Text="{Binding Path=Status}" />
 				</StatusBarItem>
 				<Separator Grid.Column="1"></Separator>
 				<StatusBarItem Grid.Column="2">
-					<TextBlock Text="{Binding Path=Operation}"></TextBlock>
+					<TextBlock Text="{Binding Path=Operation}" />
 				</StatusBarItem>
 				<Separator Grid.Column="3"></Separator>
 				<StatusBarItem Grid.Column="4">
-					<ProgressBar Width="90" Height="18" Value="{Binding Path=Progress, Mode=OneWay}"></ProgressBar>
+					<mah:MetroProgressBar HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Value="{Binding Path=Progress, Mode=OneWay}" />
 				</StatusBarItem>
 				<StatusBarItem Grid.Column="5">
 					<ToggleButton HorizontalAlignment="Center" VerticalAlignment="Center" ToolTip="Switches between dark and light themes"
-								IsChecked="{Binding Path=DarkTheme, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type Window}}}"></ToggleButton>
+								IsChecked="{Binding Path=DarkTheme, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type Window}}}" />
 				</StatusBarItem>
 			</StatusBar>
 		</Grid>
 	</md:DialogHost>
-</Window>
+</mah:MetroWindow>

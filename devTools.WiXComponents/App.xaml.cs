@@ -7,10 +7,10 @@ using System.Linq;
 using System.Reflection;
 using System.Threading;
 using System.Windows;
-using System.Windows.Media;
 using System.Xml;
 using asm.Helpers;
 using CommandLine;
+using ControlzEx.Theming;
 using devTools.WiXComponents.Core.Services;
 using devTools.WiXComponents.Core.ViewModels;
 using devTools.WiXComponents.Properties;
@@ -20,7 +20,6 @@ using essentialMix.Helpers;
 using essentialMix.Logging;
 using essentialMix.Newtonsoft.Helpers;
 using JetBrains.Annotations;
-using MaterialDesignColors;
 using MaterialDesignThemes.Wpf;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -31,6 +30,7 @@ using Serilog.Events;
 using Serilog.Sinks.SystemConsole.Themes;
 using ILogger = Microsoft.Extensions.Logging.ILogger;
 using LogLevel = Microsoft.Extensions.Logging.LogLevel;
+using Theme = MaterialDesignThemes.Wpf.Theme;
 
 namespace devTools.WiXComponents
 {
@@ -51,25 +51,6 @@ namespace devTools.WiXComponents
 			".wxs",
 			".wsi",
 			".xml",
-		};
-
-		private static readonly ColorPair[] __light =
-		{
-			new ColorPair(Color.FromRgb(155, 203, 237), Colors.Black),
-			new ColorPair(Color.FromRgb(55, 151, 219), Colors.White),
-			new ColorPair(Color.FromRgb(42, 69, 157), Colors.White),
-			new ColorPair(Color.FromRgb(153, 196, 227), Colors.Black),
-			new ColorPair(Color.FromRgb(50, 136, 198), Colors.White),
-			new ColorPair(Color.FromRgb(42, 48, 127), Colors.White),
-		};
-		private static readonly ColorPair[] __dark =
-		{
-			new ColorPair(Color.FromRgb(202, 205, 207), Colors.Black),
-			new ColorPair(Color.FromRgb(149, 155, 159), Colors.Black),
-			new ColorPair(Color.FromRgb(44, 56, 64), Colors.White),
-			new ColorPair(Color.FromRgb(210, 214, 216), Colors.Black),
-			new ColorPair(Color.FromRgb(165, 172, 176), Colors.Black),
-			new ColorPair(Color.FromRgb(76, 90, 98), Colors.White)
 		};
 
 		private readonly Lazy<PaletteHelper> _paletteHelper = new Lazy<PaletteHelper>(() => new PaletteHelper(), LazyThreadSafetyMode.PublicationOnly);
@@ -102,27 +83,16 @@ namespace devTools.WiXComponents
 				if (_darkTheme == value) return;
 				_darkTheme = value;
 				ITheme theme = _paletteHelper.Value.GetTheme();
-				int offset = 0;
-
+				
 				if (value)
 				{
 					theme.SetBaseTheme(Theme.Dark);
-					theme.PrimaryLight = __dark[offset++];
-					theme.PrimaryMid = __dark[offset++];
-					theme.PrimaryDark = __dark[offset++];
-					theme.SecondaryLight = __dark[offset++];
-					theme.SecondaryMid = __dark[offset++];
-					theme.SecondaryDark = __dark[offset];
+					ThemeManager.Current.ChangeTheme(this, "Dark.Blue");
 				}
 				else
 				{
 					theme.SetBaseTheme(Theme.Light);
-					theme.PrimaryLight = __light[offset++];
-					theme.PrimaryMid = __light[offset++];
-					theme.PrimaryDark = __light[offset++];
-					theme.SecondaryLight = __light[offset++];
-					theme.SecondaryMid = __light[offset++];
-					theme.SecondaryDark = __light[offset];
+					ThemeManager.Current.ChangeTheme(this, "Light.Blue");
 				}
 
 				_paletteHelper.Value.SetTheme(theme);
@@ -238,24 +208,14 @@ namespace devTools.WiXComponents
 			ConsoleHelper.Hide();
 			if (consoleCreated) ConsoleHelper.FreeConsole();
 
-			ResourceDictionary themeDictionary = new ResourceDictionary
+			Resources.MergedDictionaries.Add(new ResourceDictionary
 			{
-				MergedDictionaries =
-				{
-					new BundledTheme
-					{
-						BaseTheme = BaseTheme.Inherit,
-						PrimaryColor = PrimaryColor.Grey,
-						SecondaryColor = SecondaryColor.LightBlue,
-						ColorAdjustment = new ColorAdjustment()
-					},
-					new ResourceDictionary
-					{
-						Source = new Uri("MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.Defaults.xaml", UriKind.RelativeOrAbsolute)
-					}
-				}
-			};
-			Resources.MergedDictionaries.Add(themeDictionary);
+				Source = new Uri("pack://application:,,,/Themes/Default.xaml")
+			});
+			Resources.MergedDictionaries.Add(new ResourceDictionary
+			{
+				Source = new Uri("pack://application:,,,/Resources/DataTemplates.xaml")
+			});
 			if (_paletteHelper.Value.GetThemeManager() is { } themeManager) themeManager.ThemeChanged += (_, arg) => _darkTheme = arg.NewTheme.GetBaseTheme() == BaseTheme.Dark;
 			FrameworkElement.StyleProperty.OverrideMetadata(typeof(Window), new FrameworkPropertyMetadata
 			{

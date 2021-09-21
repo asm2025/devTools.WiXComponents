@@ -6,6 +6,7 @@ using System.Windows.Interop;
 using devTools.WiXComponents.Core.ViewModels;
 using essentialMix;
 using JetBrains.Annotations;
+using MahApps.Metro.Controls;
 using Microsoft.Extensions.Logging;
 
 namespace devTools.WiXComponents
@@ -13,7 +14,7 @@ namespace devTools.WiXComponents
 	/// <summary>
 	/// Interaction logic for MainWindow.xaml
 	/// </summary>
-	public partial class MainWindow : Window
+	public partial class MainWindow : MetroWindow
 	{
 		/// <inheritdoc />
 		public MainWindow([NotNull] MainViewModel viewModel, ILogger<MainWindow> logger)

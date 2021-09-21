@@ -90,7 +90,10 @@
 		<PackageReference Include="essentialMix.Logging" Version="12.32.0" />
 		<PackageReference Include="essentialMix.Newtonsoft" Version="12.32.0" />
 		<PackageReference Include="JetBrains.Annotations" Version="2021.2.0" />
-		<PackageReference Include="MaterialDesignThemes" Version="4.1.0" />
+		<PackageReference Include="MahApps.Metro" Version="2.4.7" />
+		<PackageReference Include="MahApps.Metro.IconPacks" Version="4.9.0" />
+		<PackageReference Include="MaterialDesignThemes" Version="4.2.1" />
+		<PackageReference Include="MaterialDesignThemes.MahApps" Version="0.1.9" />
 		<PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="5.0.2" />
 		<PackageReference Include="Microsoft.Extensions.Logging" Version="5.0.0" />
 		<PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="5.0.0" />

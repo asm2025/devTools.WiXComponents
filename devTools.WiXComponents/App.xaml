@@ -1,23 +1,5 @@
 ﻿<Application
 	x:Class="devTools.WiXComponents.App"
 	xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-	xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-	xmlns:viewModels="clr-namespace:devTools.WiXComponents.Core.ViewModels;assembly=WiXComp.Core"
-	xmlns:views="clr-namespace:devTools.WiXComponents.Views">
-	<Application.Resources>
-		<ResourceDictionary>
-			<DataTemplate DataType="{x:Type viewModels:GenerateViewModel}">
-				<views:GenerateView />
-			</DataTemplate>
-			<DataTemplate DataType="{x:Type viewModels:EntriesViewModel}">
-				<views:EntriesView />
-			</DataTemplate>
-			<DataTemplate DataType="{x:Type viewModels:OutputViewModel}">
-				<views:OutputView />
-			</DataTemplate>
-			<DataTemplate DataType="{x:Type viewModels:AboutViewModel}">
-				<views:AboutView />
-			</DataTemplate>
-		</ResourceDictionary>
-	</Application.Resources>
+	xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
 </Application>
