@@ -67,12 +67,12 @@ namespace devTools.WiXComponents
 		};
 		private static readonly ColorPair[] __dark =
 		{
-			new ColorPair(Color.FromRgb(205, 205, 205), Colors.Black),
-			new ColorPair(Color.FromRgb(155, 155, 155), Colors.Black),
-			new ColorPair(Color.FromRgb(56, 56, 56), Colors.White),
-			new ColorPair(Color.FromRgb(198, 198, 198), Colors.Black),
-			new ColorPair(Color.FromRgb(140, 140, 140), Colors.Black),
-			new ColorPair(Color.FromRgb(26, 26, 26), Colors.White)
+			new ColorPair(Color.FromRgb(40, 40, 40), Colors.White),
+			new ColorPair(Color.FromRgb(16, 16, 16), Colors.White),
+			new ColorPair(Color.FromRgb(8, 8, 8), Colors.White),
+			new ColorPair(Color.FromRgb(38, 38, 38), Colors.White),
+			new ColorPair(Color.FromRgb(14, 14, 14), Colors.White),
+			new ColorPair(Color.FromRgb(7, 7, 7), Colors.White)
 		};
 
 		private readonly Lazy<PaletteHelper> _paletteHelper = new Lazy<PaletteHelper>(() => new PaletteHelper(), LazyThreadSafetyMode.PublicationOnly);
