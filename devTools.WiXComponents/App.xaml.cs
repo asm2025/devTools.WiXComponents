@@ -7,6 +7,7 @@ using System.Linq;
 using System.Reflection;
 using System.Threading;
 using System.Windows;
+using System.Windows.Media;
 using System.Xml;
 using asm.Helpers;
 using CommandLine;
@@ -21,6 +22,7 @@ using essentialMix.Helpers;
 using essentialMix.Logging;
 using essentialMix.Newtonsoft.Helpers;
 using JetBrains.Annotations;
+using MaterialDesignColors;
 using MaterialDesignThemes.Wpf;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -54,6 +56,25 @@ namespace devTools.WiXComponents
 			".xml",
 		};
 
+		private static readonly ColorPair[] __light =
+		{
+			new ColorPair(Color.FromRgb(248, 248, 248), Colors.Black),
+			new ColorPair(Color.FromRgb(240, 240, 240), Colors.Black),
+			new ColorPair(Color.FromRgb(225, 225, 225), Colors.Black),
+			new ColorPair(Color.FromRgb(236, 236, 236), Colors.Black),
+			new ColorPair(Color.FromRgb(216, 216, 216), Colors.Black),
+			new ColorPair(Color.FromRgb(177, 177, 177), Colors.Black),
+		};
+		private static readonly ColorPair[] __dark =
+		{
+			new ColorPair(Color.FromRgb(205, 205, 205), Colors.Black),
+			new ColorPair(Color.FromRgb(155, 155, 155), Colors.Black),
+			new ColorPair(Color.FromRgb(56, 56, 56), Colors.White),
+			new ColorPair(Color.FromRgb(198, 198, 198), Colors.Black),
+			new ColorPair(Color.FromRgb(140, 140, 140), Colors.Black),
+			new ColorPair(Color.FromRgb(26, 26, 26), Colors.White)
+		};
+
 		private readonly Lazy<PaletteHelper> _paletteHelper = new Lazy<PaletteHelper>(() => new PaletteHelper(), LazyThreadSafetyMode.PublicationOnly);
 
 		private bool? _darkTheme;
@@ -84,16 +105,29 @@ namespace devTools.WiXComponents
 				if (_darkTheme == value) return;
 				_darkTheme = value;
 				ITheme theme = _paletteHelper.Value.GetTheme();
+				int offset = 0;
 				
 				if (value)
 				{
 					theme.SetBaseTheme(Theme.Dark);
-					ThemeManager.Current.ChangeTheme(this, "Dark.Blue");
+					theme.PrimaryLight = __dark[offset++];
+					theme.PrimaryMid = __dark[offset++];
+					theme.PrimaryDark = __dark[offset++];
+					theme.SecondaryLight = __dark[offset++];
+					theme.SecondaryMid = __dark[offset++];
+					theme.SecondaryDark = __dark[offset];
+					ThemeManager.Current.ChangeTheme(this, "Dark.Steel");
 				}
 				else
 				{
 					theme.SetBaseTheme(Theme.Light);
-					ThemeManager.Current.ChangeTheme(this, "Light.Blue");
+					theme.PrimaryLight = __light[offset++];
+					theme.PrimaryMid = __light[offset++];
+					theme.PrimaryDark = __light[offset++];
+					theme.SecondaryLight = __light[offset++];
+					theme.SecondaryMid = __light[offset++];
+					theme.SecondaryDark = __light[offset];
+					ThemeManager.Current.ChangeTheme(this, "Light.Steel");
 				}
 
 				_paletteHelper.Value.SetTheme(theme);
