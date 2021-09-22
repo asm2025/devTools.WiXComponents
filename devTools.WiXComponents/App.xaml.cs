@@ -111,6 +111,8 @@ namespace devTools.WiXComponents
 				{
 					ThemeManager.Current.ChangeTheme(this, "Dark.Steel");
 					theme.SetBaseTheme(Theme.Dark);
+					theme.SetPrimaryColor(__dark[1].Color);
+					theme.SetSecondaryColor(__dark[4].Color);
 					theme.PrimaryLight = __dark[offset++];
 					theme.PrimaryMid = __dark[offset++];
 					theme.PrimaryDark = __dark[offset++];
@@ -122,6 +124,8 @@ namespace devTools.WiXComponents
 				{
 					ThemeManager.Current.ChangeTheme(this, "Light.Steel");
 					theme.SetBaseTheme(Theme.Light);
+					theme.SetPrimaryColor(__light[1].Color);
+					theme.SetSecondaryColor(__light[4].Color);
 					theme.PrimaryLight = __light[offset++];
 					theme.PrimaryMid = __light[offset++];
 					theme.PrimaryDark = __light[offset++];
@@ -256,6 +260,9 @@ namespace devTools.WiXComponents
 			{
 				DefaultValue = Resources["MaterialDesignWindow"]
 			});
+
+			ThemeManager.Current.ThemeSyncMode = ThemeSyncMode.SyncWithAppMode;
+			ThemeManager.Current.SyncTheme();
 			DarkTheme = false;
 
 			base.OnStartup(e);
