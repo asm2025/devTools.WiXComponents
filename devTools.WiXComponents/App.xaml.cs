@@ -109,6 +109,7 @@ namespace devTools.WiXComponents
 				
 				if (value)
 				{
+					ThemeManager.Current.ChangeTheme(this, "Dark.Steel");
 					theme.SetBaseTheme(Theme.Dark);
 					theme.PrimaryLight = __dark[offset++];
 					theme.PrimaryMid = __dark[offset++];
@@ -116,10 +117,10 @@ namespace devTools.WiXComponents
 					theme.SecondaryLight = __dark[offset++];
 					theme.SecondaryMid = __dark[offset++];
 					theme.SecondaryDark = __dark[offset];
-					ThemeManager.Current.ChangeTheme(this, "Dark.Steel");
 				}
 				else
 				{
+					ThemeManager.Current.ChangeTheme(this, "Light.Steel");
 					theme.SetBaseTheme(Theme.Light);
 					theme.PrimaryLight = __light[offset++];
 					theme.PrimaryMid = __light[offset++];
@@ -127,7 +128,6 @@ namespace devTools.WiXComponents
 					theme.SecondaryLight = __light[offset++];
 					theme.SecondaryMid = __light[offset++];
 					theme.SecondaryDark = __light[offset];
-					ThemeManager.Current.ChangeTheme(this, "Light.Steel");
 				}
 
 				_paletteHelper.Value.SetTheme(theme);
