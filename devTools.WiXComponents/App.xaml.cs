@@ -42,6 +42,8 @@ namespace devTools.WiXComponents
 	/// </summary>
 	public partial class App : Application, IApp
 	{
+		private const string MAHAPPS_THEME = "Steel";
+
 		private static readonly IReadOnlySet<string> __supportedProjects = new HashSet<string>(StringComparer.OrdinalIgnoreCase)
 		{
 			".WiXProj",
@@ -54,25 +56,6 @@ namespace devTools.WiXComponents
 			".wxs",
 			".wsi",
 			".xml",
-		};
-
-		private static readonly ColorPair[] __light =
-		{
-			new ColorPair(Color.FromRgb(248, 248, 248), Colors.Black),
-			new ColorPair(Color.FromRgb(240, 240, 240), Colors.Black),
-			new ColorPair(Color.FromRgb(225, 225, 225), Colors.Black),
-			new ColorPair(Color.FromRgb(236, 236, 236), Colors.Black),
-			new ColorPair(Color.FromRgb(216, 216, 216), Colors.Black),
-			new ColorPair(Color.FromRgb(177, 177, 177), Colors.Black),
-		};
-		private static readonly ColorPair[] __dark =
-		{
-			new ColorPair(Color.FromRgb(40, 40, 40), Colors.White),
-			new ColorPair(Color.FromRgb(16, 16, 16), Colors.White),
-			new ColorPair(Color.FromRgb(8, 8, 8), Colors.White),
-			new ColorPair(Color.FromRgb(38, 38, 38), Colors.White),
-			new ColorPair(Color.FromRgb(14, 14, 14), Colors.White),
-			new ColorPair(Color.FromRgb(7, 7, 7), Colors.White)
 		};
 
 		private readonly Lazy<PaletteHelper> _paletteHelper = new Lazy<PaletteHelper>(() => new PaletteHelper(), LazyThreadSafetyMode.PublicationOnly);
@@ -105,33 +88,16 @@ namespace devTools.WiXComponents
 				if (_darkTheme == value) return;
 				_darkTheme = value;
 				ITheme theme = _paletteHelper.Value.GetTheme();
-				int offset = 0;
 				
 				if (value)
 				{
-					ThemeManager.Current.ChangeTheme(this, "Dark.Steel");
+					ThemeManager.Current.ChangeTheme(this, $"Dark.{MAHAPPS_THEME}");
 					theme.SetBaseTheme(Theme.Dark);
-					theme.SetPrimaryColor(__dark[1].Color);
-					theme.SetSecondaryColor(__dark[4].Color);
-					theme.PrimaryLight = __dark[offset++];
-					theme.PrimaryMid = __dark[offset++];
-					theme.PrimaryDark = __dark[offset++];
-					theme.SecondaryLight = __dark[offset++];
-					theme.SecondaryMid = __dark[offset++];
-					theme.SecondaryDark = __dark[offset];
 				}
 				else
 				{
-					ThemeManager.Current.ChangeTheme(this, "Light.Steel");
+					ThemeManager.Current.ChangeTheme(this, $"Light.{MAHAPPS_THEME}");
 					theme.SetBaseTheme(Theme.Light);
-					theme.SetPrimaryColor(__light[1].Color);
-					theme.SetSecondaryColor(__light[4].Color);
-					theme.PrimaryLight = __light[offset++];
-					theme.PrimaryMid = __light[offset++];
-					theme.PrimaryDark = __light[offset++];
-					theme.SecondaryLight = __light[offset++];
-					theme.SecondaryMid = __light[offset++];
-					theme.SecondaryDark = __light[offset];
 				}
 
 				_paletteHelper.Value.SetTheme(theme);
