@@ -33,6 +33,7 @@
 	</ItemGroup>
 
 	<ItemGroup>
+		<PackageReference Include="essentialMix" Version="12.32.0" />
 		<PackageReference Include="JetBrains.Annotations" Version="2021.2.0" />
 		<PackageReference Include="Ookii.Dialogs.Wpf" Version="4.0.0" />
 	</ItemGroup>
