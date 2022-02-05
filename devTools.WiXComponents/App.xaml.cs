@@ -7,9 +7,7 @@ using System.Linq;
 using System.Reflection;
 using System.Threading;
 using System.Windows;
-using System.Windows.Media;
 using System.Xml;
-using asm.Helpers;
 using CommandLine;
 using ControlzEx.Theming;
 using devTools.WiXComponents.Core;
@@ -22,7 +20,6 @@ using essentialMix.Helpers;
 using essentialMix.Logging;
 using essentialMix.Newtonsoft.Helpers;
 using JetBrains.Annotations;
-using MaterialDesignColors;
 using MaterialDesignThemes.Wpf;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -88,7 +85,7 @@ namespace devTools.WiXComponents
 				if (_darkTheme == value) return;
 				_darkTheme = value;
 				ITheme theme = _paletteHelper.Value.GetTheme();
-				
+
 				if (value)
 				{
 					ThemeManager.Current.ChangeTheme(this, $"Dark.{MAHAPPS_THEME}");
@@ -266,7 +263,7 @@ namespace devTools.WiXComponents
 										.OrderBy(type => type.GetCustomAttribute<DisplayAttribute>()?.Order ?? short.MaxValue)
 										.ToArray();
 
-			foreach (Type type in viewModelTypes) 
+			foreach (Type type in viewModelTypes)
 				services.AddSingleton(type);
 
 			services.AddSingleton(svc =>
@@ -346,7 +343,7 @@ namespace devTools.WiXComponents
 				Logger.LogInformation("Loading project file.");
 				XmlDocument doc = XmlDocumentHelper.LoadFile(fileName);
 				XmlNode root = doc.DocumentElement;
-				
+
 				if (root == null)
 				{
 					Logger.LogInformation("Skipping empty project.");
@@ -401,7 +398,7 @@ namespace devTools.WiXComponents
 					}
 
 					string ext = PathHelper.Extension(itemName);
-						
+
 					if (ext == null || !__supportedFiles.Contains(ext))
 					{
 						logger.LogInformation($"Skipping '{itemName}'.");
@@ -432,20 +429,20 @@ namespace devTools.WiXComponents
 					Logger.LogInformation("Skipping read only file.");
 					return;
 				}
-				
+
 				bool modified = false;
 				XmlDocument doc = new()
 				{
 					PreserveWhitespace = true
 				};
 				doc.Load(fileName);
-		
+
 				foreach (XmlElement element in doc.GetElementsByTagName("Component").Cast<XmlElement>())
 				{
 					element.SetAttribute("Guid", Guid.NewGuid().ToString("B").ToUpperInvariant());
 					modified = true;
 				}
-		
+
 				if (!modified) return;
 				Logger.LogInformation("Saving file...");
 				doc.Save(fileName);

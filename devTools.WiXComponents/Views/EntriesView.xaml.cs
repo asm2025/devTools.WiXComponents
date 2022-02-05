@@ -1,15 +1,14 @@
 ﻿using System.Windows.Controls;
 
-namespace devTools.WiXComponents.Views
+namespace devTools.WiXComponents.Views;
+
+/// <summary>
+/// Interaction logic for Home.xaml
+/// </summary>
+public partial class EntriesView : UserControl
 {
-	/// <summary>
-	/// Interaction logic for Home.xaml
-	/// </summary>
-	public partial class EntriesView : UserControl
+	public EntriesView()
 	{
-		public EntriesView()
-		{
-			InitializeComponent();
-		}
+		InitializeComponent();
 	}
 }

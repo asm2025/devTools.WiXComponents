@@ -1,7 +1,6 @@
-﻿namespace devTools.WiXComponents.Core
+﻿namespace devTools.WiXComponents.Core;
+
+public interface IApp
 {
-	public interface IApp
-	{
-		bool DarkTheme { get; set; }
-	}
+	bool DarkTheme { get; set; }
 }

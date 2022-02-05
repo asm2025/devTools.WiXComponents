@@ -1,9 +1,8 @@
-﻿namespace devTools.WiXComponents.Core
+﻿namespace devTools.WiXComponents.Core;
+
+public enum ComponentLocation
 {
-	public enum ComponentLocation
-	{
-		local,
-		source,
-		either
-	}
+	local,
+	source,
+	either
 }

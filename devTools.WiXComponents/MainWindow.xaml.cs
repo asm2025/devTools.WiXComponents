@@ -9,87 +9,88 @@ using JetBrains.Annotations;
 using MahApps.Metro.Controls;
 using Microsoft.Extensions.Logging;
 
-namespace devTools.WiXComponents
+namespace devTools.WiXComponents;
+
+/// <summary>
+/// Interaction logic for MainWindow.xaml
+/// </summary>
+public partial class MainWindow : MetroWindow
 {
-	/// <summary>
-	/// Interaction logic for MainWindow.xaml
-	/// </summary>
-	public partial class MainWindow : MetroWindow
+	/// <inheritdoc />
+	public MainWindow([NotNull] MainViewModel viewModel, ILogger<MainWindow> logger)
 	{
-		/// <inheritdoc />
-		public MainWindow([NotNull] MainViewModel viewModel, ILogger<MainWindow> logger)
+		Application = (App)System.Windows.Application.Current;
+		Logger = logger;
+		DataContext = viewModel;
+		InitializeComponent();
+	}
+
+	public bool DarkTheme
+	{
+		get => Application.DarkTheme;
+		set => Application.DarkTheme = value;
+	}
+
+	[NotNull]
+	public App Application { get; }
+
+	public ILogger Logger { get; }
+
+	/// <inheritdoc />
+	protected override void OnSourceInitialized(EventArgs e)
+	{
+		base.OnSourceInitialized(e);
+		HwndSource hWnd = (HwndSource)PresentationSource.FromVisual(this);
+		hWnd?.AddHook(HookProc);
+	}
+
+	/// <inheritdoc />
+	protected override void OnClosed(EventArgs e)
+	{
+		base.OnClosed(e);
+		Dispatcher.InvokeShutdown();
+	}
+
+	/// <inheritdoc />
+	protected override void OnMouseLeftButtonDown(MouseButtonEventArgs e)
+	{
+		try
 		{
-			Application = (App)System.Windows.Application.Current;
-			Logger = logger;
-			DataContext = viewModel;
-			InitializeComponent();
+			DragMove();
+			e.Handled = true;
 		}
-
-		public bool DarkTheme
+		catch (InvalidOperationException)
 		{
-			get => Application.DarkTheme;
-			set => Application.DarkTheme = value;
+			// ignored
 		}
+	}
 
-		[NotNull]
-		public App Application { get; }
+	private static IntPtr HookProc(IntPtr hWnd, int msg, IntPtr wParam, IntPtr lParam, ref bool handled)
+	{
+		if (msg != NativeMethods.WM_GETMINMAXINFO) return IntPtr.Zero;
+		// We need to tell the system what our size should be when maximized. Otherwise it will cover the whole screen,
+		// including the task bar.
+		NativeMethods.MINMAXINFO mmi = (NativeMethods.MINMAXINFO)Marshal.PtrToStructure(lParam, typeof(NativeMethods.MINMAXINFO))!;
 
-		public ILogger Logger { get; }
+		// Adjust the maximized size and position to fit the work area of the correct monitor
+		IntPtr monitor = NativeMethods.MonitorFromWindow(hWnd, NativeMethods.MONITOR_DEFAULTTONEAREST);
 
-		/// <inheritdoc />
-		protected override void OnSourceInitialized(EventArgs e)
+		if (monitor != IntPtr.Zero)
 		{
-			base.OnSourceInitialized(e);
-			HwndSource hWnd = (HwndSource)PresentationSource.FromVisual(this);
-			hWnd?.AddHook(HookProc);
-		}
-
-		/// <inheritdoc />
-		protected override void OnClosed(EventArgs e)
-		{
-			base.OnClosed(e);
-			Dispatcher.InvokeShutdown();
-		}
-
-		/// <inheritdoc />
-		protected override void OnMouseLeftButtonDown(MouseButtonEventArgs e)
-		{
-			try
+			NativeMethods.MONITORINFO monitorInfo = new NativeMethods.MONITORINFO
 			{
-				DragMove();
-				e.Handled = true;
-			}
-			catch (InvalidOperationException )
-			{
-				// ignored
-			}
+				cbSize = Marshal.SizeOf(typeof(NativeMethods.MONITORINFO))
+			};
+			NativeMethods.GetMonitorInfo(monitor, ref monitorInfo);
+			RECT rcWorkArea = monitorInfo.rcWork;
+			RECT rcMonitorArea = monitorInfo.rcMonitor;
+			mmi.ptMaxPosition.X = Math.Abs(rcWorkArea.Left - rcMonitorArea.Left);
+			mmi.ptMaxPosition.Y = Math.Abs(rcWorkArea.Top - rcMonitorArea.Top);
+			mmi.ptMaxSize.X = Math.Abs(rcWorkArea.Right - rcWorkArea.Left);
+			mmi.ptMaxSize.Y = Math.Abs(rcWorkArea.Bottom - rcWorkArea.Top);
 		}
 
-		private static IntPtr HookProc(IntPtr hWnd, int msg, IntPtr wParam, IntPtr lParam, ref bool handled)
-		{
-			if (msg != NativeMethods.WM_GETMINMAXINFO) return IntPtr.Zero;
-			// We need to tell the system what our size should be when maximized. Otherwise it will cover the whole screen,
-			// including the task bar.
-			NativeMethods.MINMAXINFO mmi = (NativeMethods.MINMAXINFO)Marshal.PtrToStructure(lParam, typeof(NativeMethods.MINMAXINFO))!;
-			
-			// Adjust the maximized size and position to fit the work area of the correct monitor
-			IntPtr monitor = NativeMethods.MonitorFromWindow(hWnd, NativeMethods.MONITOR_DEFAULTTONEAREST);
-
-			if (monitor != IntPtr.Zero)
-			{
-				NativeMethods.MONITORINFO monitorInfo = new NativeMethods.MONITORINFO();
-				monitorInfo.cbSize = Marshal.SizeOf(typeof(NativeMethods.MONITORINFO));
-				NativeMethods.GetMonitorInfo(monitor, ref monitorInfo);
-				RECT rcWorkArea = monitorInfo.rcWork;
-				RECT rcMonitorArea = monitorInfo.rcMonitor;
-				mmi.ptMaxPosition.X = Math.Abs(rcWorkArea.Left - rcMonitorArea.Left);
-				mmi.ptMaxPosition.Y = Math.Abs(rcWorkArea.Top - rcMonitorArea.Top);
-				mmi.ptMaxSize.X = Math.Abs(rcWorkArea.Right - rcWorkArea.Left);
-				mmi.ptMaxSize.Y = Math.Abs(rcWorkArea.Bottom - rcWorkArea.Top);
-			}
-
-			Marshal.StructureToPtr(mmi, lParam, true);
-			return IntPtr.Zero;
-		}
+		Marshal.StructureToPtr(mmi, lParam, true);
+		return IntPtr.Zero;
 	}
 }
