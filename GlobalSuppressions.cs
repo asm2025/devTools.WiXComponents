@@ -17,3 +17,6 @@ using System.Diagnostics.CodeAnalysis;
 [assembly: SuppressMessage("Microsoft.Performance", "HAA0601:Value type to reference type conversion causing boxing allocation", Justification = "String interpolation can't accept value types such as int or long? What's the alternative?")]
 [assembly: SuppressMessage("Microsoft.Performance", "HAA0102:Non-overridden virtual method call on value type", Justification = "String interpolation error/warning. Wasting my time!")]
 [assembly: SuppressMessage("Microsoft.Performance", "HAA0401:Possible allocation of reference type enumerator", Justification = "Wasting my time!")]
+[assembly: SuppressMessage("Microsoft.Performance", "HAA0603:Delegate allocation from a method group", Justification = "Wasting my time!")]
+[assembly: SuppressMessage("Microsoft.Performance", "HAA0101:Array allocation for params parameter", Justification = "Wasting my time!")]
+[assembly: SuppressMessage("Interoperability", "CA1401:P/Invokes should not be visible", Justification = "WTF!")]
